@@ -27,11 +27,12 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-
+        Main.logger.info("Enabled " + Main.descrp.getName() + " v" + Main.descrp.getVersion() + ".");
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        Main.logger.info("Disabled " + Main.descrp.getName() + " v" + Main.descrp.getVersion() + ".");
     }
 }
