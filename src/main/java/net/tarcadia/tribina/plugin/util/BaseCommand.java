@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin.util;
 
-import net.tarcadia.tribina.plugin.mapregions.Main;
+import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.command.*;
 public class BaseCommand{
 
