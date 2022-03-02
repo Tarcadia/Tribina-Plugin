@@ -1,7 +1,7 @@
 package net.tarcadia.tribina.plugin.mapregions;
 
-import net.tarcadia.tribina.plugins.util.Pair;
-import net.tarcadia.tribina.plugins.util.RegionMapUtil;
+import net.tarcadia.tribina.plugin.util.Pair;
+import net.tarcadia.tribina.plugin.util.RegionFiles;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -75,7 +75,7 @@ public class RegionMap {
 	public void loadMap(@NonNull String regionId) throws Exception {
 		try {
 			File fileImage = new File(this.pathMaps + "/" + regionId + ".bmp");
-			var posSet = RegionMapUtil.loadRegionFromFile(fileImage);
+			var posSet = RegionFiles.loadRegionFromFile(fileImage);
 			this.addToRegion(posSet, regionId);
 		} catch (Exception e) {
 			throw new Exception("Load map file failed.", e);
@@ -128,7 +128,7 @@ public class RegionMap {
 		}
 		try {
 			File fileImage = new File(this.pathMaps + "/" + regionId + ".bmp");
-			RegionMapUtil.saveRegionToFile(posSet, fileImage);
+			RegionFiles.saveRegionToFile(posSet, fileImage);
 		} catch (Exception e) {
 			throw new Exception("Save map file failed.", e);
 		}
@@ -148,7 +148,7 @@ public class RegionMap {
 			var posSet = posSets.get(regionId);
 			try {
 				File fileImage = new File(this.pathMaps + "/" + regionId + ".bmp");
-				RegionMapUtil.saveRegionToFile(posSet, fileImage);
+				RegionFiles.saveRegionToFile(posSet, fileImage);
 			} catch (Exception e) {
 				es.add(e);
 			}
