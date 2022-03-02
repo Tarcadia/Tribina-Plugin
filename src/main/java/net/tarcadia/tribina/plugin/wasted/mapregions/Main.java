@@ -1,11 +1,7 @@
 package net.tarcadia.tribina.plugin.wasted.mapregions;
 
-import net.tarcadia.tribina.plugin.mapregions.command.*;
+import net.tarcadia.tribina.plugin.wasted.mapregions.command.*;
 import net.tarcadia.tribina.plugin.util.BaseCommand;
-import net.tarcadia.tribina.plugin.wasted.mapregions.command.CommandListMaps;
-import net.tarcadia.tribina.plugin.wasted.mapregions.command.CommandListRegions;
-import net.tarcadia.tribina.plugin.wasted.mapregions.command.CommandReloadConfigs;
-import net.tarcadia.tribina.plugin.wasted.mapregions.command.CommandReloadMap;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
