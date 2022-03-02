@@ -1,0 +1,8 @@
+name: TribinaPlugin
+version: '${project.version}'
+main: net.tarcadia.tribina.plugin.Main
+api-version: 1.18
+prefix: TRBN
+load: STARTUP
+authors: [ Tarcadia, HYC ]
+description: Plugin for Tribina
