@@ -1,6 +1,7 @@
-package net.tarcadia.tribina.plugin.mapregions.command;
+package net.tarcadia.tribina.plugin.wasted.mapregions.command;
 
-import net.tarcadia.tribina.plugin.mapregions.Main;
+import net.tarcadia.tribina.plugin.wasted.mapregions.Main;
+import net.tarcadia.tribina.plugin.util.BaseCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

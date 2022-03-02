@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.mapregions;
+package net.tarcadia.tribina.plugin.wasted.mapregions;
 
 import net.tarcadia.tribina.plugin.util.Pair;
 import net.tarcadia.tribina.plugin.util.RegionFiles;

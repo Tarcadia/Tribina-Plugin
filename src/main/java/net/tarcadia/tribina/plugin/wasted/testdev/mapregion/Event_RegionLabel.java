@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.testdev.mapregion;
+package net.tarcadia.tribina.plugin.wasted.testdev.mapregion;
 
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;

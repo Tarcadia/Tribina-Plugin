@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.testdev;
+package net.tarcadia.tribina.plugin.wasted.testdev;
 
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;

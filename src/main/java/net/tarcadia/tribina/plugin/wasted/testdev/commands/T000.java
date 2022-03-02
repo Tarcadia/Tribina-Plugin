@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.testdev.commands;
+package net.tarcadia.tribina.plugin.wasted.testdev.commands;
 
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
