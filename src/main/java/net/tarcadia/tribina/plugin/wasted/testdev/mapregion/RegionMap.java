@@ -1,9 +1,8 @@
-package net.tarcadia.tribina.plugin.testdev.mapregion;
+package net.tarcadia.tribina.plugin.wasted.testdev.mapregion;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 

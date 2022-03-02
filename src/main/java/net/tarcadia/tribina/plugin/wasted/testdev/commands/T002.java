@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.testdev.commands;
+package net.tarcadia.tribina.plugin.wasted.testdev.commands;
 
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;

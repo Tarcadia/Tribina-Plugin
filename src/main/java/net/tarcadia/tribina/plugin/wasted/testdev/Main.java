@@ -1,8 +1,8 @@
-package net.tarcadia.tribina.plugin.testdev;
+package net.tarcadia.tribina.plugin.wasted.testdev;
 
-import net.tarcadia.tribina.plugin.testdev.commands.T000;
-import net.tarcadia.tribina.plugin.testdev.commands.T001;
-import net.tarcadia.tribina.plugin.testdev.commands.T002;
+import net.tarcadia.tribina.plugin.wasted.testdev.commands.T000;
+import net.tarcadia.tribina.plugin.wasted.testdev.commands.T001;
+import net.tarcadia.tribina.plugin.wasted.testdev.commands.T002;
 
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;

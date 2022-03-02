@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.mapregions;
+package net.tarcadia.tribina.plugin.wasted.mapregions;
 
 import java.util.Map;
 
