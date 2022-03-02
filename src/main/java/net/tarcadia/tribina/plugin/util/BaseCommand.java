@@ -1,13 +1,14 @@
 package net.tarcadia.tribina.plugin.util;
 
-import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.command.*;
+import org.bukkit.plugin.java.JavaPlugin;
+
 public class BaseCommand{
 
-    protected PluginCommand command;
-    public BaseCommand(String cmd)
+    private final PluginCommand command;
+    public BaseCommand(JavaPlugin plugin, String cmd)
     {
-        this.command = Main.plugin.getCommand(cmd);
+        this.command = plugin.getCommand(cmd);
         if (command != null)
         {
             if (this instanceof CommandExecutor) {
@@ -18,12 +19,12 @@ public class BaseCommand{
             }
             if (!(this instanceof CommandExecutor) && !(this instanceof TabCompleter))
             {
-                Main.logger.warning("Not a command implementation: " + this.getClass().getSimpleName());
+                plugin.getLogger().warning("Not a command implementation: " + this.getClass().getSimpleName() + ".");
             }
         }
         else
         {
-            Main.logger.severe("Unable to register command: " + this.getClass().getSimpleName());
+            plugin.getLogger().warning("Unable to register command: " + this.getClass().getSimpleName() + ".");
         }
     }
 
