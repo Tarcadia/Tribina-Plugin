@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public abstract class BasePosSet {
 
@@ -30,5 +31,6 @@ public abstract class BasePosSet {
 
     public abstract boolean isEmpty();
     public abstract List<Pair<Long, Long>> getList();
+    public abstract Set<Pair<Long, Long>> getSet();
 
 }

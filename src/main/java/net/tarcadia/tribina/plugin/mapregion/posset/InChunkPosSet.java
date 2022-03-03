@@ -137,4 +137,15 @@ public class InChunkPosSet extends BasePosSet{
             }
         return ret;
     }
+
+    @Override
+    public Set<Pair<Long, Long>> getSet() {
+        Set<Pair<Long, Long>> ret = new HashSet<>();
+        for (int i = 0; i < CHUNK_SIZE; i++)
+            for (int j = 0; j < CHUNK_SIZE; j++) {
+                var pos = new Pair<>(this.biasX + i, this.biasZ + j);
+                ret.add(pos);
+            }
+        return ret;
+    }
 }
