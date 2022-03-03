@@ -35,6 +35,14 @@ public class InChunkPosSet extends BasePosSet{
         }
     }
 
+    private void set(long x, long z, boolean val) {
+        long _x = x - this.biasX;
+        long _z = z - this.biasZ;
+        if ((_x >= 0) && (_z >= 0) && (_x < CHUNK_SIZE) && (_z < CHUNK_SIZE)) {
+            this.setMap[(int) _x][(int) _z] = val;
+        }
+    }
+
     @Override
     public boolean contains(@NotNull Pair<Long, Long> pos) {
         return this.contains(pos.x(), pos.y());
@@ -51,11 +59,7 @@ public class InChunkPosSet extends BasePosSet{
 
     @Override
     public void add(long x, long z) {
-        long _x = x - this.biasX;
-        long _z = z - this.biasZ;
-        if ((_x >= 0) && (_z >= 0) && (_x < CHUNK_SIZE) && (_z < CHUNK_SIZE)) {
-            this.setMap[(int) _x][(int) _z] = true;
-        }
+        this.set(x, z, true);
     }
 
     @Override
@@ -77,11 +81,7 @@ public class InChunkPosSet extends BasePosSet{
 
     @Override
     public void sub(long x, long z) {
-        long _x = x - this.biasX;
-        long _z = z - this.biasZ;
-        if ((_x >= 0) && (_z >= 0) && (_x < CHUNK_SIZE) && (_z < CHUNK_SIZE)) {
-            this.setMap[(int) _x][(int) _z] = false;
-        }
+        this.set(x, z, false);
     }
 
     @Override
