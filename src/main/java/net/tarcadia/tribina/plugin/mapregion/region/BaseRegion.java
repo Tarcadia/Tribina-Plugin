@@ -22,4 +22,6 @@ public class BaseRegion {
         this.map = new GlobalPosSet(this.filePath + ".bmp");
     }
 
+    // TODO: Finish the implementation
+
 }

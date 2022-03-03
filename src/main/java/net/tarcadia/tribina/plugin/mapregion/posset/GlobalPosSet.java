@@ -25,7 +25,10 @@ public class GlobalPosSet extends BasePosSet{
         this.biasX = 0;
         this.biasZ = 0;
         this.setMap = new HashMap<>();
+        // TODO: Load from file;
     }
+
+    // TODO: Finish the implementation;
 
     @Override
     public boolean contains(long x, long z) {
