@@ -21,6 +21,12 @@ public class GlobalPosSet extends BasePosSet{
         this.setMap = new HashMap<>();
     }
 
+    public GlobalPosSet(String filePath) {
+        this.biasX = 0;
+        this.biasZ = 0;
+        this.setMap = new HashMap<>();
+    }
+
     @Override
     public boolean contains(long x, long z) {
         return false;
