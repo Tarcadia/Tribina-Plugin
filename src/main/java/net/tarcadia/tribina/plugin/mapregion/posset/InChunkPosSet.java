@@ -124,7 +124,7 @@ public class InChunkPosSet extends BasePosSet{
             for (int j = 0; j < CHUNK_SIZE; j++) {
                 flag |= this.setMap[i][j];
             }
-        return flag;
+        return !flag;
     }
 
     @Override
