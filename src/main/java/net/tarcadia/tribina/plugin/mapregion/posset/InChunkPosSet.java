@@ -118,6 +118,16 @@ public class InChunkPosSet extends BasePosSet{
     }
 
     @Override
+    public boolean isEmpty() {
+        boolean flag = false;
+        for (int i = 0; i < CHUNK_SIZE; i++)
+            for (int j = 0; j < CHUNK_SIZE; j++) {
+                flag |= this.setMap[i][j];
+            }
+        return flag;
+    }
+
+    @Override
     public List<Pair<Long, Long>> getList() {
         List<Pair<Long, Long>> ret = new LinkedList<>();
         for (int i = 0; i < CHUNK_SIZE; i++)

@@ -28,6 +28,7 @@ public abstract class BasePosSet {
     public abstract void cross(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     public abstract void cross(@NotNull BasePosSet pSet);
 
+    public abstract boolean isEmpty();
     public abstract List<Pair<Long, Long>> getList();
 
 }
