@@ -25,6 +25,9 @@ public class TagTree<T> {
         this.tags = new LinkedList<>();
         this.subTrees = new HashMap<>();
         this.value = null;
+
+        this.tags.add("");
+        this.subTrees.put("", this);
     }
 
     public TagTree(T value) {
@@ -36,6 +39,9 @@ public class TagTree<T> {
         this.tags = new LinkedList<>();
         this.subTrees = new HashMap<>();
         this.value = value;
+
+        this.tags.add("");
+        this.subTrees.put("", this);
     }
 
     public TagTree(@NonNull TagTree<T> root, @NonNull TagTree<T> parent, @NonNull String tag, T value) {
@@ -47,6 +53,8 @@ public class TagTree<T> {
         this.root = root;
         this.tags = new LinkedList<>();
         this.subTrees = new HashMap<>();
+        this.tags.add("");
+        this.subTrees.put("", this);
         if (split.length == 2) {
             this.put(split[1], value);
         } else {
@@ -110,7 +118,8 @@ public class TagTree<T> {
             return List.copyOf(this.tags);
         } else {
             var deepTags = new LinkedList<String>();
-            for (var branchId : this.tags) {
+            deepTags.add("");
+            for (var branchId : this.tags) if (!branchId.equals("")) {
                 for (var branchTag : this.subTrees.get(branchId).getTags(true)) {
                     deepTags.add(branchId + "." + branchTag);
                 }

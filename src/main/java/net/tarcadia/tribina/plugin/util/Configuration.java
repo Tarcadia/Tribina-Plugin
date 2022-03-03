@@ -35,8 +35,31 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         this.ttl = ttl;
         this.def = def;
 
-        var file = new File(path);
-        this.load(file);
+        this.instUpdate();
+    }
+
+    public Configuration(@NotNull String path, int ttl) {
+        this.path = path;
+        this.ttl = ttl;
+        this.def = null;
+
+        this.instUpdate();
+    }
+
+    public Configuration(@NotNull String path, org.bukkit.configuration.Configuration def) {
+        this.path = path;
+        this.ttl = 5000;
+        this.def = def;
+
+        this.instUpdate();
+    }
+
+    public Configuration(@NotNull String path) {
+        this.path = path;
+        this.ttl = 5000;
+        this.def = null;
+
+        this.instUpdate();
     }
 
     public void load(@NotNull File file) {
