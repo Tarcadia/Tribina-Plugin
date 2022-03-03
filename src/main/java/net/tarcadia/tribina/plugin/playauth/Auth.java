@@ -22,12 +22,12 @@ public class Auth {
 
     public Auth(@NotNull String name, @NotNull String fileRoot) {
         this.filePath = fileRoot + "/" + name;
-        this.config = new Configuration(this.filePath + ".yml", 5000);
+        this.config = new Configuration(this.filePath + ".yml");
     }
 
     public Auth(@NotNull String filePath) {
         this.filePath = filePath;
-        this.config = new Configuration(this.filePath + ".yml", 5000);
+        this.config = new Configuration(this.filePath + ".yml");
     }
 
     @NotNull
