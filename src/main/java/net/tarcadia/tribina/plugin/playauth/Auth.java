@@ -7,16 +7,27 @@ import java.util.*;
 
 public class Auth {
 
-    private final String name;
     private final String filePath;
     private final Configuration config;
-    private final int ttl;
 
     public Auth(@NotNull String name, @NotNull String fileRoot, int ttl) {
-        this.name = name;
-        this.filePath = fileRoot + "/" + this.name;
+        this.filePath = fileRoot + "/" + name;
         this.config = new Configuration(this.filePath + ".yml", ttl);
-        this.ttl = ttl;
+    }
+
+    public Auth(@NotNull String filePath, int ttl) {
+        this.filePath = filePath;
+        this.config = new Configuration(this.filePath + ".yml", ttl);
+    }
+
+    public Auth(@NotNull String name, @NotNull String fileRoot) {
+        this.filePath = fileRoot + "/" + name;
+        this.config = new Configuration(this.filePath + ".yml", 5000);
+    }
+
+    public Auth(@NotNull String filePath) {
+        this.filePath = filePath;
+        this.config = new Configuration(this.filePath + ".yml", 5000);
     }
 
     @NotNull
