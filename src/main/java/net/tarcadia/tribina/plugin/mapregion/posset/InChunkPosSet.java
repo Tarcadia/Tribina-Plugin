@@ -114,7 +114,7 @@ public class InChunkPosSet extends BasePosSet{
 
     @Override
     public void cross(@NotNull BasePosSet pSet) {
-        this.cross(pSet.getList());
+        this.cross(pSet.getSet());
     }
 
     @Override
