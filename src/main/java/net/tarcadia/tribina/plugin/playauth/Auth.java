@@ -16,7 +16,11 @@ public class Auth {
     }
 
     public Auth(@NotNull String filePath, int ttl) {
-        this.filePath = filePath;
+        if (filePath.toLowerCase().endsWith(".yml")) {
+            this.filePath = filePath.substring(0, filePath.length() - 4);
+        } else {
+            this.filePath = filePath;
+        }
         this.config = new Configuration(this.filePath + ".yml", ttl);
     }
 
@@ -26,7 +30,11 @@ public class Auth {
     }
 
     public Auth(@NotNull String filePath) {
-        this.filePath = filePath;
+        if (filePath.toLowerCase().endsWith(".yml")) {
+            this.filePath = filePath.substring(0, filePath.length() - 4);
+        } else {
+            this.filePath = filePath;
+        }
         this.config = new Configuration(this.filePath + ".yml");
     }
 
