@@ -18,7 +18,7 @@ public class TagTree<T> {
 
     public TagTree() {
         this.id = "root";
-        this.path = "";
+        this.path = "root";
         this.depth = 0;
         this.parent = null;
         this.root = this;
@@ -32,7 +32,7 @@ public class TagTree<T> {
 
     public TagTree(T value) {
         this.id = "root";
-        this.path = "";
+        this.path = "root";
         this.depth = 0;
         this.parent = null;
         this.root = this;
