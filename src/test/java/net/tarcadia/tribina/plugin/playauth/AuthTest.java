@@ -3,6 +3,8 @@ package net.tarcadia.tribina.plugin.playauth;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AuthTest {
@@ -18,8 +20,9 @@ class AuthTest {
 
     @Test
     void doTest() {
-        Auth auth = new Auth("src/test/resources/playauth/AuthTest/A.yml", 500);
-        Configuration config = new Configuration("src/test/resources/playauth/AuthTest/A.yml");
+        File fileA = new File("src/test/resources/playauth/AuthTest/A.yml");
+        Auth auth = new Auth(fileA, 500);
+        Configuration config = new Configuration(fileA);
 
         System.out.println(auth.getAuth("play"));
         System.out.println(auth.getAuth("play.place.dirt"));

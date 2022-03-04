@@ -1,8 +1,10 @@
 package net.tarcadia.tribina.plugin.mapregion.posset;
 
+import net.tarcadia.tribina.plugin.util.func.Bitmaps;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.*;
 
 public class GlobalPosSet extends BasePosSet{
@@ -21,15 +23,6 @@ public class GlobalPosSet extends BasePosSet{
         this.biasZ = 0;
         this.setMap = new HashMap<>();
     }
-
-    public GlobalPosSet(String filePath) {
-        this.biasX = 0;
-        this.biasZ = 0;
-        this.setMap = new HashMap<>();
-        // TODO: Load from file;
-    }
-
-    // TODO: Finish the implementation;
 
     @Override
     public boolean contains(long x, long z) {

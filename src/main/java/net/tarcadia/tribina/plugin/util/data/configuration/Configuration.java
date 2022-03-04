@@ -22,7 +22,7 @@ import java.util.logging.Level;
 
 public class Configuration implements org.bukkit.configuration.Configuration {
 
-    private final String path;
+    private final File file;
     private final long ttl;
     private long timeFile;
     private long timeUpdate;
@@ -30,32 +30,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     private org.bukkit.configuration.Configuration def;
     private YamlConfiguration configBuff;
 
-    public Configuration(@NotNull String path, org.bukkit.configuration.Configuration def, int ttl) {
-        this.path = path;
+    public Configuration(@NotNull File file, org.bukkit.configuration.Configuration def, int ttl) {
+        this.file = file;
         this.ttl = ttl;
         this.def = def;
 
         this.instUpdate();
     }
 
-    public Configuration(@NotNull String path, int ttl) {
-        this.path = path;
+    public Configuration(@NotNull File file, int ttl) {
+        this.file = file;
         this.ttl = ttl;
         this.def = null;
 
         this.instUpdate();
     }
 
-    public Configuration(@NotNull String path, org.bukkit.configuration.Configuration def) {
-        this.path = path;
+    public Configuration(@NotNull File file, org.bukkit.configuration.Configuration def) {
+        this.file = file;
         this.ttl = 5000;
         this.def = def;
 
         this.instUpdate();
     }
 
-    public Configuration(@NotNull String path) {
-        this.path = path;
+    public Configuration(@NotNull File file) {
+        this.file = file;
         this.ttl = 5000;
         this.def = null;
 
@@ -81,23 +81,20 @@ public class Configuration implements org.bukkit.configuration.Configuration {
 
     public void tryUpdate() {
         if (System.currentTimeMillis() - this.timeUpdate > this.ttl) {
-            var file = new File(this.path);
-            if (file.lastModified() > this.timeFile) {
-                this.load(file);
+            if (this.file.lastModified() > this.timeFile) {
+                this.load(this.file);
             }
         }
         this.timeUpdate = System.currentTimeMillis();
     }
 
     public void instUpdate() {
-        var file = new File(this.path);
-        this.load(file);
+        this.load(this.file);
         this.timeUpdate = System.currentTimeMillis();
     }
 
     public void didUpdate() {
-        var file = new File(this.path);
-        this.save(file);
+        this.save(this.file);
         this.timeUpdate = System.currentTimeMillis();
     }
 

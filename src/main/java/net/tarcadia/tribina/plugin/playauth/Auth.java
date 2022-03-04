@@ -3,39 +3,32 @@ package net.tarcadia.tribina.plugin.playauth;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.*;
 
 public class Auth {
 
-    private final String filePath;
+    private final File file;
     private final Configuration config;
 
     public Auth(@NotNull String name, @NotNull String fileRoot, int ttl) {
-        this.filePath = fileRoot + "/" + name;
-        this.config = new Configuration(this.filePath + ".yml", ttl);
+        this.file = new File(fileRoot + "/" + name + ".yml");
+        this.config = new Configuration(this.file, ttl);
     }
 
-    public Auth(@NotNull String filePath, int ttl) {
-        if (filePath.toLowerCase().endsWith(".yml")) {
-            this.filePath = filePath.substring(0, filePath.length() - 4);
-        } else {
-            this.filePath = filePath;
-        }
-        this.config = new Configuration(this.filePath + ".yml", ttl);
+    public Auth(@NotNull File file, int ttl) {
+        this.file = file;
+        this.config = new Configuration(this.file, ttl);
     }
 
     public Auth(@NotNull String name, @NotNull String fileRoot) {
-        this.filePath = fileRoot + "/" + name;
-        this.config = new Configuration(this.filePath + ".yml");
+        this.file = new File(fileRoot + "/" + name + ".yml");
+        this.config = new Configuration(this.file);
     }
 
-    public Auth(@NotNull String filePath) {
-        if (filePath.toLowerCase().endsWith(".yml")) {
-            this.filePath = filePath.substring(0, filePath.length() - 4);
-        } else {
-            this.filePath = filePath;
-        }
-        this.config = new Configuration(this.filePath + ".yml");
+    public Auth(@NotNull File file) {
+        this.file = file;
+        this.config = new Configuration(this.file);
     }
 
     @NotNull
