@@ -121,7 +121,11 @@ public class TagTree<T> {
             deepTags.add("");
             for (var branchId : this.tags) if (!branchId.equals("")) {
                 for (var branchTag : this.subTrees.get(branchId).getTags(true)) {
-                    deepTags.add(branchId + "." + branchTag);
+                    if (!branchTag.equals("")) {
+                        deepTags.add(branchId + "." + branchTag);
+                    } else {
+                        deepTags.add(branchId);
+                    }
                 }
             }
             return deepTags;
