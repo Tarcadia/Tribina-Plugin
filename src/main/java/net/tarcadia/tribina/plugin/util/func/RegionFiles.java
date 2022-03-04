@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.util;
+package net.tarcadia.tribina.plugin.util.func;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
