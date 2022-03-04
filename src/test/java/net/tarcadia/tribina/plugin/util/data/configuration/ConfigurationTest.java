@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.util;
+package net.tarcadia.tribina.plugin.util.data.configuration;
 
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
