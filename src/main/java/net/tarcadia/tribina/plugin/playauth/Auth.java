@@ -7,35 +7,27 @@ import java.util.*;
 
 public class Auth {
 
-    private final String filePath;
+    private final String fileName;
     private final Configuration config;
 
     public Auth(@NotNull String name, @NotNull String fileRoot, int ttl) {
-        this.filePath = fileRoot + "/" + name;
-        this.config = new Configuration(this.filePath + ".yml", ttl);
+        this.fileName = fileRoot + "/" + name + ".yml";
+        this.config = new Configuration(this.fileName, ttl);
     }
 
-    public Auth(@NotNull String filePath, int ttl) {
-        if (filePath.toLowerCase().endsWith(".yml")) {
-            this.filePath = filePath.substring(0, filePath.length() - 4);
-        } else {
-            this.filePath = filePath;
-        }
-        this.config = new Configuration(this.filePath + ".yml", ttl);
+    public Auth(@NotNull String fileName, int ttl) {
+        this.fileName = fileName;
+        this.config = new Configuration(this.fileName, ttl);
     }
 
     public Auth(@NotNull String name, @NotNull String fileRoot) {
-        this.filePath = fileRoot + "/" + name;
-        this.config = new Configuration(this.filePath + ".yml");
+        this.fileName = fileRoot + "/" + name + ".yml";
+        this.config = new Configuration(this.fileName);
     }
 
-    public Auth(@NotNull String filePath) {
-        if (filePath.toLowerCase().endsWith(".yml")) {
-            this.filePath = filePath.substring(0, filePath.length() - 4);
-        } else {
-            this.filePath = filePath;
-        }
-        this.config = new Configuration(this.filePath + ".yml");
+    public Auth(@NotNull String fileName) {
+        this.fileName = fileName;
+        this.config = new Configuration(this.fileName);
     }
 
     @NotNull
