@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.util;
+package net.tarcadia.tribina.plugin.util.data;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
