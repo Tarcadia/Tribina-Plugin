@@ -58,13 +58,17 @@ public class Auth {
     @NotNull
     public Set<String> getAuth(@NotNull String key) {
         Set<String> ret = new HashSet<>();
+        Set<String> vis = new HashSet<>();
         List<String> lst = new LinkedList<>(this.getStrings(key));
         while (!lst.isEmpty()) {
             var s = lst.remove(0);
-            if (this.config.contains(s)) {
-                lst.addAll(this.getStrings(s));
-            } else {
-                ret.add(s);
+            if (!vis.contains(s)) {
+                vis.add(s);
+                if (this.config.contains(s)) {
+                    lst.addAll(this.getStrings(s));
+                } else {
+                    ret.add(s);
+                }
             }
         }
         return ret;
