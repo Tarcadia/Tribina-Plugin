@@ -1,5 +1,6 @@
 package net.tarcadia.tribina.plugin.util;
 
+import net.tarcadia.tribina.plugin.util.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin.playauth;
 
-import net.tarcadia.tribina.plugin.util.Configuration;
+import net.tarcadia.tribina.plugin.util.configuration.Configuration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
