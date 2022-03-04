@@ -11,7 +11,7 @@ public class InFilePosSet extends BasePosSet{
     static int CHUNK_SIZE = InChunkPosSet.CHUNK_SIZE;
     static int FILE_SIZE_BITLEN = 5;
     static int FILE_SIZE = 1 << FILE_SIZE_BITLEN;
-    static long FILE_SIZE_MASK = - (1L << FILE_SIZE_BITLEN << CHUNK_SIZE_BITLEN - 1);
+    static long FILE_SIZE_MASK = -1L << FILE_SIZE_BITLEN << CHUNK_SIZE_BITLEN;
 
     private final InChunkPosSet[][] setMap;
 
