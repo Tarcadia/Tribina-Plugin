@@ -1,7 +1,7 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
 import net.tarcadia.tribina.plugin.mapregion.posset.GlobalPosSet;
-import net.tarcadia.tribina.plugin.util.configuration.Configuration;
+import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.jetbrains.annotations.NotNull;
 
 public class BaseRegion {
