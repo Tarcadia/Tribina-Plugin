@@ -10,7 +10,7 @@ public class InChunkPosSet extends BasePosSet{
 
     static int CHUNK_SIZE_BITLEN = 4;
     static int CHUNK_SIZE = 1 << CHUNK_SIZE_BITLEN;
-    static long CHUNK_SIZE_MASK = - (CHUNK_SIZE - 1);
+    static long CHUNK_SIZE_MASK = -1 << CHUNK_SIZE_BITLEN;
 
     private final boolean[][] setMap;
 

@@ -11,7 +11,7 @@ public class InFilePosSet extends BasePosSet{
     static int CHUNK_SIZE = InChunkPosSet.CHUNK_SIZE;
     static int FILE_SIZE_BITLEN = 5;
     static int FILE_SIZE = 1 << FILE_SIZE_BITLEN;
-    static long FILE_SIZE_MASK = - (1L << FILE_SIZE_BITLEN << CHUNK_SIZE_BITLEN - 1);
+    static long FILE_SIZE_MASK = -1L << FILE_SIZE_BITLEN << CHUNK_SIZE_BITLEN;
 
     private final InChunkPosSet[][] setMap;
 
@@ -60,8 +60,8 @@ public class InFilePosSet extends BasePosSet{
         long _x = x - this.biasX;
         long _z = z - this.biasZ;
         if ((_x >= 0) && (_z >= 0) && (_x < (long) FILE_SIZE * CHUNK_SIZE) && (_z < (long) FILE_SIZE * CHUNK_SIZE)) {
-            int _cX = (int) (_x / CHUNK_SIZE);
-            int _cZ = (int) (_z / CHUNK_SIZE);
+            int _cX = (int) (_x >> CHUNK_SIZE_BITLEN);
+            int _cZ = (int) (_z >> CHUNK_SIZE_BITLEN);
             var sub = Objects.requireNonNullElseGet(
                     this.setMap[_cX][_cZ],
                     () -> {
@@ -99,8 +99,8 @@ public class InFilePosSet extends BasePosSet{
         long _x = x - this.biasX;
         long _z = z - this.biasZ;
         if ((_x >= 0) && (_z >= 0) && (_x < (long) FILE_SIZE * CHUNK_SIZE) && (_z < (long) FILE_SIZE * CHUNK_SIZE)) {
-            int _cX = (int) (_x / CHUNK_SIZE);
-            int _cZ = (int) (_z / CHUNK_SIZE);
+            int _cX = (int) (_x >> CHUNK_SIZE_BITLEN);
+            int _cZ = (int) (_z >> CHUNK_SIZE_BITLEN);
             var sub = this.setMap[_cX][_cZ];
             if (sub != null) {
                 sub.sub(x, z);
@@ -139,8 +139,8 @@ public class InFilePosSet extends BasePosSet{
             long _x = pos.x() - this.biasX;
             long _z = pos.y() - this.biasZ;
             if ((_x >= 0) && (_z >= 0) && (_x < (long) FILE_SIZE * CHUNK_SIZE) && (_z < (long) FILE_SIZE * CHUNK_SIZE)) {
-                int _cX = (int) (_x / CHUNK_SIZE);
-                int _cZ = (int) (_z / CHUNK_SIZE);
+                int _cX = (int) (_x >> CHUNK_SIZE_BITLEN);
+                int _cZ = (int) (_z >> CHUNK_SIZE_BITLEN);
                 c[_cX][_cZ].add(pos);
             }
         }
