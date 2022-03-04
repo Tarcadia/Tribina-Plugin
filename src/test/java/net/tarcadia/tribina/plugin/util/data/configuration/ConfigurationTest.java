@@ -1,6 +1,5 @@
 package net.tarcadia.tribina.plugin.util.data.configuration;
 
-import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,7 @@ class ConfigurationTest {
     }
 
     @Test
-    void readQueryWrite() {
+    void doTest() {
         YamlConfiguration ymlConfig = YamlConfiguration.loadConfiguration(new File("src/test/resources/ConfigurationTest/A.yml"));
         Configuration configA = new Configuration("src/test/resources/ConfigurationTest/B.yml", ymlConfig, 500);
         Configuration configB = new Configuration("src/test/resources/ConfigurationTest/B.yml", ymlConfig, 500);
