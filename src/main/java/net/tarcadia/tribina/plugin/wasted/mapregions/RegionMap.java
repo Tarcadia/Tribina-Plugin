@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin.wasted.mapregions;
 
-import net.tarcadia.tribina.plugin.util.Pair;
+import net.tarcadia.tribina.plugin.util.type.Pair;
 import net.tarcadia.tribina.plugin.util.RegionFiles;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

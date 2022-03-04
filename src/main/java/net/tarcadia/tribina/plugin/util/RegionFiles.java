@@ -9,6 +9,7 @@ import java.io.File;
 
 import java.io.IOException;
 
+import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class RegionFiles {
