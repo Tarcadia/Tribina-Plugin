@@ -21,9 +21,9 @@ public class BaseRegion {
     protected final Configuration config;
     protected final GlobalPosSet map;
 
-    protected final Location loc;
-    protected final long biasX;
-    protected final long biasZ;
+    protected Location loc;
+    protected long biasX;
+    protected long biasZ;
 
     protected final boolean isNull;
 
@@ -47,30 +47,24 @@ public class BaseRegion {
                 this.config.isLong(KEY_LOC_OFFSET_X) &&
                 this.config.isLong(KEY_LOC_OFFSET_Z)
         ) {
-            Location loc = null;
-            long biasX = 0;
-            long biasZ = 0;
-            boolean isNull = true;
+            boolean isNull;
             try {
                 long offsetX = this.config.getLong(KEY_LOC_OFFSET_X);
                 long offsetZ = this.config.getLong(KEY_LOC_OFFSET_Z);
-                loc = this.config.getLocation(KEY_LOC_LOC);
-                biasX = loc.getBlockX() + offsetX;
-                biasZ = loc.getBlockZ() + offsetZ;
+                this.loc = this.config.getLocation(KEY_LOC_LOC);
+                this.biasX = loc.getBlockX() + offsetX;
+                this.biasZ = loc.getBlockZ() + offsetZ;
                 var posSet = Bitmaps.loadBmpToSet(fileBitmap);
                 for (var pos : posSet) {
                     this.map.add(pos.x() + biasX, pos.y() + biasZ);
                 }
                 isNull = false;
             } catch (Exception e) {
-                loc = null;
-                biasX = 0;
-                biasZ = 0;
+                this.loc = null;
+                this.biasX = 0;
+                this.biasZ = 0;
                 isNull = true;
             }
-            this.loc = loc;
-            this.biasX = biasX;
-            this.biasZ = biasZ;
             this.isNull = isNull;
         } else {
             this.loc = null;
@@ -89,30 +83,24 @@ public class BaseRegion {
                 this.config.isLong(KEY_LOC_OFFSET_X) &&
                 this.config.isLong(KEY_LOC_OFFSET_Z)
         ) {
-            Location loc = null;
-            long biasX = 0;
-            long biasZ = 0;
-            boolean isNull = true;
+            boolean isNull;
             try {
                 long offsetX = this.config.getLong(KEY_LOC_OFFSET_X);
                 long offsetZ = this.config.getLong(KEY_LOC_OFFSET_Z);
-                loc = this.config.getLocation(KEY_LOC_LOC);
-                biasX = loc.getBlockX() + offsetX;
-                biasZ = loc.getBlockZ() + offsetZ;
+                this.loc = this.config.getLocation(KEY_LOC_LOC);
+                this.biasX = loc.getBlockX() + offsetX;
+                this.biasZ = loc.getBlockZ() + offsetZ;
                 var posSet = Bitmaps.loadBmpToSet(fileBitmap);
                 for (var pos : posSet) {
                     this.map.add(pos.x() + biasX, pos.y() + biasZ);
                 }
                 isNull = false;
             } catch (Exception e) {
-                loc = null;
-                biasX = 0;
-                biasZ = 0;
+                this.loc = null;
+                this.biasX = 0;
+                this.biasZ = 0;
                 isNull = true;
             }
-            this.loc = loc;
-            this.biasX = biasX;
-            this.biasZ = biasZ;
             this.isNull = isNull;
         } else {
             this.loc = null;
@@ -131,30 +119,24 @@ public class BaseRegion {
                 this.config.isLong(KEY_LOC_OFFSET_X) &&
                 this.config.isLong(KEY_LOC_OFFSET_Z)
         ) {
-            Location loc = null;
-            long biasX = 0;
-            long biasZ = 0;
-            boolean isNull = true;
+            boolean isNull;
             try {
                 long offsetX = this.config.getLong(KEY_LOC_OFFSET_X);
                 long offsetZ = this.config.getLong(KEY_LOC_OFFSET_Z);
-                loc = this.config.getLocation(KEY_LOC_LOC);
-                biasX = loc.getBlockX() + offsetX;
-                biasZ = loc.getBlockZ() + offsetZ;
+                this.loc = this.config.getLocation(KEY_LOC_LOC);
+                this.biasX = loc.getBlockX() + offsetX;
+                this.biasZ = loc.getBlockZ() + offsetZ;
                 var posSet = Bitmaps.loadBmpToSet(fileBitmap);
                 for (var pos : posSet) {
                     this.map.add(pos.x() + biasX, pos.y() + biasZ);
                 }
                 isNull = false;
             } catch (Exception e) {
-                loc = null;
-                biasX = 0;
-                biasZ = 0;
+                this.loc = null;
+                this.biasX = 0;
+                this.biasZ = 0;
                 isNull = true;
             }
-            this.loc = loc;
-            this.biasX = biasX;
-            this.biasZ = biasZ;
             this.isNull = isNull;
         } else {
             this.loc = null;
@@ -173,30 +155,24 @@ public class BaseRegion {
                 this.config.isLong(KEY_LOC_OFFSET_X) &&
                 this.config.isLong(KEY_LOC_OFFSET_Z)
         ) {
-            Location loc = null;
-            long biasX = 0;
-            long biasZ = 0;
-            boolean isNull = true;
+            boolean isNull;
             try {
                 long offsetX = this.config.getLong(KEY_LOC_OFFSET_X);
                 long offsetZ = this.config.getLong(KEY_LOC_OFFSET_Z);
-                loc = this.config.getLocation(KEY_LOC_LOC);
-                biasX = loc.getBlockX() + offsetX;
-                biasZ = loc.getBlockZ() + offsetZ;
+                this.loc = this.config.getLocation(KEY_LOC_LOC);
+                this.biasX = loc.getBlockX() + offsetX;
+                this.biasZ = loc.getBlockZ() + offsetZ;
                 var posSet = Bitmaps.loadBmpToSet(fileBitmap);
                 for (var pos : posSet) {
                     this.map.add(pos.x() + biasX, pos.y() + biasZ);
                 }
                 isNull = false;
             } catch (Exception e) {
-                loc = null;
-                biasX = 0;
-                biasZ = 0;
+                this.loc = null;
+                this.biasX = 0;
+                this.biasZ = 0;
                 isNull = true;
             }
-            this.loc = loc;
-            this.biasX = biasX;
-            this.biasZ = biasZ;
             this.isNull = isNull;
         } else {
             this.loc = null;
