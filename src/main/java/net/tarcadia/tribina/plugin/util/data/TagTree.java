@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.util;
+package net.tarcadia.tribina.plugin.util.data;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -18,7 +18,7 @@ public class TagTree<T> {
 
     public TagTree() {
         this.id = "root";
-        this.path = "";
+        this.path = "root";
         this.depth = 0;
         this.parent = null;
         this.root = this;
@@ -32,7 +32,7 @@ public class TagTree<T> {
 
     public TagTree(T value) {
         this.id = "root";
-        this.path = "";
+        this.path = "root";
         this.depth = 0;
         this.parent = null;
         this.root = this;
@@ -121,7 +121,11 @@ public class TagTree<T> {
             deepTags.add("");
             for (var branchId : this.tags) if (!branchId.equals("")) {
                 for (var branchTag : this.subTrees.get(branchId).getTags(true)) {
-                    deepTags.add(branchId + "." + branchTag);
+                    if (!branchTag.equals("")) {
+                        deepTags.add(branchId + "." + branchTag);
+                    } else {
+                        deepTags.add(branchId);
+                    }
                 }
             }
             return deepTags;

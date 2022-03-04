@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.util;
+package net.tarcadia.tribina.plugin.util.type;
 
 public record Pair<X, Y>(X x, Y y) implements Cloneable{
 

@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion.posset;
 
-import net.tarcadia.tribina.plugin.util.Pair;
+import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
