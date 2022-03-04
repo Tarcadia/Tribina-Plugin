@@ -18,9 +18,11 @@ class ConfigurationTest {
 
     @Test
     void doTest() {
-        YamlConfiguration ymlConfig = YamlConfiguration.loadConfiguration(new File("src/test/resources/util/data/configuration/ConfigurationTest/A.yml"));
-        Configuration configA = new Configuration("src/test/resources/util/data/configuration/ConfigurationTest/B.yml", ymlConfig, 500);
-        Configuration configB = new Configuration("src/test/resources/util/data/configuration/ConfigurationTest/B.yml", ymlConfig, 500);
+        File fileA = new File("src/test/resources/util/data/configuration/ConfigurationTest/A.yml");
+        File fileB = new File("src/test/resources/util/data/configuration/ConfigurationTest/B.yml");
+        YamlConfiguration ymlConfig = YamlConfiguration.loadConfiguration(fileA);
+        Configuration configA = new Configuration(fileB, ymlConfig, 500);
+        Configuration configB = new Configuration(fileB, ymlConfig, 500);
         ymlConfig.set("a.b.r", 7);
         System.out.println(configA.getString("a.b.q"));
         System.out.println(configA.getString("a.b.w"));
