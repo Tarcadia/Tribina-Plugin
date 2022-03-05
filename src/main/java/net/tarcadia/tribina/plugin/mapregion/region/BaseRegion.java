@@ -214,6 +214,18 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
+    public String getName() {
+        return this.config.getString(KEY_DISP_NAME, "");
+    }
+
+    public String getLore() {
+        return this.config.getString(KEY_DISP_LORE, "");
+    }
+
+    public List<String> getAuth() {
+        return this.config.getStringList(KEY_AUTH);
+    }
+
     @Override
     public boolean contains(long x, long z) {
         if (this.isNull) {
