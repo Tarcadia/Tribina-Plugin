@@ -8,6 +8,7 @@ import net.tarcadia.tribina.plugin.util.func.Bitmaps;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -369,6 +370,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
+    @Nullable
     public Long minX() {
         if (this.isNull) {
             return null;
@@ -378,6 +380,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
+    @Nullable
     public Long minY() {
         if (this.isNull) {
             return null;
