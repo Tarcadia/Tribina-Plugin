@@ -195,17 +195,14 @@ public class BaseRegion extends BasePosSet {
 
     public void saveMap() {
         try{
-            boolean flagToLarge = false;
-            var lst = this.map.getList();
-            long minX = Long.MAX_VALUE;
-            long minZ = Long.MAX_VALUE;
-            for (var pos : lst) {
-                if (pos.x() < minX) minX = pos.x();
-                if (pos.y() < minZ) minZ = pos.y();
-            }
-            this.reBias(minX, minZ);
+            boolean flagTooLarge = false;
+            var minX = this.minX();
+            var minZ = this.minZ();
+            if ((minX != null) && (minZ != null))
+                this.reBias(minX, minZ);
 
             var set = new HashSet<Pair<Integer, Integer>>();
+            var lst = this.map.getList();
             for (var pos : lst) {
                 long _x = pos.x() - this.biasX;
                 long _z = pos.y() - this.biasZ;
@@ -213,10 +210,10 @@ public class BaseRegion extends BasePosSet {
                     var p = new Pair<>((int) _x, (int) _z);
                     set.add(p);
                 } else {
-                    flagToLarge = true;
+                    flagTooLarge = true;
                 }
             }
-            if (flagToLarge) Main.logger.log(Level.WARNING, "MR: Saving bitmap to large, some pos discarded.");
+            if (flagTooLarge) Main.logger.log(Level.WARNING, "MR: Saving bitmap to large, some pos discarded.");
             Bitmaps.saveSetToBmp(set, this.fileBitmap);
         } catch (Exception e) {
             Main.logger.log(Level.WARNING, "MR: Saving bitmap failed.", e);
