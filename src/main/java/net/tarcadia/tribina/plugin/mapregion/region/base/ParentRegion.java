@@ -25,10 +25,14 @@ public interface ParentRegion extends Region {
     @Override
     void cross(@NotNull PosSet pSet);
 
-    void subShrink(long x, long z);
-    void subShrink(@NotNull Pair<Long, Long> pos);
-    void subAllShrink(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void subAllShrink(@NotNull BasePosSet pSet);
-    void crossShrink(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void crossShrink(@NotNull BasePosSet pSet);
+    void addForce(long x, long z);
+    void addForce(@NotNull Pair<Long, Long> pos);
+    void addAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    void addAllForce(@NotNull PosSet pSet);
+    void subForce(long x, long z);
+    void subForce(@NotNull Pair<Long, Long> pos);
+    void subAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    void subAllForce(@NotNull PosSet pSet);
+    void crossForce(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    void crossForce(@NotNull PosSet pSet);
 }
