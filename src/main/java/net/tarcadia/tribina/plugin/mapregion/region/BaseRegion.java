@@ -222,7 +222,7 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
-    public boolean reLoc(Location loc) {
+    public boolean reLoc(@NotNull Location loc) {
         if (loc.getWorld() == this.loc.getWorld()) {
             long offsetX = this.biasX - loc.getBlockX();
             long offsetZ = this.biasZ - loc.getBlockZ();
@@ -246,14 +246,17 @@ public class BaseRegion extends BasePosSet {
         return true;
     }
 
+    @NotNull
     public String getName() {
         return this.config.getString(KEY_DISP_NAME, "");
     }
 
+    @NotNull
     public String getLore() {
         return this.config.getString(KEY_DISP_LORE, "");
     }
 
+    @NotNull
     public List<String> getAuth() {
         return this.config.getStringList(KEY_AUTH);
     }
@@ -366,6 +369,24 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
+    public Long minX() {
+        if (this.isNull) {
+            return null;
+        } else {
+            return this.map.minX();
+        }
+    }
+
+    @Override
+    public Long minY() {
+        if (this.isNull) {
+            return null;
+        } else {
+            return this.map.minY();
+        }
+    }
+
+    @Override
     public boolean isEmpty() {
         if (this.isNull) {
             return true;
@@ -375,6 +396,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
+    @NotNull
     public List<Pair<Long, Long>> getList() {
         if (!this.isNull) {
             return this.map.getList();
@@ -384,6 +406,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
+    @NotNull
     public Set<Pair<Long, Long>> getSet() {
         if (!this.isNull) {
             return this.map.getSet();
