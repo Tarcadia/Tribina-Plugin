@@ -9,9 +9,6 @@ import java.util.Set;
 
 public abstract class BasePosSet {
 
-    protected long biasX;
-    protected long biasZ;
-
     public abstract boolean contains(long x, long z);
     public abstract boolean contains(@NotNull Pair<Long, Long> pos);
     public abstract boolean containsAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);

@@ -1,10 +1,8 @@
 package net.tarcadia.tribina.plugin.mapregion.posset;
 
-import net.tarcadia.tribina.plugin.util.func.Bitmaps;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.*;
 
 public class GlobalPosSet extends BasePosSet{
@@ -19,8 +17,6 @@ public class GlobalPosSet extends BasePosSet{
     private final Map<Pair<Long, Long>, InFilePosSet> setMap;
 
     public GlobalPosSet() {
-        this.biasX = 0;
-        this.biasZ = 0;
         this.setMap = new HashMap<>();
     }
 
