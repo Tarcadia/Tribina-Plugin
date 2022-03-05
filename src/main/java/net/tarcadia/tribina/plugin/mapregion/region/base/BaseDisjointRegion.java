@@ -107,8 +107,7 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public void addForce(long x, long z) {
         if (!this.isNull()) {
             for (var peer : this.peers) peer.subForce(x, z);
-            this.map().add(x, z);
-            this.saveMap();
+            this.add(x, z);
         }
     }
 
@@ -116,8 +115,7 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public void addForce(@NotNull Pair<Long, Long> pos) {
         if (!this.isNull()) {
             for (var peer : this.peers) peer.subForce(pos);
-            this.map().add(pos);
-            this.saveMap();
+            this.add(pos);
         }
     }
 
@@ -125,8 +123,7 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public void addAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
         if (!this.isNull()) {
             for (var peer : this.peers) peer.subAllForce(pSet);
-            this.map().addAll(pSet);
-            this.saveMap();
+            this.addAll(pSet);
         }
     }
 
@@ -134,8 +131,7 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public void addAllForce(@NotNull PosSet pSet) {
         if (!this.isNull()) {
             for (var peer : this.peers) peer.subAllForce(pSet);
-            this.map().addAll(pSet);
-            this.saveMap();
+            this.addAll(pSet);
         }
     }
 
@@ -143,7 +139,6 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public void subForce(long x, long z) {
         if (!this.isNull()) {
             this.sub(x, z);
-            this.saveMap();
         }
     }
 
@@ -151,7 +146,6 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public void subForce(@NotNull Pair<Long, Long> pos) {
         if (!this.isNull()) {
             this.sub(pos);
-            this.saveMap();
         }
     }
 
@@ -159,7 +153,6 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public void subAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
         if (!this.isNull()) {
             this.subAll(pSet);
-            this.saveMap();
         }
     }
 
@@ -167,7 +160,6 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public void subAllForce(@NotNull PosSet pSet) {
         if (!this.isNull()) {
             this.subAll(pSet);
-            this.saveMap();
         }
     }
 
