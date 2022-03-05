@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
-import net.tarcadia.tribina.plugin.mapregion.posset.BasePosSet;
+import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,10 +17,10 @@ public interface SubRegion extends Region {
     @Override
     void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    void addAll(@NotNull BasePosSet pSet);
+    void addAll(@NotNull PosSet pSet);
 
     void addExtend(long x, long z);
     void addExtend(@NotNull Pair<Long, Long> pos);
     void addAllExtend(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void addAllExtend(@NotNull BasePosSet pSet);
+    void addAllExtend(@NotNull PosSet pSet);
 }

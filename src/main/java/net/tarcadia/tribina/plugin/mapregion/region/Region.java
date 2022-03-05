@@ -1,6 +1,5 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
-import net.tarcadia.tribina.plugin.mapregion.posset.BasePosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
@@ -17,29 +16,48 @@ public interface Region extends PosSet {
     String getName();
     String getLore();
     List<String> getAuth();
-    boolean contains(long x, long z);
-    boolean contains(@NotNull Pair<Long, Long> pos);
-    boolean containsAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void add(long x, long z);
-    void add(@NotNull Pair<Long, Long> pos);
-    void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void addAll(@NotNull BasePosSet pSet);
-    void sub(long x, long z);
-    void sub(@NotNull Pair<Long, Long> pos);
-    void subAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void subAll(@NotNull BasePosSet pSet);
-    void cross(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void cross(@NotNull BasePosSet pSet);
 
+    @Override
+    boolean contains(long x, long z);
+    @Override
+    boolean contains(@NotNull Pair<Long, Long> pos);
+    @Override
+    boolean containsAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    @Override
+    void add(long x, long z);
+    @Override
+    void add(@NotNull Pair<Long, Long> pos);
+    @Override
+    void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    @Override
+    void addAll(@NotNull PosSet pSet);
+    @Override
+    void sub(long x, long z);
+    @Override
+    void sub(@NotNull Pair<Long, Long> pos);
+    @Override
+    void subAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    @Override
+    void subAll(@NotNull PosSet pSet);
+    @Override
+    void cross(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    @Override
+    void cross(@NotNull PosSet pSet);
+
+    @Override
     @Nullable
     Long minX();
+    @Override
     @Nullable
     Long minZ();
 
+    @Override
     boolean isEmpty();
 
+    @Override
     @NotNull
     List<Pair<Long, Long>> getList();
+    @Override
     @NotNull
     Set<Pair<Long, Long>> getSet();
 

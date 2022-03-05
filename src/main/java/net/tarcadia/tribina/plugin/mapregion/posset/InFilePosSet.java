@@ -94,7 +94,7 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
-    public void addAll(@NotNull BasePosSet pSet) {
+    public void addAll(@NotNull PosSet pSet) {
         this.addAll(pSet.getList());
     }
 
@@ -128,7 +128,7 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
-    public void subAll(@NotNull BasePosSet pSet) {
+    public void subAll(@NotNull PosSet pSet) {
         this.subAll(pSet.getList());
     }
 
@@ -155,7 +155,7 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
-    public void cross(@NotNull BasePosSet pSet) {
+    public void cross(@NotNull PosSet pSet) {
         this.cross(pSet.getSet());
     }
 

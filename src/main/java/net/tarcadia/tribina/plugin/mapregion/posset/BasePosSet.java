@@ -23,7 +23,7 @@ public abstract class BasePosSet implements PosSet{
     @Override
     public abstract void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    public abstract void addAll(@NotNull BasePosSet pSet);
+    public abstract void addAll(@NotNull PosSet pSet);
 
     @Override
     public abstract void sub(long x, long z);
@@ -32,12 +32,12 @@ public abstract class BasePosSet implements PosSet{
     @Override
     public abstract void subAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    public abstract void subAll(@NotNull BasePosSet pSet);
+    public abstract void subAll(@NotNull PosSet pSet);
 
     @Override
     public abstract void cross(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    public abstract void cross(@NotNull BasePosSet pSet);
+    public abstract void cross(@NotNull PosSet pSet);
 
     @Override
     public abstract Long minX();

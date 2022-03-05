@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
-import net.tarcadia.tribina.plugin.mapregion.posset.BasePosSet;
+import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +21,7 @@ public interface DisjointSubRegion extends DisjointRegion, SubRegion{
     @Override
     void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    void addAll(@NotNull BasePosSet pSet);
+    void addAll(@NotNull PosSet pSet);
 
     @Override
     void addOver(long x, long z);
@@ -30,7 +30,7 @@ public interface DisjointSubRegion extends DisjointRegion, SubRegion{
     @Override
     void addAllOver(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    void addAllOver(@NotNull BasePosSet pSet);
+    void addAllOver(@NotNull PosSet pSet);
 
     @Override
     void addExtend(long x, long z);
@@ -39,11 +39,11 @@ public interface DisjointSubRegion extends DisjointRegion, SubRegion{
     @Override
     void addAllExtend(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    void addAllExtend(@NotNull BasePosSet pSet);
+    void addAllExtend(@NotNull PosSet pSet);
 
     void addExtendOver(long x, long z);
     void addExtendOver(@NotNull Pair<Long, Long> pos);
     void addAllExtendOver(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void addAllExtendOver(@NotNull BasePosSet pSet);
+    void addAllExtendOver(@NotNull PosSet pSet);
 
 }

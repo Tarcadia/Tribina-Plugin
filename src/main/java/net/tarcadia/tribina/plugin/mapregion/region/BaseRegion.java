@@ -1,7 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
 import net.tarcadia.tribina.plugin.Main;
-import net.tarcadia.tribina.plugin.mapregion.posset.BasePosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.GlobalPosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
@@ -321,7 +320,7 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
-    public void addAll(@NotNull BasePosSet pSet) {
+    public void addAll(@NotNull PosSet pSet) {
         if (!this.isNull) {
             this.map.addAll(pSet);
             this.saveMap();
@@ -353,7 +352,7 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
-    public void subAll(@NotNull BasePosSet pSet) {
+    public void subAll(@NotNull PosSet pSet) {
         if (!this.isNull) {
             this.map.subAll(pSet);
             this.saveMap();
@@ -369,7 +368,7 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
-    public void cross(@NotNull BasePosSet pSet) {
+    public void cross(@NotNull PosSet pSet) {
         if (!this.isNull) {
             this.map.cross(pSet);
             this.saveMap();

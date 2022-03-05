@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
-import net.tarcadia.tribina.plugin.mapregion.posset.BasePosSet;
+import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,10 +18,10 @@ public interface DisjointRegion extends Region {
     @Override
     void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    void addAll(@NotNull BasePosSet pSet);
+    void addAll(@NotNull PosSet pSet);
 
     void addOver(long x, long z);
     void addOver(@NotNull Pair<Long, Long> pos);
     void addAllOver(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void addAllOver(@NotNull BasePosSet pSet);
+    void addAllOver(@NotNull PosSet pSet);
 }
