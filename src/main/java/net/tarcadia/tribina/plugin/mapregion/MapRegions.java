@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion;
 
-import net.tarcadia.tribina.plugin.mapregion.posset.PathRegion;
+import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TopRegion;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.wasted.mapregions.Main;
