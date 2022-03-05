@@ -137,6 +137,36 @@ public class GlobalPosSet extends BasePosSet{
     }
 
     @Override
+    @Nullable
+    public Long minX() {
+        Long min = null;
+        for (var sub : this.setMap.values()) {
+            var minSub = sub.minX();
+            if ((minSub != null) && (min == null)) {
+                min = minSub;
+            } else if ((minSub != null) && (min > minSub)) {
+                min = minSub;
+            }
+        }
+        return min;
+    }
+
+    @Override
+    @Nullable
+    public Long minZ() {
+        Long min = null;
+        for (var sub : this.setMap.values()) {
+            var minSub = sub.minZ();
+            if ((minSub != null) && (min == null)) {
+                min = minSub;
+            } else if ((minSub != null) && (min > minSub)) {
+                min = minSub;
+            }
+        }
+        return min;
+    }
+
+    @Override
     public boolean isEmpty() {
         boolean flag = false;
         for (var sub : this.setMap.values()) {
