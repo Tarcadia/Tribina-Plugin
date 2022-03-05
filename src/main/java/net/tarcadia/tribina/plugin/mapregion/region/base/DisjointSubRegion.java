@@ -10,11 +10,6 @@ import java.util.List;
 public interface DisjointSubRegion extends DisjointRegion, SubRegion {
 
     @Override
-    ParentRegion getParent();
-    @Override
-    List<? extends DisjointSubRegion> getPeers();
-
-    @Override
     void add(long x, long z);
     @Override
     void add(@NotNull Pair<Long, Long> pos);
