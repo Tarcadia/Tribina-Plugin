@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ParentRegion extends Region {
 
-    List<? extends SubRegion> getChildren();
+    List<? extends SubRegion> children();
 
     @Override
     void sub(long x, long z);

@@ -55,7 +55,7 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     }
 
     @Override
-    public List<? extends DisjointRegion> getPeers() {
+    public List<? extends DisjointRegion> peers() {
         return this.peers;
     }
 

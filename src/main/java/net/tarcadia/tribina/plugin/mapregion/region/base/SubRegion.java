@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface SubRegion extends Region {
 
-    ParentRegion getParent();
+    ParentRegion parent();
 
     @Override
     void add(long x, long z);
