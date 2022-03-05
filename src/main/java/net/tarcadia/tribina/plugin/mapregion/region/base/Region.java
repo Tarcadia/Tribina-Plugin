@@ -1,14 +1,31 @@
 package net.tarcadia.tribina.plugin.mapregion.region.base;
 
+import net.tarcadia.tribina.plugin.mapregion.posset.GlobalPosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
+import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.*;
 
 public interface Region extends PosSet {
+
+    String id();
+    File fileConfig();
+    File fileBitmap();
+    Configuration config();
+    GlobalPosSet map();
+    boolean isNull();
+
+    Location loc();
+    long biasX();
+    long biasZ();
+    void loc(Location loc);
+    void biasX(long biasX);
+    void biasZ(long biasZ);
 
     void saveMap();
     boolean reLoc(@NotNull Location loc);

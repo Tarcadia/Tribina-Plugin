@@ -27,17 +27,16 @@ public class BaseRegion implements PosSet, Region {
 
     static final long MAX_MAP_SCALE = 8192;
 
-    protected final String id;
-    protected final File fileConfig;
-    protected final File fileBitmap;
-    protected final Configuration config;
-    protected final GlobalPosSet map;
+    private final String id;
+    private final File fileConfig;
+    private final File fileBitmap;
+    private final Configuration config;
+    private final GlobalPosSet map;
+    private final boolean isNull;
 
-    protected Location loc;
-    protected long biasX;
-    protected long biasZ;
-
-    protected final boolean isNull;
+    private Location loc;
+    private long biasX;
+    private long biasZ;
 
     public BaseRegion() {
         this.id = "";
@@ -213,6 +212,66 @@ public class BaseRegion implements PosSet, Region {
             this.biasZ = 0;
             this.isNull = true;
         }
+    }
+
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    @Override
+    public File fileConfig() {
+        return this.fileConfig;
+    }
+
+    @Override
+    public File fileBitmap() {
+        return this.fileBitmap;
+    }
+
+    @Override
+    public Configuration config() {
+        return this.config;
+    }
+
+    @Override
+    public GlobalPosSet map() {
+        return this.map;
+    }
+
+    @Override
+    public boolean isNull() {
+        return this.isNull;
+    }
+
+    @Override
+    public Location loc() {
+        return this.loc;
+    }
+
+    @Override
+    public long biasX() {
+        return this.biasX;
+    }
+
+    @Override
+    public long biasZ() {
+        return this.biasZ;
+    }
+
+    @Override
+    public void loc(Location loc) {
+        this.loc = loc;
+    }
+
+    @Override
+    public void biasX(long biasX) {
+        this.biasX = biasX;
+    }
+
+    @Override
+    public void biasZ(long biasZ) {
+        this.biasZ = biasZ;
     }
 
     @Override
