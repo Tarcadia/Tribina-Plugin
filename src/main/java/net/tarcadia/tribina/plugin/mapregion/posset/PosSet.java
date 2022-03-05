@@ -16,15 +16,15 @@ public interface PosSet {
     void add(long x, long z);
     void add(@NotNull Pair<Long, Long> pos);
     void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void addAll(@NotNull BasePosSet pSet);
+    void addAll(@NotNull PosSet pSet);
 
     void sub(long x, long z);
     void sub(@NotNull Pair<Long, Long> pos);
     void subAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void subAll(@NotNull BasePosSet pSet);
+    void subAll(@NotNull PosSet pSet);
 
     void cross(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void cross(@NotNull BasePosSet pSet);
+    void cross(@NotNull PosSet pSet);
 
     Long minX();
     Long minZ();
