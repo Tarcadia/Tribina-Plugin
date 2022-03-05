@@ -156,4 +156,18 @@ public class BaseSubRegion extends BaseRegion implements SubRegion {
         }
     }
 
+    @Override
+    public void crossForce(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
+        if (!this.isNull()) {
+            this.cross(pSet);
+        }
+    }
+
+    @Override
+    public void crossForce(@NotNull PosSet pSet) {
+        if (!this.isNull()) {
+            this.cross(pSet);
+        }
+    }
+
 }

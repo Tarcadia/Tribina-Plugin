@@ -27,4 +27,6 @@ public interface SubRegion extends Region {
     void subForce(@NotNull Pair<Long, Long> pos);
     void subAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     void subAllForce(@NotNull PosSet pSet);
+    void crossForce(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    void crossForce(@NotNull PosSet pSet);
 }
