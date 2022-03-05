@@ -2,6 +2,7 @@ package net.tarcadia.tribina.plugin.mapregion.posset;
 
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -136,6 +137,36 @@ public class GlobalPosSet extends BasePosSet{
     }
 
     @Override
+    @Nullable
+    public Long minX() {
+        Long min = null;
+        for (var sub : this.setMap.values()) {
+            var minSub = sub.minX();
+            if ((minSub != null) && (min == null)) {
+                min = minSub;
+            } else if ((minSub != null) && (min > minSub)) {
+                min = minSub;
+            }
+        }
+        return min;
+    }
+
+    @Override
+    @Nullable
+    public Long minZ() {
+        Long min = null;
+        for (var sub : this.setMap.values()) {
+            var minSub = sub.minZ();
+            if ((minSub != null) && (min == null)) {
+                min = minSub;
+            } else if ((minSub != null) && (min > minSub)) {
+                min = minSub;
+            }
+        }
+        return min;
+    }
+
+    @Override
     public boolean isEmpty() {
         boolean flag = false;
         for (var sub : this.setMap.values()) {
@@ -145,6 +176,7 @@ public class GlobalPosSet extends BasePosSet{
     }
 
     @Override
+    @NotNull
     public List<Pair<Long, Long>> getList() {
         List<Pair<Long, Long>> ret = new LinkedList<>();
         for (var sub : this.setMap.values()) {
@@ -154,6 +186,7 @@ public class GlobalPosSet extends BasePosSet{
     }
 
     @Override
+    @NotNull
     public Set<Pair<Long, Long>> getSet() {
         Set<Pair<Long, Long>> ret = new HashSet<>();
         for (var sub : this.setMap.values()) {

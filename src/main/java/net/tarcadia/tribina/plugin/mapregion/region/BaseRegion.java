@@ -8,6 +8,7 @@ import net.tarcadia.tribina.plugin.util.func.Bitmaps;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -193,18 +194,16 @@ public class BaseRegion extends BasePosSet {
     }
 
     public void saveMap() {
+        Main.logger.log(Level.INFO, "MR: Saving bitmap " + this.fileBitmap + ".");
         try{
-            boolean flagToLarge = false;
-            var lst = this.map.getList();
-            long minX = Long.MAX_VALUE;
-            long minZ = Long.MAX_VALUE;
-            for (var pos : lst) {
-                if (pos.x() < minX) minX = pos.x();
-                if (pos.y() < minZ) minZ = pos.y();
-            }
-            this.reBias(minX, minZ);
+            boolean flagTooLarge = false;
+            var minX = this.minX();
+            var minZ = this.minZ();
+            if ((minX != null) && (minZ != null))
+                this.reBias(minX, minZ);
 
             var set = new HashSet<Pair<Integer, Integer>>();
+            var lst = this.map.getList();
             for (var pos : lst) {
                 long _x = pos.x() - this.biasX;
                 long _z = pos.y() - this.biasZ;
@@ -212,26 +211,27 @@ public class BaseRegion extends BasePosSet {
                     var p = new Pair<>((int) _x, (int) _z);
                     set.add(p);
                 } else {
-                    flagToLarge = true;
+                    flagTooLarge = true;
                 }
             }
-            if (flagToLarge) Main.logger.log(Level.WARNING, "MR: Saving bitmap to large, some pos discarded.");
+            if (flagTooLarge) Main.logger.log(Level.WARNING, "MR: Saving bitmap to large, some pos discarded.");
             Bitmaps.saveSetToBmp(set, this.fileBitmap);
         } catch (Exception e) {
             Main.logger.log(Level.WARNING, "MR: Saving bitmap failed.", e);
         }
     }
 
-    public boolean reLoc(Location loc) {
+    public boolean reLoc(@NotNull Location loc) {
         if (loc.getWorld() == this.loc.getWorld()) {
             long offsetX = this.biasX - loc.getBlockX();
             long offsetZ = this.biasZ - loc.getBlockZ();
             this.config.set(KEY_LOC_OFFSET_X, offsetX);
             this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
             this.config.set(KEY_LOC_LOC, loc);
+            Main.logger.log(Level.WARNING, "MR: Re-Location accessed.");
             return true;
         } else {
-            Main.logger.log(Level.WARNING, "MR: Re Location denied.");
+            Main.logger.log(Level.WARNING, "MR: Re-Location denied.");
             return false;
         }
     }
@@ -243,17 +243,21 @@ public class BaseRegion extends BasePosSet {
         this.biasZ = z;
         this.config.set(KEY_LOC_OFFSET_X, offsetX);
         this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
+        Main.logger.log(Level.WARNING, "MR: Re-Bias accessed.");
         return true;
     }
 
+    @NotNull
     public String getName() {
         return this.config.getString(KEY_DISP_NAME, "");
     }
 
+    @NotNull
     public String getLore() {
         return this.config.getString(KEY_DISP_LORE, "");
     }
 
+    @NotNull
     public List<String> getAuth() {
         return this.config.getStringList(KEY_AUTH);
     }
@@ -366,6 +370,26 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
+    @Nullable
+    public Long minX() {
+        if (this.isNull) {
+            return null;
+        } else {
+            return this.map.minX();
+        }
+    }
+
+    @Override
+    @Nullable
+    public Long minZ() {
+        if (this.isNull) {
+            return null;
+        } else {
+            return this.map.minZ();
+        }
+    }
+
+    @Override
     public boolean isEmpty() {
         if (this.isNull) {
             return true;
@@ -375,6 +399,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
+    @NotNull
     public List<Pair<Long, Long>> getList() {
         if (!this.isNull) {
             return this.map.getList();
@@ -384,6 +409,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
+    @NotNull
     public Set<Pair<Long, Long>> getSet() {
         if (!this.isNull) {
             return this.map.getSet();
@@ -391,7 +417,5 @@ public class BaseRegion extends BasePosSet {
             return new HashSet<>();
         }
     }
-
-    // TODO: Finish the implementation
 
 }

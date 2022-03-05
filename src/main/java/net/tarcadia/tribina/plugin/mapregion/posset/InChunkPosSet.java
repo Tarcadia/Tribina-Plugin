@@ -3,6 +3,7 @@ package net.tarcadia.tribina.plugin.mapregion.posset;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -120,6 +121,30 @@ public class InChunkPosSet extends BasePosSet{
     }
 
     @Override
+    @Nullable
+    public Long minX() {
+        for (int i = 0; i < CHUNK_SIZE; i++)
+            for (int j = 0; j < CHUNK_SIZE; j++) {
+                if (this.setMap[i][j]) {
+                    return this.biasX + i;
+                }
+            }
+        return null;
+    }
+
+    @Override
+    @Nullable
+    public Long minZ() {
+        for (int i = 0; i < CHUNK_SIZE; i++)
+            for (int j = 0; j < CHUNK_SIZE; j++) {
+                if (this.setMap[j][i]) {
+                    return this.biasZ + i;
+                }
+            }
+        return null;
+    }
+
+    @Override
     public boolean isEmpty() {
         boolean flag = false;
         for (int i = 0; i < CHUNK_SIZE; i++)
@@ -130,6 +155,7 @@ public class InChunkPosSet extends BasePosSet{
     }
 
     @Override
+    @NotNull
     public List<Pair<Long, Long>> getList() {
         List<Pair<Long, Long>> ret = new LinkedList<>();
         for (int i = 0; i < CHUNK_SIZE; i++)
@@ -141,6 +167,7 @@ public class InChunkPosSet extends BasePosSet{
     }
 
     @Override
+    @NotNull
     public Set<Pair<Long, Long>> getSet() {
         Set<Pair<Long, Long>> ret = new HashSet<>();
         for (int i = 0; i < CHUNK_SIZE; i++)

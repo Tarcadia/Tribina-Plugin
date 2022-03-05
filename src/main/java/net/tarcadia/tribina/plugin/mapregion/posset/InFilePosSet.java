@@ -2,6 +2,7 @@ package net.tarcadia.tribina.plugin.mapregion.posset;
 
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -158,6 +159,46 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
+    @Nullable
+    public Long minX() {
+        for (int i = 0; i < FILE_SIZE; i++) {
+            Long min = null;
+            for (int j = 0; j < FILE_SIZE; j++) {
+                var minSub = this.setMap[i][j].minX();
+                if ((minSub != null) && (min == null)) {
+                    min = minSub;
+                } else if ((minSub != null) && (min > minSub)) {
+                    min = minSub;
+                }
+            }
+            if (min != null) {
+                return min;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @Nullable
+    public Long minZ() {
+        for (int i = 0; i < FILE_SIZE; i++) {
+            Long min = null;
+            for (int j = 0; j < FILE_SIZE; j++) {
+                var minSub = this.setMap[j][i].minZ();
+                if ((minSub != null) && (min == null)) {
+                    min = minSub;
+                } else if ((minSub != null) && (min > minSub)) {
+                    min = minSub;
+                }
+            }
+            if (min != null) {
+                return min;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public boolean isEmpty() {
         boolean flag = false;
         for (int i = 0; i < FILE_SIZE; i++)
@@ -171,6 +212,7 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
+    @NotNull
     public List<Pair<Long, Long>> getList() {
         List<Pair<Long, Long>> ret = new LinkedList<>();
         for (int i = 0; i < FILE_SIZE; i++)
@@ -184,6 +226,7 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
+    @NotNull
     public Set<Pair<Long, Long>> getSet() {
         Set<Pair<Long, Long>> ret = new HashSet<>();
         for (int i = 0; i < FILE_SIZE; i++)
