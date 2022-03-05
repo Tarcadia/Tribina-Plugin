@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.List;
 
-public interface DisjointSubRegion extends DisjointRegion, SubRegion{
+public interface DisjointSubRegion extends DisjointRegion, SubRegion {
 
     @Override
     ParentRegion getParent();
