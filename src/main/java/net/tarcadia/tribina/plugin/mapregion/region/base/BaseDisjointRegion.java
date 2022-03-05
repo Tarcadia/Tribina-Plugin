@@ -61,11 +61,11 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
 
     @Override
     public void add(long x, long z) {
-        if (!this.isNull) {
+        if (!this.isNull()) {
             boolean flag = true;
             for (var peer : this.peers) flag &= !peer.contains(x, z);
             if (flag) {
-                this.map.add(x, z);
+                this.map().add(x, z);
                 this.saveMap();
             }
         }
@@ -73,11 +73,11 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
 
     @Override
     public void add(@NotNull Pair<Long, Long> pos) {
-        if (!this.isNull) {
+        if (!this.isNull()) {
             boolean flag = true;
             for (var peer : this.peers) flag &= !peer.contains(pos);
             if (flag) {
-                this.map.add(pos);
+                this.map().add(pos);
                 this.saveMap();
             }
         }
@@ -85,57 +85,85 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
 
     @Override
     public void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
-        if (!this.isNull) {
+        if (!this.isNull()) {
             var set = new HashSet<Pair<Long, Long>>(pSet);
             for (var peer : this.peers) set.removeAll(peer.getSet());
-            this.map.addAll(set);
+            this.map().addAll(set);
             this.saveMap();
         }
     }
 
     @Override
     public void addAll(@NotNull PosSet pSet) {
-        if (!this.isNull) {
+        if (!this.isNull()) {
             var set = new HashSet<>(pSet.getSet());
             for (var peer : this.peers) set.removeAll(peer.getSet());
-            this.map.addAll(set);
+            this.map().addAll(set);
             this.saveMap();
         }
     }
 
     @Override
-    public void addOver(long x, long z) {
-        if (!this.isNull) {
-            for (var peer : this.peers) peer.sub(x, z);
-            this.map.add(x, z);
+    public void addForce(long x, long z) {
+        if (!this.isNull()) {
+            for (var peer : this.peers) peer.subForce(x, z);
+            this.map().add(x, z);
             this.saveMap();
         }
     }
 
     @Override
-    public void addOver(@NotNull Pair<Long, Long> pos) {
-        if (!this.isNull) {
-            for (var peer : this.peers) peer.sub(pos);
-            this.map.add(pos);
+    public void addForce(@NotNull Pair<Long, Long> pos) {
+        if (!this.isNull()) {
+            for (var peer : this.peers) peer.subForce(pos);
+            this.map().add(pos);
             this.saveMap();
         }
     }
 
     @Override
-    public void addAllOver(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
-        if (!this.isNull) {
-            for (var peer : this.peers) peer.subAll(pSet);
-            this.map.addAll(pSet);
+    public void addAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
+        if (!this.isNull()) {
+            for (var peer : this.peers) peer.subAllForce(pSet);
+            this.map().addAll(pSet);
             this.saveMap();
         }
     }
 
     @Override
-    public void addAllOver(@NotNull PosSet pSet) {
-        if (!this.isNull) {
-            for (var peer : this.peers) peer.subAll(pSet);
-            this.map.addAll(pSet);
+    public void addAllForce(@NotNull PosSet pSet) {
+        if (!this.isNull()) {
+            for (var peer : this.peers) peer.subAllForce(pSet);
+            this.map().addAll(pSet);
             this.saveMap();
+        }
+    }
+
+    @Override
+    public void subForce(long x, long z) {
+        if (!this.isNull()) {
+            this.sub(x, z);
+        }
+    }
+
+    @Override
+    public void subForce(@NotNull Pair<Long, Long> pos) {
+        if (!this.isNull()) {
+            this.sub(pos);
+        }
+    }
+
+    @Override
+    public void subAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
+        if (!this.isNull()) {
+            this.subAll(pSet);
+        }
+    }
+
+    @Override
+    public void subAllForce(@NotNull PosSet pSet) {
+        if (!this.isNull()) {
+            this.subAll(pSet);
         }
     }
 
