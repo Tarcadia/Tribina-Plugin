@@ -9,12 +9,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public class DisjointRegion extends BaseRegion {
+public class LandRegion extends BaseRegion {
 
     protected final String id;
     protected final List<? extends BaseRegion> peers;
 
-    public DisjointRegion(
+    public LandRegion(
             @NotNull String regionId,
             @NotNull Path fileRoot,
             @NotNull List<? extends BaseRegion> peers
