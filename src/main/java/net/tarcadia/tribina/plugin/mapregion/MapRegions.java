@@ -1,5 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion;
 
+import net.tarcadia.tribina.plugin.mapregion.region.AssetRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
@@ -15,6 +16,7 @@ public class MapRegions {
     public static List<? extends PathRegion> paths;
     public static List<? extends TownRegion> towns;
     public static List<? extends LandRegion> lands;
+    public static List<? extends AssetRegion> assets;
 
     public void load()
     {
