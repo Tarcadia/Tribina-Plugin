@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.mapregion.posset;
+package net.tarcadia.tribina.plugin.mapregion.region;
 
 import net.tarcadia.tribina.plugin.mapregion.region.BaseRegion;
 
