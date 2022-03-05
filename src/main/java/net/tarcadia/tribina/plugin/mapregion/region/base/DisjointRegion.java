@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DisjointRegion extends Region {
 
-    List<? extends DisjointRegion> getPeers();
+    List<? extends DisjointRegion> peers();
 
     @Override
     void add(long x, long z);
