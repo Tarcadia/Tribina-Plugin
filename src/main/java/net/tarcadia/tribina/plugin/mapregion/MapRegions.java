@@ -1,7 +1,9 @@
 package net.tarcadia.tribina.plugin.mapregion;
 
+import net.tarcadia.tribina.plugin.mapregion.region.AssetRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
-import net.tarcadia.tribina.plugin.mapregion.region.TopRegion;
+import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
+import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.wasted.mapregions.Main;
 
@@ -11,8 +13,10 @@ import java.util.List;
 public class MapRegions {
 
     public static Configuration config;
-    public static List<? extends PathRegion> pathRegions;
-    public static List<? extends TopRegion> topRegions;
+    public static List<? extends PathRegion> paths;
+    public static List<? extends TownRegion> towns;
+    public static List<? extends LandRegion> lands;
+    public static List<? extends AssetRegion> assets;
 
     public void load()
     {

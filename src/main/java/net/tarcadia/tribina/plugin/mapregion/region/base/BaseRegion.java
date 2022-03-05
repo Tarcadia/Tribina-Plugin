@@ -1,8 +1,8 @@
-package net.tarcadia.tribina.plugin.mapregion.region;
+package net.tarcadia.tribina.plugin.mapregion.region.base;
 
 import net.tarcadia.tribina.plugin.Main;
-import net.tarcadia.tribina.plugin.mapregion.posset.BasePosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.GlobalPosSet;
+import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.util.func.Bitmaps;
 import net.tarcadia.tribina.plugin.util.type.Pair;
@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.logging.Level;
 
-public class BaseRegion extends BasePosSet {
+public class BaseRegion implements PosSet, Region {
 
     static final String KEY_LOC_LOC = "loc.loc";
     static final String KEY_LOC_OFFSET_X = "loc.offset.x";
@@ -27,18 +27,19 @@ public class BaseRegion extends BasePosSet {
 
     static final long MAX_MAP_SCALE = 8192;
 
-    protected final File fileConfig;
-    protected final File fileBitmap;
-    protected final Configuration config;
-    protected final GlobalPosSet map;
+    private final String id;
+    private final File fileConfig;
+    private final File fileBitmap;
+    private final Configuration config;
+    private final GlobalPosSet map;
+    private final boolean isNull;
 
-    protected Location loc;
-    protected long biasX;
-    protected long biasZ;
-
-    protected final boolean isNull;
+    private Location loc;
+    private long biasX;
+    private long biasZ;
 
     public BaseRegion() {
+        this.id = "";
         this.fileConfig = null;
         this.fileBitmap = null;
         this.config = null;
@@ -49,9 +50,14 @@ public class BaseRegion extends BasePosSet {
         this.isNull = true;
     }
 
-    public BaseRegion(@NotNull String name, @NotNull Path fileRoot, int ttl) {
-        this.fileConfig = new File(fileRoot + "/" + name + ".yml");
-        this.fileBitmap = new File(fileRoot + "/" + name + ".bmp");
+    public BaseRegion(
+            @NotNull String regionId,
+            @NotNull Path fileRoot,
+            long ttl
+    ) {
+        this.id = regionId;
+        this.fileConfig = new File(fileRoot + "/" + regionId + ".yml");
+        this.fileBitmap = new File(fileRoot + "/" + regionId + ".bmp");
         this.config = new Configuration(fileConfig, ttl);
         this.map = new GlobalPosSet();
         if (this.config.isLocation(KEY_LOC_LOC) &&
@@ -85,9 +91,13 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
-    public BaseRegion(@NotNull String name, @NotNull Path fileRoot) {
-        this.fileConfig = new File(fileRoot + "/" + name + ".yml");
-        this.fileBitmap = new File(fileRoot + "/" + name + ".bmp");
+    public BaseRegion(
+            @NotNull String regionId,
+            @NotNull Path fileRoot
+    ) {
+        this.id = regionId;
+        this.fileConfig = new File(fileRoot + "/" + regionId + ".yml");
+        this.fileBitmap = new File(fileRoot + "/" + regionId + ".bmp");
         this.config = new Configuration(fileConfig);
         this.map = new GlobalPosSet();
         if (this.config.isLocation(KEY_LOC_LOC) &&
@@ -121,7 +131,13 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
-    public BaseRegion(@NotNull File fileConfig, @NotNull File fileBitmap, int ttl) {
+    public BaseRegion(
+            @NotNull String regionId,
+            @NotNull File fileConfig,
+            @NotNull File fileBitmap,
+            long ttl
+    ) {
+        this.id = regionId;
         this.fileConfig = fileConfig;
         this.fileBitmap = fileBitmap;
         this.config = new Configuration(fileConfig, ttl);
@@ -157,7 +173,12 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
-    public BaseRegion(@NotNull File fileConfig, @NotNull File fileBitmap) {
+    public BaseRegion(
+            @NotNull String regionId,
+            @NotNull File fileConfig,
+            @NotNull File fileBitmap
+    ) {
+        this.id = regionId;
         this.fileConfig = fileConfig;
         this.fileBitmap = fileBitmap;
         this.config = new Configuration(fileConfig);
@@ -193,6 +214,52 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    @Override
+    public File fileConfig() {
+        return this.fileConfig;
+    }
+
+    @Override
+    public File fileBitmap() {
+        return this.fileBitmap;
+    }
+
+    @Override
+    public Configuration config() {
+        return this.config;
+    }
+
+    @Override
+    public GlobalPosSet map() {
+        return this.map;
+    }
+
+    @Override
+    public boolean isNull() {
+        return this.isNull;
+    }
+
+    @Override
+    public Location loc() {
+        return this.loc;
+    }
+
+    @Override
+    public long biasX() {
+        return this.biasX;
+    }
+
+    @Override
+    public long biasZ() {
+        return this.biasZ;
+    }
+
+    @Override
     public void saveMap() {
         Main.logger.log(Level.INFO, "MR: Saving bitmap " + this.fileBitmap + ".");
         try{
@@ -221,6 +288,7 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
+    @Override
     public boolean reLoc(@NotNull Location loc) {
         if (loc.getWorld() == this.loc.getWorld()) {
             long offsetX = this.biasX - loc.getBlockX();
@@ -236,6 +304,7 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
+    @Override
     public boolean reBias(long x, long z) {
         long offsetX = x - this.loc.getBlockX();
         long offsetZ = z - this.loc.getBlockZ();
@@ -247,19 +316,46 @@ public class BaseRegion extends BasePosSet {
         return true;
     }
 
+    @Override
     @NotNull
     public String getName() {
         return this.config.getString(KEY_DISP_NAME, "");
     }
 
+    @Override
     @NotNull
     public String getLore() {
         return this.config.getString(KEY_DISP_LORE, "");
     }
 
+    @Override
     @NotNull
     public List<String> getAuth() {
         return this.config.getStringList(KEY_AUTH);
+    }
+
+    @Override
+    public void setName(@NotNull String name) {
+        this.config.set(KEY_DISP_NAME, name);
+    }
+
+    @Override
+    public void setLore(@NotNull String lore) {
+        this.config.set(KEY_DISP_LORE, lore);
+    }
+
+    @Override
+    public void addAuth(@NotNull String auth) {
+        var lst = this.config.getStringList(KEY_AUTH);
+        lst.add(auth);
+        this.config.set(KEY_AUTH, lst);
+    }
+
+    @Override
+    public void removeAuth(@NotNull String auth) {
+        var lst = this.config.getStringList(KEY_AUTH);
+        lst.remove(auth);
+        this.config.set(KEY_AUTH, lst);
     }
 
     @Override
@@ -314,7 +410,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
-    public void addAll(@NotNull BasePosSet pSet) {
+    public void addAll(@NotNull PosSet pSet) {
         if (!this.isNull) {
             this.map.addAll(pSet);
             this.saveMap();
@@ -346,7 +442,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
-    public void subAll(@NotNull BasePosSet pSet) {
+    public void subAll(@NotNull PosSet pSet) {
         if (!this.isNull) {
             this.map.subAll(pSet);
             this.saveMap();
@@ -362,7 +458,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     @Override
-    public void cross(@NotNull BasePosSet pSet) {
+    public void cross(@NotNull PosSet pSet) {
         if (!this.isNull) {
             this.map.cross(pSet);
             this.saveMap();

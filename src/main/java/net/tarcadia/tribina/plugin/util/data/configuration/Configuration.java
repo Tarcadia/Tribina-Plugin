@@ -30,7 +30,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     private org.bukkit.configuration.Configuration def;
     private YamlConfiguration configBuff;
 
-    public Configuration(@NotNull File file, org.bukkit.configuration.Configuration def, int ttl) {
+    public Configuration(@NotNull File file, org.bukkit.configuration.Configuration def, long ttl) {
         this.file = file;
         this.ttl = ttl;
         this.def = def;
@@ -38,7 +38,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         this.instUpdate();
     }
 
-    public Configuration(@NotNull File file, int ttl) {
+    public Configuration(@NotNull File file, long ttl) {
         this.file = file;
         this.ttl = ttl;
         this.def = null;
