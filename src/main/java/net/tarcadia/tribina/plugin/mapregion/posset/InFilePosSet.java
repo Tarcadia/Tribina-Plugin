@@ -13,6 +13,8 @@ public class InFilePosSet extends BasePosSet{
     static int FILE_SIZE = 1 << FILE_SIZE_BITLEN;
     static long FILE_SIZE_MASK = -1L << FILE_SIZE_BITLEN << CHUNK_SIZE_BITLEN;
 
+    private final long biasX;
+    private final long biasZ;
     private final InChunkPosSet[][] setMap;
 
     public InFilePosSet(long biasX, long biasZ) {
