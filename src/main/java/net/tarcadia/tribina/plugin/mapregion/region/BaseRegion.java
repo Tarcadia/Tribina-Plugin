@@ -418,6 +418,4 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
-    // TODO: Finish the implementation
-
 }
