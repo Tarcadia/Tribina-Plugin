@@ -49,7 +49,7 @@ public class BaseRegion implements PosSet, Region {
         this.isNull = true;
     }
 
-    public BaseRegion(@NotNull String name, @NotNull Path fileRoot, int ttl) {
+    public BaseRegion(@NotNull String name, @NotNull Path fileRoot, long ttl) {
         this.fileConfig = new File(fileRoot + "/" + name + ".yml");
         this.fileBitmap = new File(fileRoot + "/" + name + ".bmp");
         this.config = new Configuration(fileConfig, ttl);
@@ -121,7 +121,7 @@ public class BaseRegion implements PosSet, Region {
         }
     }
 
-    public BaseRegion(@NotNull File fileConfig, @NotNull File fileBitmap, int ttl) {
+    public BaseRegion(@NotNull File fileConfig, @NotNull File fileBitmap, long ttl) {
         this.fileConfig = fileConfig;
         this.fileBitmap = fileBitmap;
         this.config = new Configuration(fileConfig, ttl);
