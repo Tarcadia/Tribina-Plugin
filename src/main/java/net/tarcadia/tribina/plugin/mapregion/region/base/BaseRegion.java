@@ -260,21 +260,6 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
-    public void loc(Location loc) {
-        this.loc = loc;
-    }
-
-    @Override
-    public void biasX(long biasX) {
-        this.biasX = biasX;
-    }
-
-    @Override
-    public void biasZ(long biasZ) {
-        this.biasZ = biasZ;
-    }
-
-    @Override
     public void saveMap() {
         Main.logger.log(Level.INFO, "MR: Saving bitmap " + this.fileBitmap + ".");
         try{

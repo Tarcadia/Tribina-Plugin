@@ -23,9 +23,6 @@ public interface Region extends PosSet {
     Location loc();
     long biasX();
     long biasZ();
-    void loc(Location loc);
-    void biasX(long biasX);
-    void biasZ(long biasZ);
 
     void saveMap();
     boolean reLoc(@NotNull Location loc);
