@@ -25,6 +25,8 @@ public abstract class BasePosSet {
 
     public abstract void cross(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     public abstract void cross(@NotNull BasePosSet pSet);
+    public abstract void decross(@NotNull Set<? extends Pair<Long, Long>> pSet);
+    public abstract void decross(@NotNull BasePosSet pSet);
 
     public abstract Long minX();
     public abstract Long minZ();
