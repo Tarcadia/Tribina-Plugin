@@ -12,7 +12,7 @@ public class GlobalPosSet extends BasePosSet{
     static int CHUNK_SIZE = InChunkPosSet.CHUNK_SIZE;
     static int FILE_SIZE_BITLEN = InFilePosSet.FILE_SIZE_BITLEN;
     static int FILE_SIZE = InFilePosSet.FILE_SIZE;
-    static int FILE_CHUNK_SIZE = CHUNK_SIZE * FILE_SIZE;
+    static int FILE_CHUNK_SIZE = InFilePosSet.FILE_CHUNK_SIZE;
     static int FILE_CHUNK_SIZE_BITLEN = FILE_SIZE_BITLEN + CHUNK_SIZE_BITLEN;
 
     private final Map<Pair<Long, Long>, InFilePosSet> setMap;

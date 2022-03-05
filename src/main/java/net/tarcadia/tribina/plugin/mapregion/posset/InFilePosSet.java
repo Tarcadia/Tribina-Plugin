@@ -13,6 +13,7 @@ public class InFilePosSet extends BasePosSet{
     static int FILE_SIZE_BITLEN = 5;
     static int FILE_SIZE = 1 << FILE_SIZE_BITLEN;
     static long FILE_SIZE_MASK = -1L << FILE_SIZE_BITLEN << CHUNK_SIZE_BITLEN;
+    static int FILE_CHUNK_SIZE = CHUNK_SIZE * FILE_SIZE;
 
     private final long biasX;
     private final long biasZ;
@@ -32,7 +33,7 @@ public class InFilePosSet extends BasePosSet{
     public boolean contains(long x, long z) {
         long _x = x - this.biasX;
         long _z = z - this.biasZ;
-        if ((_x >= 0) && (_z >= 0) && (_x < (long) FILE_SIZE * CHUNK_SIZE) && (_z < (long) FILE_SIZE * CHUNK_SIZE)) {
+        if ((_x >= 0) && (_z >= 0) && (_x < FILE_CHUNK_SIZE) && (_z < FILE_CHUNK_SIZE)) {
             var sub = this.setMap[(int) _x][(int) _z];
             if (sub != null) {
                 return sub.contains(x, z);
@@ -62,7 +63,7 @@ public class InFilePosSet extends BasePosSet{
     public void add(long x, long z) {
         long _x = x - this.biasX;
         long _z = z - this.biasZ;
-        if ((_x >= 0) && (_z >= 0) && (_x < (long) FILE_SIZE * CHUNK_SIZE) && (_z < (long) FILE_SIZE * CHUNK_SIZE)) {
+        if ((_x >= 0) && (_z >= 0) && (_x < FILE_CHUNK_SIZE) && (_z < FILE_CHUNK_SIZE)) {
             int _cX = (int) (_x >> CHUNK_SIZE_BITLEN);
             int _cZ = (int) (_z >> CHUNK_SIZE_BITLEN);
             var sub = Objects.requireNonNullElseGet(
@@ -101,7 +102,7 @@ public class InFilePosSet extends BasePosSet{
     public void sub(long x, long z) {
         long _x = x - this.biasX;
         long _z = z - this.biasZ;
-        if ((_x >= 0) && (_z >= 0) && (_x < (long) FILE_SIZE * CHUNK_SIZE) && (_z < (long) FILE_SIZE * CHUNK_SIZE)) {
+        if ((_x >= 0) && (_z >= 0) && (_x < FILE_CHUNK_SIZE) && (_z < FILE_CHUNK_SIZE)) {
             int _cX = (int) (_x >> CHUNK_SIZE_BITLEN);
             int _cZ = (int) (_z >> CHUNK_SIZE_BITLEN);
             var sub = this.setMap[_cX][_cZ];
@@ -141,7 +142,7 @@ public class InFilePosSet extends BasePosSet{
         for (var pos : pSet) {
             long _x = pos.x() - this.biasX;
             long _z = pos.y() - this.biasZ;
-            if ((_x >= 0) && (_z >= 0) && (_x < (long) FILE_SIZE * CHUNK_SIZE) && (_z < (long) FILE_SIZE * CHUNK_SIZE)) {
+            if ((_x >= 0) && (_z >= 0) && (_x < FILE_CHUNK_SIZE) && (_z < FILE_CHUNK_SIZE)) {
                 int _cX = (int) (_x >> CHUNK_SIZE_BITLEN);
                 int _cZ = (int) (_z >> CHUNK_SIZE_BITLEN);
                 c[_cX][_cZ].add(pos);
