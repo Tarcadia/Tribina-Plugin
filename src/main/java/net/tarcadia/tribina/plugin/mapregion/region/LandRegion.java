@@ -1,5 +1,7 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
+import net.tarcadia.tribina.plugin.mapregion.region.base.BaseDisjointRegion;
+import net.tarcadia.tribina.plugin.mapregion.region.base.DisjointRegion;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;

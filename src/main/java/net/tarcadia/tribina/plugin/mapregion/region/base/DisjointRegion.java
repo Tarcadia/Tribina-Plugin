@@ -1,14 +1,15 @@
-package net.tarcadia.tribina.plugin.mapregion.region;
+package net.tarcadia.tribina.plugin.mapregion.region.base;
 
 import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
 
-public interface SubRegion extends Region {
+public interface DisjointRegion extends Region {
 
-    ParentRegion getParent();
+    List<? extends DisjointRegion> getPeers();
 
     @Override
     void add(long x, long z);
@@ -19,8 +20,8 @@ public interface SubRegion extends Region {
     @Override
     void addAll(@NotNull PosSet pSet);
 
-    void addExtend(long x, long z);
-    void addExtend(@NotNull Pair<Long, Long> pos);
-    void addAllExtend(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void addAllExtend(@NotNull PosSet pSet);
+    void addOver(long x, long z);
+    void addOver(@NotNull Pair<Long, Long> pos);
+    void addAllOver(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    void addAllOver(@NotNull PosSet pSet);
 }
