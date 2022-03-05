@@ -1,20 +1,26 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
+import net.tarcadia.tribina.plugin.Main;
+import net.tarcadia.tribina.plugin.mapregion.posset.BasePosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.GlobalPosSet;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.util.func.Bitmaps;
+import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Set;
+import java.util.*;
+import java.util.logging.Level;
 
-public class BaseRegion {
+public class BaseRegion extends BasePosSet {
 
-    static String KEY_LOC_LOC = "loc.loc";
-    static String KEY_LOC_OFFSET_X = "loc.offset.x";
-    static String KEY_LOC_OFFSET_Z = "loc.offset.z";
+    static final String KEY_LOC_LOC = "loc.loc";
+    static final String KEY_LOC_OFFSET_X = "loc.offset.x";
+    static final String KEY_LOC_OFFSET_Z = "loc.offset.z";
+
+    static final long MAX_MAP_SCALE = 8192;
 
     protected final File fileConfig;
     protected final File fileBitmap;
@@ -179,6 +185,162 @@ public class BaseRegion {
             this.biasX = 0;
             this.biasZ = 0;
             this.isNull = true;
+        }
+    }
+
+    public void saveMap() {
+        try{
+            boolean flagToLarge = false;
+            var lst = this.map.getList();
+            var set = new HashSet<Pair<Integer, Integer>>();
+            for (var pos : lst) {
+                long _x = pos.x() - this.biasX;
+                long _z = pos.y() - this.biasZ;
+                if ((_x >= 0) && (_z >= 0) && (_x < MAX_MAP_SCALE) && (_z < MAX_MAP_SCALE)) {
+                    var p = new Pair<>((int) _x, (int) _z);
+                    set.add(p);
+                } else {
+                    flagToLarge = true;
+                }
+            }
+            if (flagToLarge) Main.logger.log(Level.WARNING, "MR: Saving bitmap to large, some pos discarded.");
+            Bitmaps.saveSetToBmp(set, this.fileBitmap);
+        } catch (Exception e) {
+            Main.logger.log(Level.WARNING, "MR: Saving bitmap failed.", e);
+        }
+    }
+
+    @Override
+    public boolean contains(long x, long z) {
+        if (this.isNull) {
+            return false;
+        } else {
+            return this.map.contains(x, z);
+        }
+    }
+
+    @Override
+    public boolean contains(@NotNull Pair<Long, Long> pos) {
+        if (this.isNull) {
+            return false;
+        } else {
+            return this.map.contains(pos);
+        }
+    }
+
+    @Override
+    public boolean containsAll(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
+        if (this.isNull) {
+            return false;
+        } else {
+            return this.map.containsAll(pSet);
+        }
+    }
+
+    @Override
+    public void add(long x, long z) {
+        if (!this.isNull) {
+            this.map.add(x, z);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void add(@NotNull Pair<Long, Long> pos) {
+        if (!this.isNull) {
+            this.map.add(pos);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void addAll(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
+        if (!this.isNull) {
+            this.map.addAll(pSet);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void addAll(@NotNull BasePosSet pSet) {
+        if (!this.isNull) {
+            this.map.addAll(pSet);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void sub(long x, long z) {
+        if (!this.isNull) {
+            this.map.sub(x, z);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void sub(@NotNull Pair<Long, Long> pos) {
+        if (!this.isNull) {
+            this.map.sub(pos);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void subAll(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
+        if (!this.isNull) {
+            this.map.subAll(pSet);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void subAll(@NotNull BasePosSet pSet) {
+        if (!this.isNull) {
+            this.map.subAll(pSet);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void cross(@NotNull Collection<? extends Pair<Long, Long>> pSet) {
+        if (!this.isNull) {
+            this.map.cross(pSet);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public void cross(@NotNull BasePosSet pSet) {
+        if (!this.isNull) {
+            this.map.cross(pSet);
+            this.saveMap();
+        }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        if (this.isNull) {
+            return true;
+        } else {
+            return this.map.isEmpty();
+        }
+    }
+
+    @Override
+    public List<Pair<Long, Long>> getList() {
+        if (!this.isNull) {
+            return this.map.getList();
+        } else {
+            return new LinkedList<>();
+        }
+    }
+
+    @Override
+    public Set<Pair<Long, Long>> getSet() {
+        if (!this.isNull) {
+            return this.map.getSet();
+        } else {
+            return new HashSet<>();
         }
     }
 
