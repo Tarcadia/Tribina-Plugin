@@ -159,6 +159,46 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
+    @Nullable
+    public Long minX() {
+        for (int i = 0; i < FILE_SIZE; i++) {
+            Long min = null;
+            for (int j = 0; j < FILE_SIZE; j++) {
+                var minSub = this.setMap[i][j].minX();
+                if ((minSub != null) && (min == null)) {
+                    min = minSub;
+                } else if ((minSub != null) && (min > minSub)) {
+                    min = minSub;
+                }
+            }
+            if (min != null) {
+                return min;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @Nullable
+    public Long minZ() {
+        for (int i = 0; i < FILE_SIZE; i++) {
+            Long min = null;
+            for (int j = 0; j < FILE_SIZE; j++) {
+                var minSub = this.setMap[j][i].minZ();
+                if ((minSub != null) && (min == null)) {
+                    min = minSub;
+                } else if ((minSub != null) && (min > minSub)) {
+                    min = minSub;
+                }
+            }
+            if (min != null) {
+                return min;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public boolean isEmpty() {
         boolean flag = false;
         for (int i = 0; i < FILE_SIZE; i++)
