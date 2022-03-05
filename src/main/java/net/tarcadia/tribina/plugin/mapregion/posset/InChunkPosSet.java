@@ -120,6 +120,28 @@ public class InChunkPosSet extends BasePosSet{
     }
 
     @Override
+    public Long minX() {
+        for (int i = 0; i < CHUNK_SIZE; i++)
+            for (int j = 0; j < CHUNK_SIZE; j++) {
+                if (this.setMap[i][j]) {
+                    return this.biasX + i;
+                }
+            }
+        return null;
+    }
+
+    @Override
+    public Long minY() {
+        for (int i = 0; i < CHUNK_SIZE; i++)
+            for (int j = 0; j < CHUNK_SIZE; j++) {
+                if (this.setMap[j][i]) {
+                    return this.biasZ + i;
+                }
+            }
+        return null;
+    }
+
+    @Override
     public boolean isEmpty() {
         boolean flag = false;
         for (int i = 0; i < CHUNK_SIZE; i++)
