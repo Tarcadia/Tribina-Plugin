@@ -20,6 +20,10 @@ public class BaseRegion extends BasePosSet {
     static final String KEY_LOC_OFFSET_X = "loc.offset.x";
     static final String KEY_LOC_OFFSET_Z = "loc.offset.z";
 
+    static final String KEY_DISP_NAME = "disp.name";
+    static final String KEY_DISP_LORE = "disp.lore";
+    static final String KEY_AUTH = "auth";
+
     static final long MAX_MAP_SCALE = 8192;
 
     protected final File fileConfig;
