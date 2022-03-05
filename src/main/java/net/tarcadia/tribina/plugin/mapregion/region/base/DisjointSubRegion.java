@@ -41,9 +41,18 @@ public interface DisjointSubRegion extends DisjointRegion, SubRegion{
     @Override
     void addAllExtend(@NotNull PosSet pSet);
 
-    void addExtendOver(long x, long z);
-    void addExtendOver(@NotNull Pair<Long, Long> pos);
-    void addAllExtendOver(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    void addAllExtendOver(@NotNull PosSet pSet);
+    @Override
+    void subForce(long x, long z);
+    @Override
+    void subForce(@NotNull Pair<Long, Long> pos);
+    @Override
+    void subAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    @Override
+    void subAllForce(@NotNull PosSet pSet);
+
+    void addExtendForce(long x, long z);
+    void addExtendForce(@NotNull Pair<Long, Long> pos);
+    void addAllExtendForce(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    void addAllExtendForce(@NotNull PosSet pSet);
 
 }

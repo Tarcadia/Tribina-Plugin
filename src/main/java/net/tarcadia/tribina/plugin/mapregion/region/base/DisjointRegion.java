@@ -28,10 +28,6 @@ public interface DisjointRegion extends Region {
     void subAll(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
     void subAll(@NotNull PosSet pSet);
-    @Override
-    void cross(@NotNull Collection<? extends Pair<Long, Long>> pSet);
-    @Override
-    void cross(@NotNull PosSet pSet);
 
     void addForce(long x, long z);
     void addForce(@NotNull Pair<Long, Long> pos);
