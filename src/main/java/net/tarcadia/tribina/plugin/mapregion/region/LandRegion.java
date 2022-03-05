@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public class LandRegion extends BaseRegion {
+public class LandRegion extends BaseRegion implements DisjointRegion {
 
     protected final String id;
     protected final List<? extends BaseRegion> peers;
