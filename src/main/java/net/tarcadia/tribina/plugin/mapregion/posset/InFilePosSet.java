@@ -2,6 +2,7 @@ package net.tarcadia.tribina.plugin.mapregion.posset;
 
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -171,6 +172,7 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
+    @NotNull
     public List<Pair<Long, Long>> getList() {
         List<Pair<Long, Long>> ret = new LinkedList<>();
         for (int i = 0; i < FILE_SIZE; i++)
@@ -184,6 +186,7 @@ public class InFilePosSet extends BasePosSet{
     }
 
     @Override
+    @NotNull
     public Set<Pair<Long, Long>> getSet() {
         Set<Pair<Long, Long>> ret = new HashSet<>();
         for (int i = 0; i < FILE_SIZE; i++)
