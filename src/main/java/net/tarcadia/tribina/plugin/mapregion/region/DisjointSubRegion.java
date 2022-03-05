@@ -12,7 +12,7 @@ public interface DisjointSubRegion extends DisjointRegion, SubRegion{
     @Override
     ParentRegion getParent();
     @Override
-    List<? extends DisjointRegion> getPeers();
+    List<? extends DisjointSubRegion> getPeers();
 
     @Override
     void add(long x, long z);
