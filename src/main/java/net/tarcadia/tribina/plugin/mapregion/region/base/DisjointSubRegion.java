@@ -24,13 +24,13 @@ public interface DisjointSubRegion extends DisjointRegion, SubRegion{
     void addAll(@NotNull PosSet pSet);
 
     @Override
-    void addOver(long x, long z);
+    void addForce(long x, long z);
     @Override
-    void addOver(@NotNull Pair<Long, Long> pos);
+    void addForce(@NotNull Pair<Long, Long> pos);
     @Override
-    void addAllOver(@NotNull Collection<? extends Pair<Long, Long>> pSet);
+    void addAllForce(@NotNull Collection<? extends Pair<Long, Long>> pSet);
     @Override
-    void addAllOver(@NotNull PosSet pSet);
+    void addAllForce(@NotNull PosSet pSet);
 
     @Override
     void addExtend(long x, long z);
