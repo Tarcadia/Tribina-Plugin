@@ -12,7 +12,6 @@ import java.util.List;
 
 public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
 
-    protected final String id;
     protected final List<? extends DisjointRegion> peers;
 
     public BaseDisjointRegion(
@@ -22,7 +21,6 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
             @NotNull List<? extends DisjointRegion> peers
     ) {
         super(regionId, fileRoot, ttl);
-        this.id = regionId;
         this.peers = peers;
     }
 
@@ -32,7 +30,6 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
             @NotNull List<? extends DisjointRegion> peers
     ) {
         super(regionId, fileRoot);
-        this.id = regionId;
         this.peers = peers;
     }
 
@@ -43,8 +40,7 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
             long ttl,
             @NotNull List<? extends DisjointRegion> peers
     ) {
-        super(fileConfig, fileBitmap, ttl);
-        this.id = regionId;
+        super(regionId, fileConfig, fileBitmap, ttl);
         this.peers = peers;
     }
 
@@ -54,8 +50,7 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
             @NotNull File fileBitmap,
             @NotNull List<? extends DisjointRegion> peers
     ) {
-        super(fileConfig, fileBitmap);
-        this.id = regionId;
+        super(regionId, fileConfig, fileBitmap);
         this.peers = peers;
     }
 
