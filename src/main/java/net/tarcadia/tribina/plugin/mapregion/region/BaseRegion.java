@@ -194,6 +194,7 @@ public class BaseRegion extends BasePosSet {
     }
 
     public void saveMap() {
+        Main.logger.log(Level.INFO, "MR: Saving bitmap " + this.fileBitmap + ".");
         try{
             boolean flagTooLarge = false;
             var minX = this.minX();
@@ -227,9 +228,10 @@ public class BaseRegion extends BasePosSet {
             this.config.set(KEY_LOC_OFFSET_X, offsetX);
             this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
             this.config.set(KEY_LOC_LOC, loc);
+            Main.logger.log(Level.WARNING, "MR: Re-Location accessed.");
             return true;
         } else {
-            Main.logger.log(Level.WARNING, "MR: Re Location denied.");
+            Main.logger.log(Level.WARNING, "MR: Re-Location denied.");
             return false;
         }
     }
@@ -241,6 +243,7 @@ public class BaseRegion extends BasePosSet {
         this.biasZ = z;
         this.config.set(KEY_LOC_OFFSET_X, offsetX);
         this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
+        Main.logger.log(Level.WARNING, "MR: Re-Bias accessed.");
         return true;
     }
 
