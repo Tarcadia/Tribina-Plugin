@@ -335,6 +335,30 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
+    public void setName(@NotNull String name) {
+        this.config.set(KEY_DISP_NAME, name);
+    }
+
+    @Override
+    public void setLore(@NotNull String lore) {
+        this.config.set(KEY_DISP_LORE, lore);
+    }
+
+    @Override
+    public void addAuth(@NotNull String auth) {
+        var lst = this.config.getStringList(KEY_AUTH);
+        lst.add(auth);
+        this.config.set(KEY_AUTH, lst);
+    }
+
+    @Override
+    public void removeAuth(@NotNull String auth) {
+        var lst = this.config.getStringList(KEY_AUTH);
+        lst.remove(auth);
+        this.config.set(KEY_AUTH, lst);
+    }
+
+    @Override
     public boolean contains(long x, long z) {
         if (this.isNull) {
             return false;

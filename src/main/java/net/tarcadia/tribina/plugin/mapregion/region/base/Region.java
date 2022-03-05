@@ -27,9 +27,15 @@ public interface Region extends PosSet {
     void saveMap();
     boolean reLoc(@NotNull Location loc);
     boolean reBias(long x, long z);
+
     String getName();
     String getLore();
     List<String> getAuth();
+
+    void setName(@NotNull String name);
+    void setLore(@NotNull String lore);
+    void addAuth(@NotNull String auth);
+    void removeAuth(@NotNull String auth);
 
     @Override
     boolean contains(long x, long z);
