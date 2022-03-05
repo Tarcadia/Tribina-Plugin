@@ -7,8 +7,8 @@ import java.util.List;
 
 public class DisjointRegion extends BaseRegion {
 
-    private final String id;
-    private final List<? extends BaseRegion> peers;
+    protected final String id;
+    protected final List<? extends BaseRegion> peers;
 
     public DisjointRegion(@NotNull String regionId, @NotNull Path fileRoot, @NotNull List<? extends BaseRegion> peers) {
         super(regionId, fileRoot);
