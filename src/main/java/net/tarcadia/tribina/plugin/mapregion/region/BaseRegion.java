@@ -381,11 +381,11 @@ public class BaseRegion extends BasePosSet {
 
     @Override
     @Nullable
-    public Long minY() {
+    public Long minZ() {
         if (this.isNull) {
             return null;
         } else {
-            return this.map.minY();
+            return this.map.minZ();
         }
     }
 

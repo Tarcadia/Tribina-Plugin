@@ -27,7 +27,7 @@ public abstract class BasePosSet {
     public abstract void cross(@NotNull BasePosSet pSet);
 
     public abstract Long minX();
-    public abstract Long minY();
+    public abstract Long minZ();
 
     public abstract boolean isEmpty();
     public abstract List<Pair<Long, Long>> getList();

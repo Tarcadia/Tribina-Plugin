@@ -134,7 +134,7 @@ public class InChunkPosSet extends BasePosSet{
 
     @Override
     @Nullable
-    public Long minY() {
+    public Long minZ() {
         for (int i = 0; i < CHUNK_SIZE; i++)
             for (int j = 0; j < CHUNK_SIZE; j++) {
                 if (this.setMap[j][i]) {
