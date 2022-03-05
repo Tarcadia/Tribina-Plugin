@@ -3,6 +3,7 @@ package net.tarcadia.tribina.plugin.mapregion.region;
 import net.tarcadia.tribina.plugin.Main;
 import net.tarcadia.tribina.plugin.mapregion.posset.BasePosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.GlobalPosSet;
+import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.util.func.Bitmaps;
 import net.tarcadia.tribina.plugin.util.type.Pair;
@@ -15,7 +16,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.logging.Level;
 
-public class BaseRegion extends BasePosSet {
+public class BaseRegion implements PosSet, Region {
 
     static final String KEY_LOC_LOC = "loc.loc";
     static final String KEY_LOC_OFFSET_X = "loc.offset.x";
@@ -193,6 +194,7 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
+    @Override
     public void saveMap() {
         Main.logger.log(Level.INFO, "MR: Saving bitmap " + this.fileBitmap + ".");
         try{
@@ -221,6 +223,7 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
+    @Override
     public boolean reLoc(@NotNull Location loc) {
         if (loc.getWorld() == this.loc.getWorld()) {
             long offsetX = this.biasX - loc.getBlockX();
@@ -236,6 +239,7 @@ public class BaseRegion extends BasePosSet {
         }
     }
 
+    @Override
     public boolean reBias(long x, long z) {
         long offsetX = x - this.loc.getBlockX();
         long offsetZ = z - this.loc.getBlockZ();
@@ -247,16 +251,19 @@ public class BaseRegion extends BasePosSet {
         return true;
     }
 
+    @Override
     @NotNull
     public String getName() {
         return this.config.getString(KEY_DISP_NAME, "");
     }
 
+    @Override
     @NotNull
     public String getLore() {
         return this.config.getString(KEY_DISP_LORE, "");
     }
 
+    @Override
     @NotNull
     public List<String> getAuth() {
         return this.config.getStringList(KEY_AUTH);
