@@ -196,6 +196,14 @@ public class BaseRegion extends BasePosSet {
         try{
             boolean flagToLarge = false;
             var lst = this.map.getList();
+            long minX = Long.MAX_VALUE;
+            long minZ = Long.MAX_VALUE;
+            for (var pos : lst) {
+                if (pos.x() < minX) minX = pos.x();
+                if (pos.y() < minZ) minZ = pos.y();
+            }
+            this.reBias(minX, minZ);
+
             var set = new HashSet<Pair<Integer, Integer>>();
             for (var pos : lst) {
                 long _x = pos.x() - this.biasX;
@@ -212,6 +220,30 @@ public class BaseRegion extends BasePosSet {
         } catch (Exception e) {
             Main.logger.log(Level.WARNING, "MR: Saving bitmap failed.", e);
         }
+    }
+
+    public boolean reLoc(Location loc) {
+        if (loc.getWorld() == this.loc.getWorld()) {
+            long offsetX = this.biasX - loc.getBlockX();
+            long offsetZ = this.biasZ - loc.getBlockZ();
+            this.config.set(KEY_LOC_OFFSET_X, offsetX);
+            this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
+            this.config.set(KEY_LOC_LOC, loc);
+            return true;
+        } else {
+            Main.logger.log(Level.WARNING, "MR: Re Location denied.");
+            return false;
+        }
+    }
+
+    public boolean reBias(long x, long z) {
+        long offsetX = x - this.loc.getBlockX();
+        long offsetZ = z - this.loc.getBlockZ();
+        this.biasX = x;
+        this.biasZ = z;
+        this.config.set(KEY_LOC_OFFSET_X, offsetX);
+        this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
+        return true;
     }
 
     public String getName() {
