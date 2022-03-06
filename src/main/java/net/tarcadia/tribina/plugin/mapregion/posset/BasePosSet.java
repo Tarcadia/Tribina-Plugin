@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public abstract class BasePosSet implements PosSet{
+public abstract class BasePosSet implements PosSet {
 
     @Override
     public abstract boolean contains(long x, long z);
