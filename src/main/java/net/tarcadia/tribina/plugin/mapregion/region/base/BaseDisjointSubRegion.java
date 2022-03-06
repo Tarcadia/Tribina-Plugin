@@ -12,7 +12,7 @@ import java.util.List;
 
 public class BaseDisjointSubRegion extends BaseRegion implements DisjointRegion, SubRegion {
 
-    protected final List<? extends DisjointRegion> peers;
+    private final List<? extends DisjointRegion> peers;
     private final ParentRegion parent;
 
     public BaseDisjointSubRegion(

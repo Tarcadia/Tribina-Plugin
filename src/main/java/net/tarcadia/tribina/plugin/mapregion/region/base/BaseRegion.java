@@ -18,15 +18,15 @@ import java.util.logging.Level;
 
 public class BaseRegion implements PosSet, Region {
 
-    static final String KEY_LOC_LOC = "loc.loc";
-    static final String KEY_LOC_OFFSET_X = "loc.offset.x";
-    static final String KEY_LOC_OFFSET_Z = "loc.offset.z";
+    public static final String KEY_LOC_LOC = "loc.loc";
+    public static final String KEY_LOC_OFFSET_X = "loc.offset.x";
+    public static final String KEY_LOC_OFFSET_Z = "loc.offset.z";
 
-    static final String KEY_DISP_NAME = "disp.name";
-    static final String KEY_DISP_LORE = "disp.lore";
-    static final String KEY_AUTH = "auth";
+    public static final String KEY_DISP_NAME = "disp.name";
+    public static final String KEY_DISP_LORE = "disp.lore";
+    public static final String KEY_AUTH = "auth";
 
-    static final long MAX_MAP_SCALE = 8192;
+    public static final long MAX_MAP_SCALE = 8192;
 
     private final String id;
     private final File fileConfig;
