@@ -7,6 +7,7 @@ import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.util.func.Bitmaps;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,15 +18,15 @@ import java.util.logging.Level;
 
 public class BaseRegion implements PosSet, Region {
 
-    static final String KEY_LOC_LOC = "loc.loc";
-    static final String KEY_LOC_OFFSET_X = "loc.offset.x";
-    static final String KEY_LOC_OFFSET_Z = "loc.offset.z";
+    public static final String KEY_LOC_LOC = "loc.loc";
+    public static final String KEY_LOC_OFFSET_X = "loc.offset.x";
+    public static final String KEY_LOC_OFFSET_Z = "loc.offset.z";
 
-    static final String KEY_DISP_NAME = "disp.name";
-    static final String KEY_DISP_LORE = "disp.lore";
-    static final String KEY_AUTH = "auth";
+    public static final String KEY_DISP_NAME = "disp.name";
+    public static final String KEY_DISP_LORE = "disp.lore";
+    public static final String KEY_AUTH = "auth";
 
-    static final long MAX_MAP_SCALE = 8192;
+    public static final long MAX_MAP_SCALE = 8192;
 
     private final String id;
     private final File fileConfig;
@@ -215,26 +216,31 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
+    @Nullable
     public String id() {
         return this.id;
     }
 
     @Override
+    @Nullable
     public File fileConfig() {
         return this.fileConfig;
     }
 
     @Override
+    @Nullable
     public File fileBitmap() {
         return this.fileBitmap;
     }
 
     @Override
+    @Nullable
     public Configuration config() {
         return this.config;
     }
 
     @Override
+    @Nullable
     public GlobalPosSet map() {
         return this.map;
     }
@@ -245,6 +251,7 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
+    @Nullable
     public Location loc() {
         return this.loc;
     }
@@ -266,7 +273,7 @@ public class BaseRegion implements PosSet, Region {
             boolean flagTooLarge = false;
             var minX = this.minX();
             var minZ = this.minZ();
-            if ((minX != null) && (minZ != null))
+            if ((minX != null) && (minZ != null) && ((minX <= this.biasX) || (minZ <= this.biasZ)))
                 this.reBias(minX, minZ);
 
             var set = new HashSet<Pair<Integer, Integer>>();
@@ -324,14 +331,32 @@ public class BaseRegion implements PosSet, Region {
 
     @Override
     @NotNull
+    public String getName(@NotNull Player player) {
+        return this.getName();
+    }
+
+    @Override
+    @NotNull
     public String getLore() {
         return this.config.getString(KEY_DISP_LORE, "");
     }
 
     @Override
     @NotNull
+    public String getLore(@NotNull Player player) {
+        return this.getLore();
+    }
+
+    @Override
+    @NotNull
     public List<String> getAuth() {
         return this.config.getStringList(KEY_AUTH);
+    }
+
+    @Override
+    @NotNull
+    public List<String> getAuth(@NotNull Player player) {
+        return this.getAuth();
     }
 
     @Override

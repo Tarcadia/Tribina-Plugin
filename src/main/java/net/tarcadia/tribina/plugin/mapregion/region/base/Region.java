@@ -5,6 +5,7 @@ import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,13 +14,19 @@ import java.util.*;
 
 public interface Region extends PosSet {
 
+    @Nullable
     String id();
+    @Nullable
     File fileConfig();
+    @Nullable
     File fileBitmap();
+    @Nullable
     Configuration config();
+    @Nullable
     GlobalPosSet map();
     boolean isNull();
 
+    @Nullable
     Location loc();
     long biasX();
     long biasZ();
@@ -28,9 +35,18 @@ public interface Region extends PosSet {
     boolean reLoc(@NotNull Location loc);
     boolean reBias(long x, long z);
 
+    @NotNull
     String getName();
+    @NotNull
+    String getName(@NotNull Player player);
+    @NotNull
     String getLore();
+    @NotNull
+    String getLore(@NotNull Player player);
+    @NotNull
     List<String> getAuth();
+    @NotNull
+    List<String> getAuth(@NotNull Player player);
 
     void setName(@NotNull String name);
     void setLore(@NotNull String lore);
