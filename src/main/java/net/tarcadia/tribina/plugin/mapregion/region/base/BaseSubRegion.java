@@ -54,6 +54,7 @@ public class BaseSubRegion extends BaseRegion implements SubRegion {
     }
 
     @Override
+    @NotNull
     public ParentRegion parent() {
         return this.parent;
     }

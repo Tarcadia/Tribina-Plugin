@@ -55,6 +55,7 @@ public class BaseParentRegion extends BaseRegion implements ParentRegion {
     }
 
     @Override
+    @NotNull
     public List<? extends SubRegion> children() {
         return this.children;
     }

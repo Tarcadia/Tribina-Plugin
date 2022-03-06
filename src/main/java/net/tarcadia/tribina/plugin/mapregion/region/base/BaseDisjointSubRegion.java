@@ -64,11 +64,13 @@ public class BaseDisjointSubRegion extends BaseRegion implements DisjointRegion,
     }
 
     @Override
+    @NotNull
     public List<? extends DisjointRegion> peers() {
         return this.peers;
     }
 
     @Override
+    @NotNull
     public ParentRegion parent() {
         return this.parent;
     }
