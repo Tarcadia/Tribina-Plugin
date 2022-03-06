@@ -16,8 +16,8 @@ import java.util.List;
 public class AssetRegion extends BaseDisjointSubRegion {
 
     public static String KEY_ASSET_AUTHS = "asset-info.auths";
+    public static String KEY_ASSET_AUTH_OWNER = "asset-info.auth-owner";
     public static String KEY_ASSET_OWNER = "asset-info.owner";
-    public static String AUTH_REGION_ASSET_OWNER = MapRegions.AUTH_REGION_ASSET_OWNER;
 
     public AssetRegion(
             @NotNull String regionId,
@@ -53,8 +53,10 @@ public class AssetRegion extends BaseDisjointSubRegion {
     public List<String> getAuth(@NotNull Player player) {
         List<String> pAuth = new LinkedList<>();
         if (!this.isNull()) {
+            pAuth.addAll(this.config().getStringList(BaseRegion.KEY_AUTH));
+            pAuth.addAll(this.config().getStringList(KEY_ASSET_AUTHS + "." + player.getName()));
             if (this.config().getString(KEY_ASSET_OWNER, "").equals(player.getName())) {
-                pAuth.add(AUTH_REGION_ASSET_OWNER);
+                pAuth.addAll(this.config().getStringList(KEY_ASSET_AUTH_OWNER));
             }
             pAuth.addAll(this.config().getStringList(KEY_ASSET_AUTHS + "." + player.getName()));
             pAuth.addAll(this.config().getStringList(BaseRegion.KEY_AUTH));
