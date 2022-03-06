@@ -8,6 +8,7 @@ import java.util.Collection;
 
 public interface SubRegion extends Region {
 
+    @NotNull
     ParentRegion parent();
 
     @Override

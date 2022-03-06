@@ -1,0 +1,7 @@
+regions:
+  path:
+  town:
+  land:
+global:
+  auth:
+    - "region.global"
