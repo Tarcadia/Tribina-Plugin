@@ -273,7 +273,7 @@ public class BaseRegion implements PosSet, Region {
             boolean flagTooLarge = false;
             var minX = this.minX();
             var minZ = this.minZ();
-            if ((minX != null) && (minZ != null))
+            if ((minX != null) && (minZ != null) && ((minX <= this.biasX) || (minZ <= this.biasZ)))
                 this.reBias(minX, minZ);
 
             var set = new HashSet<Pair<Integer, Integer>>();
