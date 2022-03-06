@@ -1,0 +1,28 @@
+basic:
+  play:
+    place:
+      hand: []
+      bukkit: []
+    break:
+      hand: []
+      sword: []
+      pickaxe: []
+      axe: []
+      hoe: []
+      scissor: []
+      bukkit: []
+    use: []
+region:
+  global: []
+  path:
+    public: []
+    operator: []
+  land:
+    public: []
+  town:
+    exotic: []
+    citizen: []
+    operator: []
+  asset:
+    public: []
+    owner: []
