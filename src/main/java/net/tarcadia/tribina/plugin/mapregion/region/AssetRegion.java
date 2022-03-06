@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class AssetRegion extends BaseDisjointSubRegion {
+
     public AssetRegion(
             @NotNull String regionId,
             @NotNull Path fileRoot,
@@ -18,4 +19,7 @@ public class AssetRegion extends BaseDisjointSubRegion {
     ) {
         super(regionId, fileRoot, peers, parent);
     }
+
+    // TODO: More implements that make asset a region that is a region
+
 }

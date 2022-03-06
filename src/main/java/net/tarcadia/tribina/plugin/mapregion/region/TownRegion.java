@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class TownRegion extends BaseDisjointRegion {
+
     public TownRegion(
             @NotNull String regionId,
             @NotNull Path fileRoot,
