@@ -6,8 +6,10 @@ import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.wasted.mapregions.Main;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +19,14 @@ public class MapRegions {
     public static final String KEY_REGION_TOWN_LIST = "regions.town";
     public static final String KEY_REGION_LAND_LIST = "regions.land";
 
+    public static final String AUTH_REGION_GLOBAL = "region.global";
+    public static final String AUTH_REGION_PATH_PUBLIC = "region.path.public";
+    public static final String AUTH_REGION_PATH_OPERATOR = "region.path.operator";
+    public static final String AUTH_REGION_LAND_PUBLIC = "region.land.public";
+    public static final String AUTH_REGION_TOWN_EXOTIC = "region.town.exotic";
+    public static final String AUTH_REGION_TOWN_CITIZEN = "region.town.citizen";
+    public static final String AUTH_REGION_TOWN_OPERATOR = "region.town.operator";
+    public static final String AUTH_REGION_ASSET_PUBLIC = "region.asset.public";
     public static final String AUTH_REGION_ASSET_OWNER = "region.asset.owner";
 
     public static final String PATH_MAPREGIONS = "/MapRegions/";
@@ -38,11 +48,18 @@ public class MapRegions {
         this.loadTowns();
     }
 
-    public void loadConfig() {
-        MapRegions.config = new Configuration(new File(Main.dataPath + PATH_FILE_CONFIG));
+    private void loadConfig() {
+        var defConfig = YamlConfiguration.loadConfiguration(
+                new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
+        );
+
+        MapRegions.config = new Configuration(
+                new File(Main.dataPath + PATH_FILE_CONFIG),
+                defConfig
+        );
     }
 
-    public void loadPaths() {
+    private void loadPaths() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_PATH_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
@@ -54,7 +71,7 @@ public class MapRegions {
         }
     }
 
-    public void loadLands() {
+    private void loadLands() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_LAND_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
@@ -66,7 +83,7 @@ public class MapRegions {
         }
     }
 
-    public void loadTowns() {
+    private void loadTowns() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_TOWN_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
