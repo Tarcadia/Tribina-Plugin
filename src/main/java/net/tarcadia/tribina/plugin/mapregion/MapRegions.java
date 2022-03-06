@@ -12,11 +12,15 @@ import java.util.List;
 
 public class MapRegions {
 
-    public static Configuration config;
-    public static List<? extends PathRegion> paths;
-    public static List<? extends TownRegion> towns;
-    public static List<? extends LandRegion> lands;
-    public static List<? extends AssetRegion> assets;
+    public static final String KEY_REGION_PATH_LIST = "regions.path";
+    public static final String KEY_REGION_TOWN_LIST = "regions.town";
+    public static final String KEY_REGION_LAND_LIST = "regions.land";
+
+    public static Configuration config = null;
+    public static List<PathRegion> regionPaths = null;
+    public static List<LandRegion> regionLands = null;
+    public static List<TownRegion> regionTowns = null;
+    public static List<AssetRegion> regionAssets = null;
 
     public void load()
     {
