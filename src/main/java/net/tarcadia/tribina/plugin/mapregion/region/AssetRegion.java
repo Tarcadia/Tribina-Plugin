@@ -7,6 +7,7 @@ import net.tarcadia.tribina.plugin.mapregion.region.base.ParentRegion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +25,16 @@ public class AssetRegion extends BaseDisjointSubRegion {
             @NotNull ParentRegion parent
     ) {
         super(regionId, fileRoot, peers, parent);
+    }
+
+    public AssetRegion(
+            @NotNull String regionId,
+            @NotNull File fileConfig,
+            @NotNull File fileBitmap,
+            @NotNull List<? extends DisjointRegion> peers,
+            @NotNull ParentRegion parent
+    ) {
+        super(regionId, fileConfig, fileBitmap, peers, parent);
     }
 
     @Override
