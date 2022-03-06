@@ -1,5 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
+import net.tarcadia.tribina.plugin.mapregion.MapRegions;
 import net.tarcadia.tribina.plugin.mapregion.region.base.BaseDisjointSubRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.BaseRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.DisjointRegion;
@@ -16,7 +17,7 @@ public class AssetRegion extends BaseDisjointSubRegion {
 
     public static String KEY_ASSET_AUTHS = "asset-info.auths";
     public static String KEY_ASSET_OWNER = "asset-info.owner";
-    public static String AUTH_REGION_ASSET_OWNER = "region.asset.owner";
+    public static String AUTH_REGION_ASSET_OWNER = MapRegions.AUTH_REGION_ASSET_OWNER;
 
     public AssetRegion(
             @NotNull String regionId,

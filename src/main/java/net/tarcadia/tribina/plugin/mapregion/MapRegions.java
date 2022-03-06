@@ -17,6 +17,8 @@ public class MapRegions {
     public static final String KEY_REGION_TOWN_LIST = "regions.town";
     public static final String KEY_REGION_LAND_LIST = "regions.land";
 
+    public static final String AUTH_REGION_ASSET_OWNER = "region.asset.owner";
+
     public static final String PATH_MAPREGIONS = "/MapRegions/";
     public static final String PATH_FILE_CONFIG = PATH_MAPREGIONS + "/config.yml";
     public static final String PATH_REGION_PATHS = PATH_MAPREGIONS + "/Paths/";
