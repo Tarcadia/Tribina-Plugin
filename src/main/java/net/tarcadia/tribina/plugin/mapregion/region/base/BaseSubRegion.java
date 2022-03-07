@@ -16,30 +16,9 @@ public class BaseSubRegion extends BaseRegion implements SubRegion {
     public BaseSubRegion(
             @NotNull String regionId,
             @NotNull Path fileRoot,
-            long ttl,
-            @NotNull ParentRegion parent
-    ) {
-        super(regionId, fileRoot, ttl);
-        this.parent = parent;
-    }
-
-    public BaseSubRegion(
-            @NotNull String regionId,
-            @NotNull Path fileRoot,
             @NotNull ParentRegion parent
     ) {
         super(regionId, fileRoot);
-        this.parent = parent;
-    }
-
-    public BaseSubRegion(
-            @NotNull String regionId,
-            @NotNull File fileConfig,
-            @NotNull File fileBitmap,
-            long ttl,
-            @NotNull ParentRegion parent
-    ) {
-        super(regionId, fileConfig, fileBitmap, ttl);
         this.parent = parent;
     }
 

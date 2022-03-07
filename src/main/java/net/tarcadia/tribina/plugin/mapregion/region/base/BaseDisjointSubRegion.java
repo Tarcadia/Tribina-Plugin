@@ -18,35 +18,10 @@ public class BaseDisjointSubRegion extends BaseRegion implements DisjointRegion,
     public BaseDisjointSubRegion(
             @NotNull String regionId,
             @NotNull Path fileRoot,
-            long ttl,
-            @NotNull List<? extends DisjointRegion> peers,
-            @NotNull ParentRegion parent
-    ) {
-        super(regionId, fileRoot, ttl);
-        this.peers = peers;
-        this.parent = parent;
-    }
-
-    public BaseDisjointSubRegion(
-            @NotNull String regionId,
-            @NotNull Path fileRoot,
             @NotNull List<? extends DisjointRegion> peers,
             @NotNull ParentRegion parent
     ) {
         super(regionId, fileRoot);
-        this.peers = peers;
-        this.parent = parent;
-    }
-
-    public BaseDisjointSubRegion(
-            @NotNull String regionId,
-            @NotNull File fileConfig,
-            @NotNull File fileBitmap,
-            long ttl,
-            @NotNull List<? extends DisjointRegion> peers,
-            @NotNull ParentRegion parent
-    ) {
-        super(regionId, fileConfig, fileBitmap, ttl);
         this.peers = peers;
         this.parent = parent;
     }
