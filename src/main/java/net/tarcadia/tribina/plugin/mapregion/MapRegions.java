@@ -37,12 +37,12 @@ public class MapRegions {
     public static final String PATH_REGION_LANDS = PATH_MAPREGIONS + "/Lands/";
     public static final String PATH_REGION_TOWNS = PATH_MAPREGIONS + "/Towns/";
 
-    public static Configuration config = null;
-
     public static final List<PathRegion> regionPaths = new LinkedList<>();
     public static final List<LandRegion> regionLands = new LinkedList<>();
     public static final List<TownRegion> regionTowns = new LinkedList<>();
     public static final List<AssetRegion> regionAssets = new LinkedList<>();
+
+    private static Configuration config = null;
 
     public static void load() {
         MapRegions.loadConfig();
@@ -106,6 +106,10 @@ public class MapRegions {
                 MapRegions.regionAssets.addAll(assets);
             }
         }
+    }
+
+    public static Configuration config() {
+        return MapRegions.config;
     }
 
     public static boolean enabled() {
