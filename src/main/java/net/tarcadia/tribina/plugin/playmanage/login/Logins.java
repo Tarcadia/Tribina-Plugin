@@ -62,7 +62,7 @@ public class Logins {
     }
 
     public static boolean checkPassword(@NotNull Player player, @NotNull String password) {
-        return Logins.config.getString(KEY_LOGIN_PASSWORDS + "." + player.getName()).equals(Logins.md5(password));
+        return Logins.md5(password).equals(Logins.config.getString(KEY_LOGIN_PASSWORDS + "." + player.getName()));
     }
 
 }
