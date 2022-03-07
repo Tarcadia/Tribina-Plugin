@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class GlobalPosSet extends BasePosSet{
+public class GlobalPosSet extends BasePosSet {
 
     static int CHUNK_SIZE_BITLEN = InChunkPosSet.CHUNK_SIZE_BITLEN;
     static int CHUNK_SIZE = InChunkPosSet.CHUNK_SIZE;

@@ -11,24 +11,14 @@ public class Auth {
     private final File file;
     private final Configuration config;
 
-    public Auth(@NotNull String name, @NotNull String fileRoot, long ttl) {
-        this.file = new File(fileRoot + "/" + name + ".yml");
-        this.config = new Configuration(this.file, ttl);
-    }
-
-    public Auth(@NotNull File file, long ttl) {
-        this.file = file;
-        this.config = new Configuration(this.file, ttl);
-    }
-
     public Auth(@NotNull String name, @NotNull String fileRoot) {
         this.file = new File(fileRoot + "/" + name + ".yml");
-        this.config = new Configuration(this.file);
+        this.config = Configuration.getConfiguration(file);
     }
 
     public Auth(@NotNull File file) {
         this.file = file;
-        this.config = new Configuration(this.file);
+        this.config = Configuration.getConfiguration(file);
     }
 
     @NotNull

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class InFilePosSet extends BasePosSet{
+public class InFilePosSet extends BasePosSet {
 
     static int CHUNK_SIZE_BITLEN = InChunkPosSet.CHUNK_SIZE_BITLEN;
     static int CHUNK_SIZE = InChunkPosSet.CHUNK_SIZE;
