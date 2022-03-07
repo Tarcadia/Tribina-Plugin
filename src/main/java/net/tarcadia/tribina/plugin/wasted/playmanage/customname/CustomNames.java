@@ -1,21 +1,21 @@
-package net.tarcadia.tribina.plugin.playmanage.customname;
+package net.tarcadia.tribina.plugin.wasted.playmanage.customname;
 
 import net.tarcadia.tribina.plugin.Main;
-import net.tarcadia.tribina.plugin.playmanage.PlayManages;
-import net.tarcadia.tribina.plugin.playmanage.customname.text.Style;
-import net.tarcadia.tribina.plugin.playmanage.customname.text.Tag;
+import net.tarcadia.tribina.plugin.wasted.playmanage.customname.text.Style;
+import net.tarcadia.tribina.plugin.wasted.playmanage.customname.text.Tag;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomNames {
 
-    public static final String KEY_CUSNAME_NAME = PlayManages.KEY_CUSNAME_NAME;
-    public static final String KEY_CUSNAME_TAG = PlayManages.KEY_CUSNAME_TAG;
-    public static final String KEY_CUSNAME_TAG_LIST = PlayManages.KEY_CUSNAME_TAG_LIST;
-    public static final String KEY_CUSNAME_TAG_VISIBLE = PlayManages.KEY_CUSNAME_TAG_VISIBLE;
-    public static final String KEY_CUSNAME_STYLE = PlayManages.KEY_CUSNAME_STYLE;
-    public static final String KEY_CUSNAME_STYLE_LIST = PlayManages.KEY_CUSNAME_STYLE_LIST;
+    public static final String KEY_CUSNAME_ENABLED = "login.enabled";
+    public static final String KEY_CUSNAME_NAME = "custom-name.names";
+    public static final String KEY_CUSNAME_TAG = "custom-name.tag";
+    public static final String KEY_CUSNAME_TAG_LIST = "custom-name.tag-list";
+    public static final String KEY_CUSNAME_TAG_VISIBLE = "custom-name.tag-visible";
+    public static final String KEY_CUSNAME_STYLE = "custom-name.style";
+    public static final String KEY_CUSNAME_STYLE_LIST = "custom-name.style-list";
 
     private static Configuration config;
 

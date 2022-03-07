@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.playmanage.customname.text;
+package net.tarcadia.tribina.plugin.wasted.playmanage.customname.text;
 
 import org.jetbrains.annotations.NotNull;
 
