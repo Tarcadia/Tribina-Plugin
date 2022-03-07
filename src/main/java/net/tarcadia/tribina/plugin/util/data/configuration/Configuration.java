@@ -1,5 +1,7 @@
 package net.tarcadia.tribina.plugin.util.data.configuration;
 
+import net.tarcadia.tribina.plugin.Main;
+import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -15,12 +17,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 public class Configuration implements org.bukkit.configuration.Configuration {
+
+    private static final Map<File, Configuration> configs = new HashMap<>();
 
     private final File file;
     private final long ttl;
@@ -29,6 +31,17 @@ public class Configuration implements org.bukkit.configuration.Configuration {
 
     private org.bukkit.configuration.Configuration def;
     private YamlConfiguration configBuff;
+
+    public static Configuration getConfiguration(@NotNull File file) {
+        return Objects.requireNonNullElseGet(
+                Configuration.configs.get(file),
+                () -> {
+                    var c = new Configuration(file);
+                    Configuration.configs.put(file, c);
+                    return c;
+                }
+        );
+    }
 
     public Configuration(@NotNull File file, org.bukkit.configuration.Configuration def, long ttl) {
         this.file = file;
