@@ -1,7 +1,5 @@
 package net.tarcadia.tribina.plugin.util.data.configuration;
 
-import net.tarcadia.tribina.plugin.Main;
-import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -32,7 +30,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     private org.bukkit.configuration.Configuration def;
     private YamlConfiguration configBuff;
 
-    public static Configuration getConfiguration(@NotNull File file) {
+    public synchronized static Configuration getConfiguration(@NotNull File file) {
         return Objects.requireNonNullElseGet(
                 Configuration.configs.get(file),
                 () -> {
@@ -75,7 +73,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         this.instUpdate();
     }
 
-    public void load(@NotNull File file) {
+    public synchronized void load(@NotNull File file) {
         this.timeFile = file.lastModified();
         this.configBuff = YamlConfiguration.loadConfiguration(file);
         if (def != null) {
@@ -83,7 +81,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         }
     }
 
-    public void save(@NotNull File file) {
+    public synchronized void save(@NotNull File file) {
         try {
             this.configBuff.save(file);
         } catch (IOException ex) {
@@ -92,7 +90,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         this.timeFile = file.lastModified();
     }
 
-    public void tryUpdate() {
+    public synchronized void tryUpdate() {
         if (System.currentTimeMillis() - this.timeUpdate > this.ttl) {
             if (this.file.lastModified() > this.timeFile) {
                 this.load(this.file);
@@ -101,12 +99,12 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         this.timeUpdate = System.currentTimeMillis();
     }
 
-    public void instUpdate() {
+    public synchronized void instUpdate() {
         this.load(this.file);
         this.timeUpdate = System.currentTimeMillis();
     }
 
-    public void didUpdate() {
+    public synchronized void didUpdate() {
         this.save(this.file);
         this.timeUpdate = System.currentTimeMillis();
     }
@@ -127,7 +125,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public Set<String> getKeys(boolean deep) {
+    public synchronized Set<String> getKeys(boolean deep) {
         this.tryUpdate();
         return this.configBuff.getKeys(deep);
     }
@@ -148,7 +146,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public Map<String, Object> getValues(boolean deep) {
+    public synchronized Map<String, Object> getValues(boolean deep) {
         this.tryUpdate();
         return this.configBuff.getValues(deep);
     }
@@ -165,7 +163,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @throws IllegalArgumentException Thrown when path is null.
      */
     @Override
-    public boolean contains(@NotNull String path) {
+    public synchronized boolean contains(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.contains(path);
     }
@@ -188,7 +186,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @throws IllegalArgumentException Thrown when path is null.
      */
     @Override
-    public boolean contains(@NotNull String path, boolean ignoreDefault) {
+    public synchronized boolean contains(@NotNull String path, boolean ignoreDefault) {
         this.tryUpdate();
         return this.configBuff.contains(path, ignoreDefault);
     }
@@ -206,7 +204,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @throws IllegalArgumentException Thrown when path is null.
      */
     @Override
-    public boolean isSet(@NotNull String path) {
+    public synchronized boolean isSet(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isSet(path);
     }
@@ -227,7 +225,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Path of this section relative to its root
      */
     @Override
-    public String getCurrentPath() {
+    public synchronized String getCurrentPath() {
         this.tryUpdate();
         return this.configBuff.getCurrentPath();
     }
@@ -243,7 +241,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public String getName() {
+    public synchronized String getName() {
         this.tryUpdate();
         return this.configBuff.getName();
     }
@@ -261,7 +259,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Root configuration containing this section.
      */
     @Override
-    public org.bukkit.configuration.Configuration getRoot() {
+    public synchronized org.bukkit.configuration.Configuration getRoot() {
         this.tryUpdate();
         return this.configBuff.getRoot();
     }
@@ -278,7 +276,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Parent section containing this section.
      */
     @Override
-    public ConfigurationSection getParent() {
+    public synchronized ConfigurationSection getParent() {
         this.tryUpdate();
         return this.configBuff.getParent();
     }
@@ -294,7 +292,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested Object.
      */
     @Override
-    public Object get(@NotNull String path) {
+    public synchronized Object get(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.get(path);
     }
@@ -312,7 +310,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested Object.
      */
     @Override
-    public Object get(@NotNull String path, Object def) {
+    public synchronized Object get(@NotNull String path, Object def) {
         this.tryUpdate();
         return this.configBuff.get(path, def);
     }
@@ -332,7 +330,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @param value New value to set the path to.
      */
     @Override
-    public void set(@NotNull String path, Object value) {
+    public synchronized void set(@NotNull String path, Object value) {
         this.instUpdate();
         this.configBuff.set(path, value);
         this.didUpdate();
@@ -350,7 +348,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public ConfigurationSection createSection(@NotNull String path) {
+    public synchronized ConfigurationSection createSection(@NotNull String path) {
         this.instUpdate();
         var ret = this.configBuff.createSection(path);
         this.didUpdate();
@@ -371,7 +369,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public ConfigurationSection createSection(@NotNull String path, @NotNull Map<?, ?> map) {
+    public synchronized ConfigurationSection createSection(@NotNull String path, @NotNull Map<?, ?> map) {
         this.instUpdate();
         var ret = this.configBuff.createSection(path, map);
         this.didUpdate();
@@ -389,7 +387,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested String.
      */
     @Override
-    public String getString(@NotNull String path) {
+    public synchronized String getString(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getString(path);
     }
@@ -408,7 +406,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested String.
      */
     @Override
-    public String getString(@NotNull String path, String def) {
+    public synchronized String getString(@NotNull String path, String def) {
         this.tryUpdate();
         return this.configBuff.getString(path, def);
     }
@@ -425,7 +423,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a String.
      */
     @Override
-    public boolean isString(@NotNull String path) {
+    public synchronized boolean isString(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isString(path);
     }
@@ -441,7 +439,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested int.
      */
     @Override
-    public int getInt(@NotNull String path) {
+    public synchronized int getInt(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getInt(path);
     }
@@ -459,7 +457,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested int.
      */
     @Override
-    public int getInt(@NotNull String path, int def) {
+    public synchronized int getInt(@NotNull String path, int def) {
         this.tryUpdate();
         return this.configBuff.getInt(path, def);
     }
@@ -476,7 +474,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is an int.
      */
     @Override
-    public boolean isInt(@NotNull String path) {
+    public synchronized boolean isInt(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isInt(path);
     }
@@ -492,7 +490,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested boolean.
      */
     @Override
-    public boolean getBoolean(@NotNull String path) {
+    public synchronized boolean getBoolean(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getBoolean(path);
     }
@@ -511,7 +509,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested boolean.
      */
     @Override
-    public boolean getBoolean(@NotNull String path, boolean def) {
+    public synchronized boolean getBoolean(@NotNull String path, boolean def) {
         this.tryUpdate();
         return this.configBuff.getBoolean(path);
     }
@@ -528,7 +526,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a boolean.
      */
     @Override
-    public boolean isBoolean(@NotNull String path) {
+    public synchronized boolean isBoolean(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isBoolean(path);
     }
@@ -544,7 +542,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested double.
      */
     @Override
-    public double getDouble(@NotNull String path) {
+    public synchronized double getDouble(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getDouble(path);
     }
@@ -563,7 +561,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested double.
      */
     @Override
-    public double getDouble(@NotNull String path, double def) {
+    public synchronized double getDouble(@NotNull String path, double def) {
         this.tryUpdate();
         return this.configBuff.getDouble(path, def);
     }
@@ -580,7 +578,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a double.
      */
     @Override
-    public boolean isDouble(@NotNull String path) {
+    public synchronized boolean isDouble(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isDouble(path);
     }
@@ -596,7 +594,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested long.
      */
     @Override
-    public long getLong(@NotNull String path) {
+    public synchronized long getLong(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getLong(path);
     }
@@ -615,7 +613,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested long.
      */
     @Override
-    public long getLong(@NotNull String path, long def) {
+    public synchronized long getLong(@NotNull String path, long def) {
         this.tryUpdate();
         return this.configBuff.getLong(path, def);
     }
@@ -632,7 +630,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a long.
      */
     @Override
-    public boolean isLong(@NotNull String path) {
+    public synchronized boolean isLong(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isLong(path);
     }
@@ -648,7 +646,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested List.
      */
     @Override
-    public List<?> getList(@NotNull String path) {
+    public synchronized List<?> getList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getList(path);
     }
@@ -667,7 +665,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested List.
      */
     @Override
-    public List<?> getList(@NotNull String path, List<?> def) {
+    public synchronized List<?> getList(@NotNull String path, List<?> def) {
         this.tryUpdate();
         return this.configBuff.getList(path, def);
     }
@@ -684,7 +682,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a List.
      */
     @Override
-    public boolean isList(@NotNull String path) {
+    public synchronized boolean isList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isList(path);
     }
@@ -704,7 +702,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<String> getStringList(@NotNull String path) {
+    public synchronized List<String> getStringList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getStringList(path);
     }
@@ -724,7 +722,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Integer> getIntegerList(@NotNull String path) {
+    public synchronized List<Integer> getIntegerList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getIntegerList(path);
     }
@@ -744,7 +742,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Boolean> getBooleanList(@NotNull String path) {
+    public synchronized List<Boolean> getBooleanList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getBooleanList(path);
     }
@@ -764,7 +762,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Double> getDoubleList(@NotNull String path) {
+    public synchronized List<Double> getDoubleList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getDoubleList(path);
     }
@@ -784,7 +782,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Float> getFloatList(@NotNull String path) {
+    public synchronized List<Float> getFloatList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getFloatList(path);
     }
@@ -804,7 +802,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Long> getLongList(@NotNull String path) {
+    public synchronized List<Long> getLongList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getLongList(path);
     }
@@ -824,7 +822,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Byte> getByteList(@NotNull String path) {
+    public synchronized List<Byte> getByteList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getByteList(path);
     }
@@ -844,7 +842,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Character> getCharacterList(@NotNull String path) {
+    public synchronized List<Character> getCharacterList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getCharacterList(path);
     }
@@ -864,7 +862,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Short> getShortList(@NotNull String path) {
+    public synchronized List<Short> getShortList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getShortList(path);
     }
@@ -884,7 +882,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<Map<?, ?>> getMapList(@NotNull String path) {
+    public synchronized List<Map<?, ?>> getMapList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getMapList(path);
     }
@@ -907,7 +905,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested object
      */
     @Override
-    public <T> T getObject(@NotNull String path, @NotNull Class<T> clazz) {
+    public synchronized <T> T getObject(@NotNull String path, @NotNull Class<T> clazz) {
         this.tryUpdate();
         return this.configBuff.getObject(path, clazz);
     }
@@ -935,7 +933,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested object
      */
     @Override
-    public <T> T getObject(@NotNull String path, @NotNull Class<T> clazz, T def) {
+    public synchronized <T> T getObject(@NotNull String path, @NotNull Class<T> clazz, T def) {
         this.tryUpdate();
         return this.configBuff.getObject(path, clazz, def);
     }
@@ -953,7 +951,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested {@link ConfigurationSerializable} object
      */
     @Override
-    public <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz) {
+    public synchronized <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz) {
         this.tryUpdate();
         return this.configBuff.getSerializable(path, clazz);
     }
@@ -973,7 +971,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested {@link ConfigurationSerializable} object
      */
     @Override
-    public <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz, T def) {
+    public synchronized <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz, T def) {
         this.tryUpdate();
         return this.configBuff.getSerializable(path, clazz, def);
     }
@@ -989,7 +987,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested Vector.
      */
     @Override
-    public Vector getVector(@NotNull String path) {
+    public synchronized Vector getVector(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getVector(path);
     }
@@ -1008,7 +1006,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested Vector.
      */
     @Override
-    public Vector getVector(@NotNull String path, Vector def) {
+    public synchronized Vector getVector(@NotNull String path, Vector def) {
         this.tryUpdate();
         return this.configBuff.getVector(path, def);
     }
@@ -1025,7 +1023,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a Vector.
      */
     @Override
-    public boolean isVector(@NotNull String path) {
+    public synchronized boolean isVector(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isVector(path);
     }
@@ -1042,7 +1040,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested OfflinePlayer.
      */
     @Override
-    public OfflinePlayer getOfflinePlayer(@NotNull String path) {
+    public synchronized OfflinePlayer getOfflinePlayer(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getOfflinePlayer(path);
     }
@@ -1061,7 +1059,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested OfflinePlayer.
      */
     @Override
-    public OfflinePlayer getOfflinePlayer(@NotNull String path, OfflinePlayer def) {
+    public synchronized OfflinePlayer getOfflinePlayer(@NotNull String path, OfflinePlayer def) {
         this.tryUpdate();
         return this.configBuff.getOfflinePlayer(path, def);
     }
@@ -1078,7 +1076,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is an OfflinePlayer.
      */
     @Override
-    public boolean isOfflinePlayer(@NotNull String path) {
+    public synchronized boolean isOfflinePlayer(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isOfflinePlayer(path);
     }
@@ -1094,7 +1092,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested ItemStack.
      */
     @Override
-    public ItemStack getItemStack(@NotNull String path) {
+    public synchronized ItemStack getItemStack(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getItemStack(path);
     }
@@ -1113,7 +1111,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested ItemStack.
      */
     @Override
-    public ItemStack getItemStack(@NotNull String path, ItemStack def) {
+    public synchronized ItemStack getItemStack(@NotNull String path, ItemStack def) {
         this.tryUpdate();
         return this.configBuff.getItemStack(path, def);
     }
@@ -1130,7 +1128,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is an ItemStack.
      */
     @Override
-    public boolean isItemStack(@NotNull String path) {
+    public synchronized boolean isItemStack(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isItemStack(path);
     }
@@ -1146,7 +1144,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested Color.
      */
     @Override
-    public Color getColor(@NotNull String path) {
+    public synchronized Color getColor(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getColor(path);
     }
@@ -1165,7 +1163,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested Color.
      */
     @Override
-    public Color getColor(@NotNull String path, Color def) {
+    public synchronized Color getColor(@NotNull String path, Color def) {
         this.tryUpdate();
         return this.configBuff.getColor(path, def);
     }
@@ -1182,7 +1180,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a Color.
      */
     @Override
-    public boolean isColor(@NotNull String path) {
+    public synchronized boolean isColor(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isColor(path);
     }
@@ -1198,7 +1196,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested Location.
      */
     @Override
-    public Location getLocation(@NotNull String path) {
+    public synchronized Location getLocation(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getLocation(path);
     }
@@ -1217,7 +1215,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested Location.
      */
     @Override
-    public Location getLocation(@NotNull String path, Location def) {
+    public synchronized Location getLocation(@NotNull String path, Location def) {
         this.tryUpdate();
         return this.configBuff.getLocation(path, def);
     }
@@ -1234,7 +1232,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a Location.
      */
     @Override
-    public boolean isLocation(@NotNull String path) {
+    public synchronized boolean isLocation(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isLocation(path);
     }
@@ -1251,7 +1249,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Requested ConfigurationSection.
      */
     @Override
-    public ConfigurationSection getConfigurationSection(@NotNull String path) {
+    public synchronized ConfigurationSection getConfigurationSection(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getConfigurationSection(path);
     }
@@ -1269,7 +1267,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a ConfigurationSection.
      */
     @Override
-    public boolean isConfigurationSection(@NotNull String path) {
+    public synchronized boolean isConfigurationSection(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isConfigurationSection(path);
     }
@@ -1285,7 +1283,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Equivalent section in root configuration
      */
     @Override
-    public ConfigurationSection getDefaultSection() {
+    public synchronized ConfigurationSection getDefaultSection() {
         this.tryUpdate();
         return this.configBuff.getDefaultSection();
     }
@@ -1305,7 +1303,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @throws IllegalArgumentException Thrown if path is null.
      */
     @Override
-    public void addDefault(@NotNull String path, Object value) {
+    public synchronized void addDefault(@NotNull String path, Object value) {
         this.configBuff.addDefault(path, value);
         this.def.set(path, value);
     }
@@ -1323,7 +1321,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<String> getComments(@NotNull String path) {
+    public synchronized List<String> getComments(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getComments(path);
     }
@@ -1341,7 +1339,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public List<String> getInlineComments(@NotNull String path) {
+    public synchronized List<String> getInlineComments(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getInlineComments(path);
     }
@@ -1361,7 +1359,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @param comments New comments to set at the path, every entry represents
      */
     @Override
-    public void setComments(@NotNull String path, List<String> comments) {
+    public synchronized void setComments(@NotNull String path, List<String> comments) {
         this.instUpdate();
         this.configBuff.setComments(path, comments);
         this.didUpdate();
@@ -1382,7 +1380,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @param comments New comments to set at the path, every entry represents
      */
     @Override
-    public void setInlineComments(@NotNull String path, List<String> comments) {
+    public synchronized void setInlineComments(@NotNull String path, List<String> comments) {
         this.instUpdate();
         this.configBuff.setInlineComments(path, comments);
         this.didUpdate();
@@ -1399,7 +1397,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @throws IllegalArgumentException Thrown if defaults is null.
      */
     @Override
-    public void addDefaults(@NotNull Map<String, Object> defaults) {
+    public synchronized void addDefaults(@NotNull Map<String, Object> defaults) {
         this.configBuff.addDefaults(defaults);
 //        for (var kv : defaults.entrySet()) {
 //            var key = kv.getKey();
@@ -1424,7 +1422,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @throws IllegalArgumentException Thrown if defaults is null or this.
      */
     @Override
-    public void addDefaults(@NotNull org.bukkit.configuration.Configuration defaults) {
+    public synchronized void addDefaults(@NotNull org.bukkit.configuration.Configuration defaults) {
         this.configBuff.addDefaults(defaults);
 //        for (var kv : defaults.getValues(true).entrySet()) {
 //            var key = kv.getKey();
@@ -1443,7 +1441,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @throws IllegalArgumentException Thrown if defaults is null or this.
      */
     @Override
-    public void setDefaults(@NotNull org.bukkit.configuration.Configuration defaults) {
+    public synchronized void setDefaults(@NotNull org.bukkit.configuration.Configuration defaults) {
         this.configBuff.setDefaults(defaults);
         this.def = defaults;
     }
@@ -1458,7 +1456,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Configuration source for default values, or null if none exist.
      */
     @Override
-    public org.bukkit.configuration.Configuration getDefaults() {
+    public synchronized org.bukkit.configuration.Configuration getDefaults() {
         return this.def;
     }
 
@@ -1471,7 +1469,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     @NotNull
-    public ConfigurationOptions options() {
+    public synchronized ConfigurationOptions options() {
         this.tryUpdate();
         return this.configBuff.options();
     }
