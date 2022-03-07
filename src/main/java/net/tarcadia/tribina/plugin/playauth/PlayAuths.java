@@ -14,19 +14,34 @@ public class PlayAuths {
     public static final String PATH_FILE_CONFIG = PATH_PLAYAUTHS + "/config.yml";
     public static final String PATH_FILE_AUTHS = PATH_PLAYAUTHS + "/auths.yml";
 
-    public static Configuration config = null;
+    private static Configuration config = null;
+    private static Auth auth = null;
 
-    public void load() {
-        this.loadConfig();
+    public static void load() {
+        Main.logger.info("[PA] Loading...");
+        PlayAuths.loadConfig();
+        PlayAuths.loadAuth();
+        Main.logger.info("[PA] Loaded.");
     }
 
-    private void loadConfig() {
+    private static void loadConfig() {
         var defConfig = YamlConfiguration.loadConfiguration(
                 new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
         );
 
-        PlayAuths.config =  Configuration.getConfiguration(new File(Main.dataPath + PATH_FILE_CONFIG));
+        PlayAuths.config = Configuration.getConfiguration(new File(Main.dataPath + PATH_FILE_CONFIG));
         PlayAuths.config.setDefaults(defConfig);
+
+        Main.logger.info("[PA] Loaded config.");
+    }
+
+    private static void loadAuth() {
+        PlayAuths.auth = new Auth(new File(Main.dataPath + PATH_FILE_AUTHS));
+        Main.logger.info("[PA] Loaded auths.");
+    }
+
+    public static Configuration config() {
+        return PlayAuths.config;
     }
 
 }
