@@ -15,6 +15,8 @@ import java.util.List;
 
 public class MapRegions {
 
+    public static final String KEY_ENABLED = "enabled";
+
     public static final String KEY_REGION_PATH_LIST = "regions.path";
     public static final String KEY_REGION_TOWN_LIST = "regions.town";
     public static final String KEY_REGION_LAND_LIST = "regions.land";
@@ -35,31 +37,34 @@ public class MapRegions {
     public static final String PATH_REGION_LANDS = PATH_MAPREGIONS + "/Lands/";
     public static final String PATH_REGION_TOWNS = PATH_MAPREGIONS + "/Towns/";
 
-    public static Configuration config = null;
-    public static List<PathRegion> regionPaths = null;
-    public static List<LandRegion> regionLands = null;
-    public static List<TownRegion> regionTowns = null;
-    public static List<AssetRegion> regionAssets = null;
+    public static final List<PathRegion> regionPaths = new LinkedList<>();
+    public static final List<LandRegion> regionLands = new LinkedList<>();
+    public static final List<TownRegion> regionTowns = new LinkedList<>();
+    public static final List<AssetRegion> regionAssets = new LinkedList<>();
 
-    public void load() {
-        this.loadConfig();
-        this.loadPaths();
-        this.loadLands();
-        this.loadTowns();
+    private static Configuration config = null;
+
+    public static void load() {
+        Main.logger.info("[MR] Loading...");
+        MapRegions.loadConfig();
+        MapRegions.loadPaths();
+        MapRegions.loadLands();
+        MapRegions.loadTowns();
+        Main.logger.info("[MR] Loaded.");
     }
 
-    private void loadConfig() {
+    private static void loadConfig() {
         var defConfig = YamlConfiguration.loadConfiguration(
                 new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
         );
 
-        MapRegions.config = Configuration.getConfiguration(
-                new File(Main.dataPath + PATH_FILE_CONFIG)
-        );
+        MapRegions.config = Configuration.getConfiguration(new File(Main.dataPath + PATH_FILE_CONFIG));
         MapRegions.config.setDefaults(defConfig);
+
+        Main.logger.info("[MR] Loaded config.");
     }
 
-    private void loadPaths() {
+    private static void loadPaths() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_PATH_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
@@ -67,11 +72,13 @@ public class MapRegions {
                 var fileBitmap = new File(Main.dataPath + PATH_REGION_PATHS + id + ".bmp");
                 var pathRegion = new PathRegion(id, fileConfig, fileBitmap);
                 MapRegions.regionPaths.add(pathRegion);
+                Main.logger.info("[MR] Loaded path " + pathRegion.id() + ".");
             }
         }
+        Main.logger.info("[MR] Loaded paths.");
     }
 
-    private void loadLands() {
+    private static void loadLands() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_LAND_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
@@ -79,11 +86,13 @@ public class MapRegions {
                 var fileBitmap = new File(Main.dataPath + PATH_REGION_LANDS + id + ".bmp");
                 var landRegion = new LandRegion(id, fileConfig, fileBitmap, MapRegions.regionLands);
                 MapRegions.regionLands.add(landRegion);
+                Main.logger.info("[MR] Loaded land " + landRegion.id() + ".");
             }
         }
+        Main.logger.info("[MR] Loaded lands.");
     }
 
-    private void loadTowns() {
+    private static void loadTowns() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_TOWN_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
@@ -99,10 +108,32 @@ public class MapRegions {
                     var subFileBitmap = new File(Main.dataPath + PATH_REGION_TOWNS + id + "/" + subId + ".bmp");
                     var assetRegion = new AssetRegion(subId, subFileConfig, subFileBitmap, assets, townRegion);
                     assets.add(assetRegion);
+                    Main.logger.info("[MR] Loaded asset " + assetRegion.id() + "@" + townRegion.id() + ".");
                 }
                 MapRegions.regionAssets.addAll(assets);
+                Main.logger.info("[MR] Loaded town " + townRegion.id() + ".");
             }
         }
+        Main.logger.info("[MR] Loaded towns.");
     }
+
+    public static Configuration config() {
+        return MapRegions.config;
+    }
+
+    public static boolean enabled() {
+        return MapRegions.config.getBoolean(KEY_ENABLED);
+    }
+
+    public static void enable() {
+        MapRegions.config.set(KEY_ENABLED, true);
+        Main.logger.info("[MR] Set enabled.");
+    }
+
+    public static void disable() {
+        MapRegions.config.set(KEY_ENABLED, false);
+        Main.logger.info("[MR] Set disabled.");
+    }
+
 
 }
