@@ -185,7 +185,7 @@ public class BaseRegion implements PosSet, Region {
 
     @Override
     public void saveMap() {
-        Main.logger.log(Level.INFO, "MR: Saving bitmap " + this.fileBitmap + ".");
+        Main.logger.log(Level.INFO, "[MR] Saving bitmap " + this.fileBitmap + ".");
         try{
             boolean flagTooLarge = false;
             var minX = this.minX();
@@ -205,10 +205,10 @@ public class BaseRegion implements PosSet, Region {
                     flagTooLarge = true;
                 }
             }
-            if (flagTooLarge) Main.logger.log(Level.WARNING, "MR: Saving bitmap to large, some pos discarded.");
+            if (flagTooLarge) Main.logger.log(Level.WARNING, "[MR] Saving bitmap to large, some pos discarded.");
             Bitmaps.saveSetToBmp(set, this.fileBitmap);
         } catch (Exception e) {
-            Main.logger.log(Level.WARNING, "MR: Saving bitmap failed.", e);
+            Main.logger.log(Level.WARNING, "[MR] Saving bitmap failed.", e);
         }
     }
 
@@ -220,10 +220,10 @@ public class BaseRegion implements PosSet, Region {
             this.config.set(KEY_LOC_OFFSET_X, offsetX);
             this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
             this.config.set(KEY_LOC_LOC, loc);
-            Main.logger.log(Level.WARNING, "MR: Re-Location accessed.");
+            Main.logger.log(Level.WARNING, "[MR] Re-Location accessed.");
             return true;
         } else {
-            Main.logger.log(Level.WARNING, "MR: Re-Location denied.");
+            Main.logger.log(Level.WARNING, "[MR] Re-Location denied.");
             return false;
         }
     }
@@ -236,7 +236,7 @@ public class BaseRegion implements PosSet, Region {
         this.biasZ = z;
         this.config.set(KEY_LOC_OFFSET_X, offsetX);
         this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
-        Main.logger.log(Level.WARNING, "MR: Re-Bias accessed.");
+        Main.logger.log(Level.WARNING, "[MR] Re-Bias accessed.");
         return true;
     }
 

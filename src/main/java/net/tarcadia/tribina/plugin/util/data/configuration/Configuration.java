@@ -110,7 +110,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             this.save(this.file);
             this.timeWrite = System.currentTimeMillis();
         }
-        this.timeUpdate = System.currentTimeMillis();
     }
 
     /**
@@ -352,7 +351,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     @Override
     @NotNull
     public synchronized ConfigurationSection createSection(@NotNull String path) {
-        this.instUpdate();
         var ret = this.configBuff.createSection(path);
         this.didUpdate();
         return ret;
@@ -373,7 +371,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     @Override
     @NotNull
     public synchronized ConfigurationSection createSection(@NotNull String path, @NotNull Map<?, ?> map) {
-        this.instUpdate();
         var ret = this.configBuff.createSection(path, map);
         this.didUpdate();
         return ret;
@@ -1363,7 +1360,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     public synchronized void setComments(@NotNull String path, List<String> comments) {
-        this.instUpdate();
         this.configBuff.setComments(path, comments);
         this.didUpdate();
     }
@@ -1384,7 +1380,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     public synchronized void setInlineComments(@NotNull String path, List<String> comments) {
-        this.instUpdate();
         this.configBuff.setInlineComments(path, comments);
         this.didUpdate();
     }
