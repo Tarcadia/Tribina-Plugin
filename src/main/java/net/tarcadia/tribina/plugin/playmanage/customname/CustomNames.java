@@ -8,8 +8,6 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.logging.Level;
-
 public class CustomNames {
 
     public static final String KEY_CUSNAME_NAME = PlayManages.KEY_CUSNAME_NAME;
@@ -45,7 +43,7 @@ public class CustomNames {
                 theStyle = Style.Normal;
             }
         } catch (IllegalArgumentException e) {
-            Main.logger.log(Level.WARNING, "[PM] Style " + style + " load failed.");
+            Main.logger.warning("[PM] Style " + style + " load failed.");
             theStyle = Style.Normal;
         }
 
@@ -56,7 +54,7 @@ public class CustomNames {
                 theTag = Tag.NullTag;
             }
         } catch (IllegalArgumentException e) {
-            Main.logger.log(Level.WARNING, "[PM] Tag " + tag + " load failed.");
+            Main.logger.warning("[PM] Tag " + tag + " load failed.");
             theTag = Tag.NullTag;
         }
 
