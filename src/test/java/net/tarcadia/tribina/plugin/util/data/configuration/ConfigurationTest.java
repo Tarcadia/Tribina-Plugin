@@ -21,8 +21,10 @@ class ConfigurationTest {
         File fileA = new File("src/test/resources/util/data/configuration/ConfigurationTest/A.yml");
         File fileB = new File("src/test/resources/util/data/configuration/ConfigurationTest/B.yml");
         YamlConfiguration ymlConfig = YamlConfiguration.loadConfiguration(fileA);
-        Configuration configA = new Configuration(fileB, ymlConfig, 500);
-        Configuration configB = new Configuration(fileB, ymlConfig, 500);
+        Configuration configA = Configuration.getConfiguration(fileB);
+        Configuration configB = Configuration.getConfiguration(fileB);
+        configA.setDefaults(ymlConfig);
+        configB.setDefaults(ymlConfig);
         ymlConfig.set("a.b.r", 7);
         System.out.println(configA.getString("a.b.q"));
         System.out.println(configA.getString("a.b.w"));
