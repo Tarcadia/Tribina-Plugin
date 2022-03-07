@@ -1,5 +1,8 @@
 package net.tarcadia.tribina.plugin;
 
+import net.tarcadia.tribina.plugin.login.LogIns;
+import net.tarcadia.tribina.plugin.mapregion.MapRegions;
+import net.tarcadia.tribina.plugin.playauth.PlayAuths;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +30,9 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        LogIns.load();
+        PlayAuths.load();
+        MapRegions.load();
         Main.logger.info("Enabled " + Main.descrp.getName() + " v" + Main.descrp.getVersion() + ".");
     }
 
