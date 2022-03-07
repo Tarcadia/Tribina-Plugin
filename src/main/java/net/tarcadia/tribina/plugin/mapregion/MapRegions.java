@@ -15,6 +15,8 @@ import java.util.List;
 
 public class MapRegions {
 
+    public static final String KEY_ENABLED = "enabled";
+
     public static final String KEY_REGION_PATH_LIST = "regions.path";
     public static final String KEY_REGION_TOWN_LIST = "regions.town";
     public static final String KEY_REGION_LAND_LIST = "regions.land";
@@ -36,6 +38,8 @@ public class MapRegions {
     public static final String PATH_REGION_TOWNS = PATH_MAPREGIONS + "/Towns/";
 
     public static Configuration config = null;
+    public static boolean enabled = false;
+
     public static List<PathRegion> regionPaths = null;
     public static List<LandRegion> regionLands = null;
     public static List<TownRegion> regionTowns = null;
@@ -57,6 +61,8 @@ public class MapRegions {
                 new File(Main.dataPath + PATH_FILE_CONFIG),
                 defConfig
         );
+
+        MapRegions.enabled = MapRegions.config.getBoolean(KEY_ENABLED);
     }
 
     private void loadPaths() {
