@@ -45,10 +45,12 @@ public class MapRegions {
     private static Configuration config = null;
 
     public static void load() {
+        Main.logger.info("[MR] Loading...");
         MapRegions.loadConfig();
         MapRegions.loadPaths();
         MapRegions.loadLands();
         MapRegions.loadTowns();
+        Main.logger.info("[MR] Loaded.");
     }
 
     private static void loadConfig() {
@@ -60,6 +62,8 @@ public class MapRegions {
                 new File(Main.dataPath + PATH_FILE_CONFIG),
                 defConfig
         );
+
+        Main.logger.info("[MR] Loaded config.");
     }
 
     private static void loadPaths() {
@@ -70,8 +74,10 @@ public class MapRegions {
                 var fileBitmap = new File(Main.dataPath + PATH_REGION_PATHS + id + ".bmp");
                 var pathRegion = new PathRegion(id, fileConfig, fileBitmap);
                 MapRegions.regionPaths.add(pathRegion);
+                Main.logger.info("[MR] Loaded path " + pathRegion.id() + ".");
             }
         }
+        Main.logger.info("[MR] Loaded paths.");
     }
 
     private static void loadLands() {
@@ -82,8 +88,10 @@ public class MapRegions {
                 var fileBitmap = new File(Main.dataPath + PATH_REGION_LANDS + id + ".bmp");
                 var landRegion = new LandRegion(id, fileConfig, fileBitmap, MapRegions.regionLands);
                 MapRegions.regionLands.add(landRegion);
+                Main.logger.info("[MR] Loaded land " + landRegion.id() + ".");
             }
         }
+        Main.logger.info("[MR] Loaded lands.");
     }
 
     private static void loadTowns() {
@@ -102,10 +110,13 @@ public class MapRegions {
                     var subFileBitmap = new File(Main.dataPath + PATH_REGION_TOWNS + id + "/" + subId + ".bmp");
                     var assetRegion = new AssetRegion(subId, subFileConfig, subFileBitmap, assets, townRegion);
                     assets.add(assetRegion);
+                    Main.logger.info("[MR] Loaded asset " + assetRegion.id() + "@" + townRegion.id() + ".");
                 }
                 MapRegions.regionAssets.addAll(assets);
+                Main.logger.info("[MR] Loaded town " + townRegion.id() + ".");
             }
         }
+        Main.logger.info("[MR] Loaded towns.");
     }
 
     public static Configuration config() {
@@ -118,10 +129,12 @@ public class MapRegions {
 
     public static void enable() {
         MapRegions.config.set(KEY_ENABLED, true);
+        Main.logger.info("[MR] Set enabled.");
     }
 
     public static void disable() {
         MapRegions.config.set(KEY_ENABLED, false);
+        Main.logger.info("[MR] Set disabled.");
     }
 
 
