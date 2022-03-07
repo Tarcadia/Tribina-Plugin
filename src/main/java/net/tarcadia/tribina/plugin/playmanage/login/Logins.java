@@ -42,7 +42,7 @@ public class Logins {
         try {
             Logins.md = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            Main.logger.log(Level.SEVERE, "[PM] Encoder MD5 load failed.");
+            Main.logger.log(Level.SEVERE, "[PM] Encoder " + algorithm + " load failed.");
             Logins.md = Logins.md5;
         }
     }
