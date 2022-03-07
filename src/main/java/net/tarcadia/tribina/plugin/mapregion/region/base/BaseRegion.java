@@ -53,95 +53,12 @@ public class BaseRegion implements PosSet, Region {
 
     public BaseRegion(
             @NotNull String regionId,
-            @NotNull Path fileRoot,
-            long ttl
-    ) {
-        this.id = regionId;
-        this.fileConfig = new File(fileRoot + "/" + regionId + ".yml");
-        this.fileBitmap = new File(fileRoot + "/" + regionId + ".bmp");
-        this.config = new Configuration(fileConfig, ttl);
-        this.map = new GlobalPosSet();
-        if (this.config.isLocation(KEY_LOC_LOC) &&
-                this.config.isLong(KEY_LOC_OFFSET_X) &&
-                this.config.isLong(KEY_LOC_OFFSET_Z)
-        ) {
-            boolean isNull;
-            try {
-                long offsetX = this.config.getLong(KEY_LOC_OFFSET_X);
-                long offsetZ = this.config.getLong(KEY_LOC_OFFSET_Z);
-                this.loc = this.config.getLocation(KEY_LOC_LOC);
-                this.biasX = loc.getBlockX() + offsetX;
-                this.biasZ = loc.getBlockZ() + offsetZ;
-                var posSet = Bitmaps.loadBmpToSet(fileBitmap);
-                for (var pos : posSet) {
-                    this.map.add(pos.x() + biasX, pos.y() + biasZ);
-                }
-                isNull = false;
-            } catch (Exception e) {
-                this.loc = null;
-                this.biasX = 0;
-                this.biasZ = 0;
-                isNull = true;
-            }
-            this.isNull = isNull;
-        } else {
-            this.loc = null;
-            this.biasX = 0;
-            this.biasZ = 0;
-            this.isNull = true;
-        }
-    }
-
-    public BaseRegion(
-            @NotNull String regionId,
             @NotNull Path fileRoot
     ) {
         this.id = regionId;
         this.fileConfig = new File(fileRoot + "/" + regionId + ".yml");
         this.fileBitmap = new File(fileRoot + "/" + regionId + ".bmp");
-        this.config = new Configuration(fileConfig);
-        this.map = new GlobalPosSet();
-        if (this.config.isLocation(KEY_LOC_LOC) &&
-                this.config.isLong(KEY_LOC_OFFSET_X) &&
-                this.config.isLong(KEY_LOC_OFFSET_Z)
-        ) {
-            boolean isNull;
-            try {
-                long offsetX = this.config.getLong(KEY_LOC_OFFSET_X);
-                long offsetZ = this.config.getLong(KEY_LOC_OFFSET_Z);
-                this.loc = this.config.getLocation(KEY_LOC_LOC);
-                this.biasX = loc.getBlockX() + offsetX;
-                this.biasZ = loc.getBlockZ() + offsetZ;
-                var posSet = Bitmaps.loadBmpToSet(fileBitmap);
-                for (var pos : posSet) {
-                    this.map.add(pos.x() + biasX, pos.y() + biasZ);
-                }
-                isNull = false;
-            } catch (Exception e) {
-                this.loc = null;
-                this.biasX = 0;
-                this.biasZ = 0;
-                isNull = true;
-            }
-            this.isNull = isNull;
-        } else {
-            this.loc = null;
-            this.biasX = 0;
-            this.biasZ = 0;
-            this.isNull = true;
-        }
-    }
-
-    public BaseRegion(
-            @NotNull String regionId,
-            @NotNull File fileConfig,
-            @NotNull File fileBitmap,
-            long ttl
-    ) {
-        this.id = regionId;
-        this.fileConfig = fileConfig;
-        this.fileBitmap = fileBitmap;
-        this.config = new Configuration(fileConfig, ttl);
+        this.config = Configuration.getConfiguration(fileConfig);
         this.map = new GlobalPosSet();
         if (this.config.isLocation(KEY_LOC_LOC) &&
                 this.config.isLong(KEY_LOC_OFFSET_X) &&
@@ -182,7 +99,7 @@ public class BaseRegion implements PosSet, Region {
         this.id = regionId;
         this.fileConfig = fileConfig;
         this.fileBitmap = fileBitmap;
-        this.config = new Configuration(fileConfig);
+        this.config = Configuration.getConfiguration(fileConfig);
         this.map = new GlobalPosSet();
         if (this.config.isLocation(KEY_LOC_LOC) &&
                 this.config.isLong(KEY_LOC_OFFSET_X) &&
