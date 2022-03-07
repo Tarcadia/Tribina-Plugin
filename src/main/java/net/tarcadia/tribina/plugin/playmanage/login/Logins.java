@@ -48,9 +48,15 @@ public class Logins {
     }
 
     @NotNull
-    public static String md5(@NotNull String str) {
+    public static String encode(@NotNull String str) {
         Logins.md.update(str.getBytes(StandardCharsets.UTF_8));
         return new BigInteger(1, Logins.md.digest()).toString(16);
+    }
+
+    @NotNull
+    public static String encodeMd5(@NotNull String str) {
+        Logins.md5.update(str.getBytes(StandardCharsets.UTF_8));
+        return new BigInteger(1, Logins.md5.digest()).toString(16);
     }
 
     public static boolean hasPassword(@NotNull Player player) {
@@ -58,11 +64,11 @@ public class Logins {
     }
 
     public static void setPassword(@NotNull Player player, @NotNull String password) {
-        Logins.config.set(KEY_LOGIN_PASSWORDS + "." + player.getName(), Logins.md5(password));
+        Logins.config.set(KEY_LOGIN_PASSWORDS + "." + player.getName(), Logins.encode(password));
     }
 
     public static boolean checkPassword(@NotNull Player player, @NotNull String password) {
-        return Logins.md5(password).equals(Logins.config.getString(KEY_LOGIN_PASSWORDS + "." + player.getName()));
+        return Logins.encode(password).equals(Logins.config.getString(KEY_LOGIN_PASSWORDS + "." + player.getName()));
     }
 
 }
