@@ -26,6 +26,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     private final long ttl;
     private long timeFile;
     private long timeUpdate;
+    private long timeWrite;
 
     private org.bukkit.configuration.Configuration def;
     private YamlConfiguration configBuff;
@@ -41,7 +42,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         );
     }
 
-    public Configuration(@NotNull File file, org.bukkit.configuration.Configuration def, long ttl) {
+    private Configuration(@NotNull File file, org.bukkit.configuration.Configuration def, long ttl) {
         this.file = file;
         this.ttl = ttl;
         this.def = def;
@@ -49,7 +50,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         this.instUpdate();
     }
 
-    public Configuration(@NotNull File file, long ttl) {
+    private Configuration(@NotNull File file, long ttl) {
         this.file = file;
         this.ttl = ttl;
         this.def = null;
@@ -57,7 +58,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         this.instUpdate();
     }
 
-    public Configuration(@NotNull File file, org.bukkit.configuration.Configuration def) {
+    private Configuration(@NotNull File file, org.bukkit.configuration.Configuration def) {
         this.file = file;
         this.ttl = 5000;
         this.def = def;
@@ -65,7 +66,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         this.instUpdate();
     }
 
-    public Configuration(@NotNull File file) {
+    private Configuration(@NotNull File file) {
         this.file = file;
         this.ttl = 5000;
         this.def = null;
@@ -105,8 +106,10 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     }
 
     public synchronized void didUpdate() {
-        this.save(this.file);
-        this.timeUpdate = System.currentTimeMillis();
+        if (System.currentTimeMillis() - this.timeWrite > this.ttl) {
+            this.save(this.file);
+            this.timeWrite = System.currentTimeMillis();
+        }
     }
 
     /**
@@ -331,7 +334,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     public synchronized void set(@NotNull String path, Object value) {
-        this.instUpdate();
         this.configBuff.set(path, value);
         this.didUpdate();
     }
@@ -349,7 +351,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     @Override
     @NotNull
     public synchronized ConfigurationSection createSection(@NotNull String path) {
-        this.instUpdate();
         var ret = this.configBuff.createSection(path);
         this.didUpdate();
         return ret;
@@ -370,7 +371,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     @Override
     @NotNull
     public synchronized ConfigurationSection createSection(@NotNull String path, @NotNull Map<?, ?> map) {
-        this.instUpdate();
         var ret = this.configBuff.createSection(path, map);
         this.didUpdate();
         return ret;
@@ -578,7 +578,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      * @return Whether or not the specified path is a double.
      */
     @Override
-    public synchronized boolean isDouble(@NotNull String path) {
+    public boolean isDouble(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.isDouble(path);
     }
@@ -1360,7 +1360,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     public synchronized void setComments(@NotNull String path, List<String> comments) {
-        this.instUpdate();
         this.configBuff.setComments(path, comments);
         this.didUpdate();
     }
@@ -1381,7 +1380,6 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     public synchronized void setInlineComments(@NotNull String path, List<String> comments) {
-        this.instUpdate();
         this.configBuff.setInlineComments(path, comments);
         this.didUpdate();
     }

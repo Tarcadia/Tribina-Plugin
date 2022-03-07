@@ -25,10 +25,8 @@ public class PlayAuths {
                 new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
         );
 
-        PlayAuths.config = new Configuration(
-                new File(Main.dataPath + PATH_FILE_CONFIG),
-                defConfig
-        );
+        PlayAuths.config =  Configuration.getConfiguration(new File(Main.dataPath + PATH_FILE_CONFIG));
+        PlayAuths.config.setDefaults(defConfig);
     }
 
 }
