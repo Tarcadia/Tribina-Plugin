@@ -10,6 +10,8 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class Logins {
@@ -20,13 +22,15 @@ public class Logins {
     private static MessageDigest md5;
     private static MessageDigest md;
 
+    private static final Set<String> loggedPlayers = new HashSet<>();
+
     public static void load(@NotNull Configuration config) {
         Logins.config = config;
         try {
             Logins.md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             Logins.md5 = null;
-            Main.logger.log(Level.SEVERE, "[PM] Encoder MD5 load failed.");
+            Main.logger.severe("[PM] Encoder MD5 load failed.");
         }
         Logins.md = Logins.md5;
     }
@@ -37,38 +41,70 @@ public class Logins {
             Logins.md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             Logins.md5 = null;
-            Main.logger.log(Level.SEVERE, "[PM] Encoder MD5 load failed.");
+            Main.logger.severe("[PM] Encoder MD5 load failed.");
         }
         try {
             Logins.md = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            Main.logger.log(Level.SEVERE, "[PM] Encoder " + algorithm + " load failed.");
+            Main.logger.severe("[PM] Encoder " + algorithm + " load failed.");
             Logins.md = Logins.md5;
         }
     }
 
     @NotNull
-    public static String encode(@NotNull String str) {
+    private static String encode(@NotNull String str) {
         Logins.md.update(str.getBytes(StandardCharsets.UTF_8));
         return new BigInteger(1, Logins.md.digest()).toString(16);
     }
 
     @NotNull
-    public static String encodeMd5(@NotNull String str) {
+    private static String encodeMd5(@NotNull String str) {
         Logins.md5.update(str.getBytes(StandardCharsets.UTF_8));
         return new BigInteger(1, Logins.md5.digest()).toString(16);
     }
 
-    public static boolean hasPassword(@NotNull Player player) {
+    private static boolean hasPassword(@NotNull Player player) {
         return Logins.config.getString(KEY_LOGIN_PASSWORDS + "." + player.getName()) != null;
     }
 
-    public static void setPassword(@NotNull Player player, @NotNull String password) {
+    private static void setPassword(@NotNull Player player, @NotNull String password) {
         Logins.config.set(KEY_LOGIN_PASSWORDS + "." + player.getName(), Logins.encode(password));
     }
 
-    public static boolean checkPassword(@NotNull Player player, @NotNull String password) {
+    private static boolean checkPassword(@NotNull Player player, @NotNull String password) {
         return Logins.encode(password).equals(Logins.config.getString(KEY_LOGIN_PASSWORDS + "." + player.getName()));
+    }
+
+    public static boolean regPlayer(Player player, String password) {
+        if (Logins.hasPassword(player)) {
+            Main.logger.warning("[PM] Login reg player " + player.getName() + " already exists.");
+            return false;
+        } else {
+            Logins.setPassword(player, password);
+            Main.logger.info("[PM] Login reg player " + player.getName() + " accepted.");
+            return true;
+        }
+    }
+
+    public static boolean loginPlayer(Player player, String password) {
+        if (player.isOnline() && checkPassword(player, password)) {
+            Logins.loggedPlayers.add(player.getName());
+            Main.logger.info("[PM] Login log player " + player.getName() + " accepted.");
+            return true;
+        } else {
+            Logins.loggedPlayers.remove(player.getName());
+            Main.logger.info("[PM] Login log player " + player.getName() + " denied.");
+            return false;
+        }
+    }
+
+    public static boolean checkPlayer(Player player) {
+        if (player.isOnline()) {
+            return Logins.loggedPlayers.contains(player.getName());
+        } else {
+            Logins.loggedPlayers.remove(player.getName());
+            return false;
+        }
     }
 
 }
