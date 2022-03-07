@@ -75,7 +75,7 @@ public class PlayManages {
         );
         config.setDefaults(defConfig);
         Logins.load(config);
-        Main.logger.info("[PM] Loaded custom name sub-system.");
+        Main.logger.info("[PM] Loaded custom-name sub-system.");
     }
 
     public static boolean loginEnabled() {
@@ -84,12 +84,12 @@ public class PlayManages {
 
     public static void loginEnable() {
         PlayManages.configLogin.set(KEY_LOGIN_ENABLED, true);
-        Main.logger.info("[MR] Set login sub-system enabled.");
+        Main.logger.info("[PM] Set login sub-system enabled.");
     }
 
     public static void loginDisable() {
         PlayManages.configLogin.set(KEY_LOGIN_ENABLED, false);
-        Main.logger.info("[MR] Set login sub-system disabled.");
+        Main.logger.info("[PM] Set login sub-system disabled.");
     }
 
     public static List<String> loginAuth(@NotNull Player player) {
