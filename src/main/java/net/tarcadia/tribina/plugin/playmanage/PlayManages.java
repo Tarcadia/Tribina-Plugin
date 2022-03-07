@@ -126,5 +126,18 @@ public class PlayManages {
         }
     }
 
+    public static boolean cusnameEnabled() {
+        return PlayManages.configLogin.getBoolean(KEY_CUSNAME_ENABLED);
+    }
+
+    public static void cusnameEnable() {
+        PlayManages.configLogin.set(KEY_CUSNAME_ENABLED, true);
+        Main.logger.info("[PM] Set custom-name sub-system enabled.");
+    }
+
+    public static void cusnameDisable() {
+        PlayManages.configLogin.set(KEY_CUSNAME_ENABLED, false);
+        Main.logger.info("[PM] Set custom-name sub-system disabled.");
+    }
 
 }
