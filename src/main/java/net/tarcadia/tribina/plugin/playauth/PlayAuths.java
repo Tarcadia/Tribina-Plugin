@@ -4,9 +4,12 @@ import net.tarcadia.tribina.plugin.mapregion.MapRegions;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.wasted.mapregions.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.Set;
 
 public class PlayAuths {
 
@@ -42,6 +45,11 @@ public class PlayAuths {
 
     public static Configuration config() {
         return PlayAuths.config;
+    }
+
+    @NotNull
+    public static Set<String> getAuth(@NotNull Collection<String> keys) {
+        return PlayAuths.auth.getAuth(keys);
     }
 
 }
