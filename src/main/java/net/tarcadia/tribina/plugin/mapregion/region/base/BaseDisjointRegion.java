@@ -17,30 +17,9 @@ public class BaseDisjointRegion extends BaseRegion implements DisjointRegion {
     public BaseDisjointRegion(
             @NotNull String regionId,
             @NotNull Path fileRoot,
-            long ttl,
-            @NotNull List<? extends DisjointRegion> peers
-    ) {
-        super(regionId, fileRoot, ttl);
-        this.peers = peers;
-    }
-
-    public BaseDisjointRegion(
-            @NotNull String regionId,
-            @NotNull Path fileRoot,
             @NotNull List<? extends DisjointRegion> peers
     ) {
         super(regionId, fileRoot);
-        this.peers = peers;
-    }
-
-    public BaseDisjointRegion(
-            @NotNull String regionId,
-            @NotNull File fileConfig,
-            @NotNull File fileBitmap,
-            long ttl,
-            @NotNull List<? extends DisjointRegion> peers
-    ) {
-        super(regionId, fileConfig, fileBitmap, ttl);
         this.peers = peers;
     }
 

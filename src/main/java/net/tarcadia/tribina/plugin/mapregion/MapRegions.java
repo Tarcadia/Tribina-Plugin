@@ -53,10 +53,10 @@ public class MapRegions {
                 new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
         );
 
-        MapRegions.config = new Configuration(
-                new File(Main.dataPath + PATH_FILE_CONFIG),
-                defConfig
+        MapRegions.config = Configuration.getConfiguration(
+                new File(Main.dataPath + PATH_FILE_CONFIG)
         );
+        MapRegions.config.setDefaults(defConfig);
     }
 
     private void loadPaths() {
