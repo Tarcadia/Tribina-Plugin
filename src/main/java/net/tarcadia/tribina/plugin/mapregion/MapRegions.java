@@ -38,21 +38,20 @@ public class MapRegions {
     public static final String PATH_REGION_TOWNS = PATH_MAPREGIONS + "/Towns/";
 
     public static Configuration config = null;
-    public static boolean enabled = false;
 
-    public static List<PathRegion> regionPaths = null;
-    public static List<LandRegion> regionLands = null;
-    public static List<TownRegion> regionTowns = null;
-    public static List<AssetRegion> regionAssets = null;
+    public static final List<PathRegion> regionPaths = new LinkedList<>();
+    public static final List<LandRegion> regionLands = new LinkedList<>();
+    public static final List<TownRegion> regionTowns = new LinkedList<>();
+    public static final List<AssetRegion> regionAssets = new LinkedList<>();
 
-    public void load() {
-        this.loadConfig();
-        this.loadPaths();
-        this.loadLands();
-        this.loadTowns();
+    public static void load() {
+        MapRegions.loadConfig();
+        MapRegions.loadPaths();
+        MapRegions.loadLands();
+        MapRegions.loadTowns();
     }
 
-    private void loadConfig() {
+    private static void loadConfig() {
         var defConfig = YamlConfiguration.loadConfiguration(
                 new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
         );
@@ -61,11 +60,9 @@ public class MapRegions {
                 new File(Main.dataPath + PATH_FILE_CONFIG),
                 defConfig
         );
-
-        MapRegions.enabled = MapRegions.config.getBoolean(KEY_ENABLED);
     }
 
-    private void loadPaths() {
+    private static void loadPaths() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_PATH_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
@@ -77,7 +74,7 @@ public class MapRegions {
         }
     }
 
-    private void loadLands() {
+    private static void loadLands() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_LAND_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
@@ -89,7 +86,7 @@ public class MapRegions {
         }
     }
 
-    private void loadTowns() {
+    private static void loadTowns() {
         if (MapRegions.config != null) {
             var configSec = MapRegions.config.getConfigurationSection(KEY_REGION_TOWN_LIST);
             if (configSec != null) for (var id : configSec.getKeys(false)) {
@@ -110,5 +107,18 @@ public class MapRegions {
             }
         }
     }
+
+    public static boolean enabled() {
+        return MapRegions.config.getBoolean(KEY_ENABLED);
+    }
+
+    public static void enable() {
+        MapRegions.config.set(KEY_ENABLED, true);
+    }
+
+    public static void disable() {
+        MapRegions.config.set(KEY_ENABLED, false);
+    }
+
 
 }
