@@ -21,8 +21,8 @@ class AuthTest {
     @Test
     void doTest() {
         File fileA = new File("src/test/resources/playauth/AuthTest/A.yml");
-        Auth auth = new Auth(fileA, 500);
-        Configuration config = new Configuration(fileA);
+        Auth auth = new Auth(fileA);
+        Configuration config = Configuration.getConfiguration(fileA);
 
         System.out.println(auth.getAuth("play"));
         System.out.println(auth.getAuth("play.place.dirt"));
@@ -33,13 +33,13 @@ class AuthTest {
         System.out.println(auth.getAuth("play.break.flower"));
         config.set("play.break.flower", "play_break_flower");
         System.out.println(auth.getAuth("play.break.flower"));
-        sleep(500);
+        sleep(5000);
         System.out.println(auth.getAuth("play.break.flower"));
         config.set("play.break.flower", null);
         System.out.println(auth.getAuth("play.place"));
         System.out.println(auth.getAuth("play.break"));
         System.out.println(auth.getAuth("play.place*"));
-        sleep(500);
+        sleep(5000);
         System.out.println(auth.getAuth("play.place"));
         System.out.println(auth.getAuth("play.break"));
         System.out.println(auth.getAuth("play.place*"));
