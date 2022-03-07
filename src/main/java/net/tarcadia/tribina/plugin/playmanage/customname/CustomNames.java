@@ -2,7 +2,8 @@ package net.tarcadia.tribina.plugin.playmanage.customname;
 
 import net.tarcadia.tribina.plugin.Main;
 import net.tarcadia.tribina.plugin.playmanage.PlayManages;
-import net.tarcadia.tribina.plugin.playmanage.customname.style.Style;
+import net.tarcadia.tribina.plugin.playmanage.customname.text.Style;
+import net.tarcadia.tribina.plugin.playmanage.customname.text.Tag;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,7 @@ public class CustomNames {
         var tagLst = CustomNames.config.getStringList(KEY_CUSNAME_TAG_LIST + "." + player.getName());
 
         Style theStyle;
+        Tag theTag;
 
         try {
             if (styleLst.contains(style)) {
@@ -46,10 +48,29 @@ public class CustomNames {
             Main.logger.log(Level.WARNING, "[PM] Style " + style + " load failed.");
             theStyle = Style.Normal;
         }
-        if (tagVisible && (tag != null) && (tagLst.contains(tag))) {
-            return theStyle.styled(name, tag);
+
+        try {
+            if (tagLst.contains(tag)) {
+                theTag = Tag.valueOf(tag);
+            } else {
+                theTag = Tag.NullTag;
+            }
+        } catch (IllegalArgumentException e) {
+            Main.logger.log(Level.WARNING, "[PM] Tag " + tag + " load failed.");
+            theTag = Tag.NullTag;
+        }
+
+
+        if (tagVisible && (theTag != Tag.NullTag)) {
+            return "{\"text\": \"\", \"extra\": [" +
+                    theTag.tag() +
+                    ", " +
+                    theStyle.styled(name.replace("\"", "")) +
+                    "]}";
         } else {
-            return theStyle.styled(name);
+            return "{\"text\": \"\", \"extra\": [" +
+                    theStyle.styled(name.replace("\"", "")) +
+                    "]}";
         }
     }
 
