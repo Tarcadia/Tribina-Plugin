@@ -6,9 +6,11 @@ import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.Main;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.InputStreamReader;
@@ -142,20 +144,53 @@ public class MapRegions {
         Main.logger.info(MR + "Set disabled.");
     }
 
+    @NotNull
     public static List<String> getAuthTags(@NotNull Player player) {
         List<String> authTags = new LinkedList<>(MapRegions.config.getStringList(KEY_MAPREGIONS_GLOBAL_AUTH));
-        for (var region : regionPaths) if (region.inRegion(player)) {
-            authTags.addAll(region.getAuthTags(player));
-        }
-        for (var region : regionLands) if (region.inRegion(player)) {
-            authTags.addAll(region.getAuthTags(player));
-        }
-        for (var region : regionTowns) if (region.inRegion(player)) {
-            authTags.addAll(region.getAuthTags(player));
-        }
-        for (var region : regionAssets) if (region.inRegion(player)) {
-            authTags.addAll(region.getAuthTags(player));
-        }
+        for (var region : regionPaths) if (region.inRegion(player)) authTags.addAll(region.getAuthTags(player));
+        for (var region : regionLands) if (region.inRegion(player)) authTags.addAll(region.getAuthTags(player));
+        for (var region : regionTowns) if (region.inRegion(player)) authTags.addAll(region.getAuthTags(player));
+        for (var region : regionAssets) if (region.inRegion(player)) authTags.addAll(region.getAuthTags(player));
         return authTags;
     }
+
+    @NotNull
+    public static List<String> getRegionIdList() {
+        List<String> ret = new LinkedList<>();
+        for (var region : regionPaths) ret.add(region.id());
+        for (var region : regionLands) ret.add(region.id());
+        for (var region : regionTowns) ret.add(region.id());
+        for (var region : regionAssets) ret.add(region.id());
+        return ret;
+    }
+
+    @NotNull
+    public static List<String> getRegionIdListAt(@NotNull Location loc) {
+        List<String> ret = new LinkedList<>();
+        for (var region : regionPaths) if (region.inRegion(loc)) ret.add(region.id());
+        for (var region : regionLands) if (region.inRegion(loc)) ret.add(region.id());
+        for (var region : regionTowns) if (region.inRegion(loc)) ret.add(region.id());
+        for (var region : regionAssets) if (region.inRegion(loc)) ret.add(region.id());
+        return ret;
+    }
+
+    @NotNull
+    public static List<String> getRegionIdListAt(@NotNull Player player) {
+        List<String> ret = new LinkedList<>();
+        for (var region : regionPaths) if (region.inRegion(player)) ret.add(region.id());
+        for (var region : regionLands) if (region.inRegion(player)) ret.add(region.id());
+        for (var region : regionTowns) if (region.inRegion(player)) ret.add(region.id());
+        for (var region : regionAssets) if (region.inRegion(player)) ret.add(region.id());
+        return ret;
+    }
+
+    @Nullable
+    public static String getRegionIdTopAt(@NotNull Location loc) {
+        for (var region : regionAssets) if (region.inRegion(loc)) return region.id();
+        for (var region : regionTowns) if (region.inRegion(loc)) return region.id();
+        for (var region : regionPaths) if (region.inRegion(loc)) return region.id();
+        for (var region : regionLands) if (region.inRegion(loc)) return region.id();
+        return null;
+    }
+
 }
