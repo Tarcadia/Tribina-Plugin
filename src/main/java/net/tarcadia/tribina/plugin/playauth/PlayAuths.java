@@ -49,6 +49,11 @@ public class PlayAuths {
     }
 
     @NotNull
+    public Set<String> getPlaySet(@NotNull String authTag) {
+        return PlayAuths.auth.getPlaySet(authTag);
+    }
+
+    @NotNull
     public static Set<String> getPlaySet(@NotNull Collection<String> authTags) {
         return PlayAuths.auth.getPlaySet(authTags);
     }

@@ -45,6 +45,24 @@ public class LogIns {
         LogIns.md = LogIns.md5;
     }
 
+    public static Configuration config() {
+        return LogIns.config;
+    }
+
+    public static boolean enabled() {
+        return LogIns.config.getBoolean(KEY_LOGINS_ENABLED);
+    }
+
+    public static void enable() {
+        LogIns.config.set(KEY_LOGINS_ENABLED, true);
+        Main.logger.info(LI + "Set enabled.");
+    }
+
+    public static void disable() {
+        LogIns.config.set(KEY_LOGINS_ENABLED, false);
+        Main.logger.info(LI + "Set disabled.");
+    }
+
     @NotNull
     private static String encode(@NotNull String str) {
         LogIns.md.update(str.getBytes(StandardCharsets.UTF_8));
