@@ -15,7 +15,7 @@ public class LandRegion extends BaseDisjointRegion {
             @NotNull Path fileRoot,
             @NotNull List<? extends DisjointRegion> peers
     ) {
-        super(regionId, fileRoot, peers);
+        super("land." + regionId, fileRoot, peers);
     }
 
     public LandRegion(
@@ -24,7 +24,7 @@ public class LandRegion extends BaseDisjointRegion {
             @NotNull File fileBitmap,
             @NotNull List<? extends DisjointRegion> peers
     ) {
-        super(regionId, fileConfig, fileBitmap, peers);
+        super("land." + regionId, fileConfig, fileBitmap, peers);
     }
 
     // TODO: More implements that make land a region that looks interesting

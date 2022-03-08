@@ -17,7 +17,7 @@ public class TownRegion extends BaseDisjointParentRegion {
             @NotNull List<? extends TownRegion> peers,
             @NotNull List<? extends AssetRegion> assets
     ) {
-        super(regionId, fileRoot, peers, assets);
+        super("town." + regionId, fileRoot, peers, assets);
         this.assets = assets;
     }
 
@@ -28,7 +28,7 @@ public class TownRegion extends BaseDisjointParentRegion {
             @NotNull List<? extends TownRegion> peers,
             @NotNull List<? extends AssetRegion> assets
     ) {
-        super(regionId, fileConfig, fileBitmap, peers, assets);
+        super("town." + regionId, fileConfig, fileBitmap, peers, assets);
         this.assets = assets;
     }
 

@@ -12,7 +12,7 @@ public class PathRegion extends BaseRegion {
             @NotNull String regionId,
             @NotNull Path fileRoot
     ) {
-        super(regionId, fileRoot);
+        super("path." + regionId, fileRoot);
     }
 
     public PathRegion(
@@ -20,7 +20,7 @@ public class PathRegion extends BaseRegion {
             @NotNull File fileConfig,
             @NotNull File fileBitmap
     ) {
-        super(regionId, fileConfig, fileBitmap);
+        super("path." + regionId, fileConfig, fileBitmap);
     }
 
     // TODO: More implements that make path do something
