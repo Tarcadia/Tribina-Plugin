@@ -289,16 +289,12 @@ public class BaseRegion implements PosSet, Region {
 
     @Override
     public void addAuthTag(@NotNull String auth) {
-        var lst = this.config.getStringList(KEY_AUTH);
-        lst.add(auth);
-        this.config.set(KEY_AUTH, lst);
+        this.config.addStringList(KEY_AUTH, auth);
     }
 
     @Override
     public void removeAuthTag(@NotNull String auth) {
-        var lst = this.config.getStringList(KEY_AUTH);
-        lst.remove(auth);
-        this.config.set(KEY_AUTH, lst);
+        this.config.addStringList(KEY_AUTH, auth);
     }
 
     @Override
