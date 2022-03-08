@@ -5,7 +5,7 @@ import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
-import net.tarcadia.tribina.plugin.wasted.mapregions.Main;
+import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
