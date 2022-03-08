@@ -144,8 +144,6 @@ public class MapRegions {
 
     public static List<String> getAuthTags(@NotNull Player player) {
         List<String> authTags = new LinkedList<>(MapRegions.config.getStringList(KEY_MAPREGIONS_GLOBAL_AUTH));
-        var loc = player.getLocation();
-        // TODO: define and implement an inRegion method for interface Region
         for (var region : regionPaths) if (region.inRegion(player)) {
             authTags.addAll(region.getAuthTags(player));
         }
