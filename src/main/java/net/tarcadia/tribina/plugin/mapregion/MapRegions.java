@@ -153,6 +153,62 @@ public class MapRegions {
         Main.logger.info(MR + "Set disabled.");
     }
 
+    public static void addPathRegion(@NotNull String id, @NotNull Location loc) {
+        if (!MapRegions.config.contains(KEY_MAPREGIONS_PATH_LIST + "." + id)) {
+            var fileConfig = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".yml");
+            var fileBitmap = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".bmp");
+            var pathRegion = PathRegion.create(id, fileConfig, fileBitmap);
+            // TODO: make a create function;
+            MapRegions.regionPaths.add(pathRegion);
+            MapRegions.regionMap.put(pathRegion.id(), pathRegion);
+            Main.logger.info(MR + "Added path " + pathRegion.id() + ".");
+        } else {
+            Main.logger.info(MR + "Existing path " + id + ".");
+        }
+    }
+
+    public static void addLandRegion(@NotNull String id) {
+        if (!MapRegions.config.contains(KEY_MAPREGIONS_LAND_LIST + "." + id)) {
+            var fileConfig = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".yml");
+            var fileBitmap = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".bmp");
+            var landRegion = LandRegion.create(id, fileConfig, fileBitmap, MapRegions.regionLands);
+            MapRegions.regionLands.add(landRegion);
+            MapRegions.regionMap.put(landRegion.id(), landRegion);
+            Main.logger.info(MR + "Added land " + landRegion.id() + ".");
+        } else {
+            Main.logger.info(MR + "Existing land " + id + ".");
+        }
+    }
+
+    public static void addTownRegion(@NotNull String id) {
+        if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + id)) {
+            var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".yml");
+            var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".bmp");
+            var townRegion = TownRegion.create(id, fileConfig, fileBitmap, MapRegions.regionTowns);
+            MapRegions.regionTowns.add(townRegion);
+            MapRegions.regionMap.put(townRegion.id(), townRegion);
+            Main.logger.info(MR + "Added town " + townRegion.id() + ".");
+        } else {
+            Main.logger.info(MR + "Existing town " + id + ".");
+        }
+    }
+
+    public static void addAssetRegion(@NotNull String townId, @NotNull String id) {
+        var townRegion = MapRegions.getRegion("town." + townId);
+        if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id) && (townRegion instanceof TownRegion)) {
+            var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".yml");
+            var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".bmp");
+            var assetRegion = AssetRegion.create(id, fileConfig, fileBitmap, (TownRegion) townRegion);
+            MapRegions.regionAssets.add(assetRegion);
+            MapRegions.regionMap.put(assetRegion.id(), assetRegion);
+            Main.logger.info(MR + "Added asset " + assetRegion.id() + ".");
+        } else if (MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id)) {
+            Main.logger.info(MR + "Existing asset " + id + ".");
+        } else if (!(townRegion instanceof TownRegion)) {
+            Main.logger.info(MR + "Non-existing town " + townId + ".");
+        }
+    }
+
     public static Region getRegion(@NotNull String regionId) {
         return regionMap.get(regionId);
     }
