@@ -22,10 +22,10 @@ public class PlayAuths {
     private static Auth auth = null;
 
     public static void load() {
-        Main.logger.info("[PA] Loading...");
+        Main.logger.info(PA + "Loading...");
         PlayAuths.loadConfig();
         PlayAuths.loadAuth();
-        Main.logger.info("[PA] Loaded.");
+        Main.logger.info(PA + "Loaded.");
     }
 
     private static void loadConfig() {
@@ -36,12 +36,12 @@ public class PlayAuths {
         PlayAuths.config = Configuration.getConfiguration(new File(Main.dataPath + PATH_FILE_CONFIG));
         PlayAuths.config.setDefaults(defConfig);
 
-        Main.logger.info("[PA] Loaded config.");
+        Main.logger.info(PA + "Loaded config.");
     }
 
     private static void loadAuth() {
         PlayAuths.auth = new Auth(new File(Main.dataPath + PATH_FILE_AUTHS));
-        Main.logger.info("[PA] Loaded auths.");
+        Main.logger.info(PA + "Loaded auths.");
     }
 
     public static Configuration config() {
