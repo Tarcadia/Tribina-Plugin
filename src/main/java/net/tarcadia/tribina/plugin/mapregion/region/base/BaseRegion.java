@@ -298,6 +298,15 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
+    public boolean inRegion(@NotNull Location loc) {
+        if (Objects.equals(loc.getWorld(), this.loc.getWorld())) {
+            Pair<Long, Long> pPos = new Pair<>((long) loc.getBlockX(), (long) loc.getBlockZ());
+            return this.contains(pPos);
+        }
+        return false;
+    }
+
+    @Override
     public boolean inRegion(@NotNull Player player) {
         Location pLoc = player.getLocation();
         if (Objects.equals(pLoc.getWorld(), this.loc.getWorld())) {

@@ -18,7 +18,7 @@ public class BaseSubRegion extends BaseRegion implements SubRegion {
             @NotNull Path fileRoot,
             @NotNull ParentRegion parent
     ) {
-        super(regionId, fileRoot);
+        super(parent.id() + "." + regionId, fileRoot);
         this.parent = parent;
     }
 
@@ -28,7 +28,7 @@ public class BaseSubRegion extends BaseRegion implements SubRegion {
             @NotNull File fileBitmap,
             @NotNull ParentRegion parent
     ) {
-        super(regionId, fileConfig, fileBitmap);
+        super(parent.id() + "." + regionId, fileConfig, fileBitmap);
         this.parent = parent;
     }
 

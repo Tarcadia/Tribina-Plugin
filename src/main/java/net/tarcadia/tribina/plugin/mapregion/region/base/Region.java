@@ -53,6 +53,7 @@ public interface Region extends PosSet {
     void addAuthTag(@NotNull String auth);
     void removeAuthTag(@NotNull String auth);
 
+    boolean inRegion(@NotNull Location loc);
     boolean inRegion(@NotNull Player player);
 
     @Override

@@ -4,16 +4,21 @@ import net.tarcadia.tribina.plugin.mapregion.region.AssetRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
+import net.tarcadia.tribina.plugin.mapregion.region.base.Region;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.Main;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class MapRegions {
 
@@ -43,6 +48,8 @@ public class MapRegions {
     public static final String PATH_ROOT_LANDS = PATH_ROOT + "/Lands/";
     public static final String PATH_ROOT_TOWNS = PATH_ROOT + "/Towns/";
     public static final String PATH_FILE_CONFIG = PATH_ROOT + "/config.yml";
+
+    public static final Map<String, Region> regionMap = new HashMap<>();
 
     public static final List<PathRegion> regionPaths = new LinkedList<>();
     public static final List<LandRegion> regionLands = new LinkedList<>();
@@ -79,6 +86,7 @@ public class MapRegions {
                 var fileBitmap = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".bmp");
                 var pathRegion = new PathRegion(id, fileConfig, fileBitmap);
                 MapRegions.regionPaths.add(pathRegion);
+                MapRegions.regionMap.put(pathRegion.id(), pathRegion);
                 Main.logger.info(MR + "Loaded path " + pathRegion.id() + ".");
             }
         }
@@ -93,6 +101,7 @@ public class MapRegions {
                 var fileBitmap = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".bmp");
                 var landRegion = new LandRegion(id, fileConfig, fileBitmap, MapRegions.regionLands);
                 MapRegions.regionLands.add(landRegion);
+                MapRegions.regionMap.put(landRegion.id(), landRegion);
                 Main.logger.info(MR + "Loaded land " + landRegion.id() + ".");
             }
         }
@@ -109,15 +118,17 @@ public class MapRegions {
                 var assets = new LinkedList<AssetRegion>();
                 var townRegion = new TownRegion(id, fileConfig, fileBitmap, MapRegions.regionTowns, assets);
                 MapRegions.regionTowns.add(townRegion);
+                MapRegions.regionMap.put(townRegion.id(), townRegion);
 
                 if (subConfigSec != null) for (var subId : subConfigSec.getKeys(false)) {
                     var subFileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + id + "/" + subId + ".yml");
                     var subFileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + id + "/" + subId + ".bmp");
                     var assetRegion = new AssetRegion(subId, subFileConfig, subFileBitmap, assets, townRegion);
                     assets.add(assetRegion);
-                    Main.logger.info(MR + "Loaded asset " + assetRegion.id() + "@" + townRegion.id() + ".");
+                    MapRegions.regionAssets.add(assetRegion);
+                    MapRegions.regionMap.put(assetRegion.id(), assetRegion);
+                    Main.logger.info(MR + "Loaded asset " + assetRegion.id() + ".");
                 }
-                MapRegions.regionAssets.addAll(assets);
                 Main.logger.info(MR + "Loaded town " + townRegion.id() + ".");
             }
         }
@@ -142,20 +153,113 @@ public class MapRegions {
         Main.logger.info(MR + "Set disabled.");
     }
 
+    public static void addPathRegion(@NotNull String id, @NotNull Location loc) {
+        if (!MapRegions.config.contains(KEY_MAPREGIONS_PATH_LIST + "." + id)) {
+            var fileConfig = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".yml");
+            var fileBitmap = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".bmp");
+            var pathRegion = PathRegion.create(id, fileConfig, fileBitmap);
+            // TODO: make a create function;
+            MapRegions.regionPaths.add(pathRegion);
+            MapRegions.regionMap.put(pathRegion.id(), pathRegion);
+            Main.logger.info(MR + "Added path " + pathRegion.id() + ".");
+        } else {
+            Main.logger.info(MR + "Existing path " + id + ".");
+        }
+    }
+
+    public static void addLandRegion(@NotNull String id) {
+        if (!MapRegions.config.contains(KEY_MAPREGIONS_LAND_LIST + "." + id)) {
+            var fileConfig = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".yml");
+            var fileBitmap = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".bmp");
+            var landRegion = LandRegion.create(id, fileConfig, fileBitmap, MapRegions.regionLands);
+            MapRegions.regionLands.add(landRegion);
+            MapRegions.regionMap.put(landRegion.id(), landRegion);
+            Main.logger.info(MR + "Added land " + landRegion.id() + ".");
+        } else {
+            Main.logger.info(MR + "Existing land " + id + ".");
+        }
+    }
+
+    public static void addTownRegion(@NotNull String id) {
+        if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + id)) {
+            var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".yml");
+            var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".bmp");
+            var townRegion = TownRegion.create(id, fileConfig, fileBitmap, MapRegions.regionTowns);
+            MapRegions.regionTowns.add(townRegion);
+            MapRegions.regionMap.put(townRegion.id(), townRegion);
+            Main.logger.info(MR + "Added town " + townRegion.id() + ".");
+        } else {
+            Main.logger.info(MR + "Existing town " + id + ".");
+        }
+    }
+
+    public static void addAssetRegion(@NotNull String townId, @NotNull String id) {
+        var townRegion = MapRegions.getRegion("town." + townId);
+        if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id) && (townRegion instanceof TownRegion)) {
+            var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".yml");
+            var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".bmp");
+            var assetRegion = AssetRegion.create(id, fileConfig, fileBitmap, (TownRegion) townRegion);
+            MapRegions.regionAssets.add(assetRegion);
+            MapRegions.regionMap.put(assetRegion.id(), assetRegion);
+            Main.logger.info(MR + "Added asset " + assetRegion.id() + ".");
+        } else if (MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id)) {
+            Main.logger.info(MR + "Existing asset " + id + ".");
+        } else if (!(townRegion instanceof TownRegion)) {
+            Main.logger.info(MR + "Non-existing town " + townId + ".");
+        }
+    }
+
+    public static Region getRegion(@NotNull String regionId) {
+        return regionMap.get(regionId);
+    }
+
+    @NotNull
     public static List<String> getAuthTags(@NotNull Player player) {
         List<String> authTags = new LinkedList<>(MapRegions.config.getStringList(KEY_MAPREGIONS_GLOBAL_AUTH));
-        for (var region : regionPaths) if (region.inRegion(player)) {
-            authTags.addAll(region.getAuthTags(player));
-        }
-        for (var region : regionLands) if (region.inRegion(player)) {
-            authTags.addAll(region.getAuthTags(player));
-        }
-        for (var region : regionTowns) if (region.inRegion(player)) {
-            authTags.addAll(region.getAuthTags(player));
-        }
-        for (var region : regionAssets) if (region.inRegion(player)) {
-            authTags.addAll(region.getAuthTags(player));
-        }
+        for (var region : regionPaths) if (region.inRegion(player)) authTags.addAll(region.getAuthTags(player));
+        for (var region : regionLands) if (region.inRegion(player)) authTags.addAll(region.getAuthTags(player));
+        for (var region : regionTowns) if (region.inRegion(player)) authTags.addAll(region.getAuthTags(player));
+        for (var region : regionAssets) if (region.inRegion(player)) authTags.addAll(region.getAuthTags(player));
         return authTags;
     }
+
+    @NotNull
+    public static List<String> getRegionIdList() {
+        List<String> ret = new LinkedList<>();
+        for (var region : regionPaths) ret.add(region.id());
+        for (var region : regionLands) ret.add(region.id());
+        for (var region : regionTowns) ret.add(region.id());
+        for (var region : regionAssets) ret.add(region.id());
+        return ret;
+    }
+
+    @NotNull
+    public static List<String> getRegionIdListAt(@NotNull Location loc) {
+        List<String> ret = new LinkedList<>();
+        for (var region : regionPaths) if (region.inRegion(loc)) ret.add(region.id());
+        for (var region : regionLands) if (region.inRegion(loc)) ret.add(region.id());
+        for (var region : regionTowns) if (region.inRegion(loc)) ret.add(region.id());
+        for (var region : regionAssets) if (region.inRegion(loc)) ret.add(region.id());
+        return ret;
+    }
+
+    @NotNull
+    public static List<String> getRegionIdListAt(@NotNull Player player) {
+        List<String> ret = new LinkedList<>();
+        for (var region : regionPaths) if (region.inRegion(player)) ret.add(region.id());
+        for (var region : regionLands) if (region.inRegion(player)) ret.add(region.id());
+        for (var region : regionTowns) if (region.inRegion(player)) ret.add(region.id());
+        for (var region : regionAssets) if (region.inRegion(player)) ret.add(region.id());
+        return ret;
+    }
+
+    @Nullable
+    public static String getRegionIdTopAt(@NotNull Location loc) {
+        for (var region : regionAssets) if (region.inRegion(loc)) return region.id();
+        for (var region : regionTowns) if (region.inRegion(loc)) return region.id();
+        for (var region : regionPaths) if (region.inRegion(loc)) return region.id();
+        for (var region : regionLands) if (region.inRegion(loc)) return region.id();
+        return null;
+    }
+
 }

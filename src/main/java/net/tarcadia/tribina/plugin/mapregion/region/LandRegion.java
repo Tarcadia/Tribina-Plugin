@@ -10,12 +10,17 @@ import java.util.List;
 
 public class LandRegion extends BaseDisjointRegion {
 
+    public static LandRegion create(String id, File fileConfig, File fileBitmap, List<? extends LandRegion> peers) {
+        // TODO: Add a new implementation for creating empty region in BaseRegion and call that for this method
+        return new LandRegion(id, fileConfig, fileBitmap, peers);
+    }
+
     public LandRegion(
             @NotNull String regionId,
             @NotNull Path fileRoot,
             @NotNull List<? extends DisjointRegion> peers
     ) {
-        super(regionId, fileRoot, peers);
+        super("land." + regionId, fileRoot, peers);
     }
 
     public LandRegion(
@@ -24,7 +29,7 @@ public class LandRegion extends BaseDisjointRegion {
             @NotNull File fileBitmap,
             @NotNull List<? extends DisjointRegion> peers
     ) {
-        super(regionId, fileConfig, fileBitmap, peers);
+        super("land." + regionId, fileConfig, fileBitmap, peers);
     }
 
     // TODO: More implements that make land a region that looks interesting

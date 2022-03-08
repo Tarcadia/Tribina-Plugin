@@ -8,12 +8,12 @@ import java.util.*;
 
 public class InFilePosSet extends BasePosSet {
 
-    static int CHUNK_SIZE_BITLEN = InChunkPosSet.CHUNK_SIZE_BITLEN;
-    static int CHUNK_SIZE = InChunkPosSet.CHUNK_SIZE;
-    static int FILE_SIZE_BITLEN = 5;
-    static int FILE_SIZE = 1 << FILE_SIZE_BITLEN;
-    static long FILE_SIZE_MASK = -1L << FILE_SIZE_BITLEN << CHUNK_SIZE_BITLEN;
-    static int FILE_CHUNK_SIZE = CHUNK_SIZE * FILE_SIZE;
+    static final int CHUNK_SIZE_BITLEN = InChunkPosSet.CHUNK_SIZE_BITLEN;
+    static final int CHUNK_SIZE = InChunkPosSet.CHUNK_SIZE;
+    static final int FILE_SIZE_BITLEN = 5;
+    static final int FILE_SIZE = 1 << FILE_SIZE_BITLEN;
+    static final long FILE_SIZE_MASK = -1L << FILE_SIZE_BITLEN << CHUNK_SIZE_BITLEN;
+    static final int FILE_CHUNK_SIZE = CHUNK_SIZE * FILE_SIZE;
 
     private final long biasX;
     private final long biasZ;
