@@ -44,13 +44,13 @@ public interface Region extends PosSet {
     @NotNull
     String getLore(@NotNull Player player);
     @NotNull
-    List<String> getAuth();
+    List<String> getAuthTags();
     @NotNull
-    List<String> getAuth(@NotNull Player player);
+    List<String> getAuthTags(@NotNull Player player);
 
     void setName(@NotNull String name);
     void setLore(@NotNull String lore);
-    void addAuth(@NotNull String auth);
+    void addAuthTags(@NotNull String auth);
     void removeAuth(@NotNull String auth);
 
     @Override

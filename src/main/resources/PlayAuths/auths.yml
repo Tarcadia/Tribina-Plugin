@@ -12,6 +12,9 @@ basic:
       scissor: []
       bukkit: []
     use: []
+login:
+  non-login: []
+  login: []
 region:
   global: []
   path:

@@ -3,5 +3,8 @@ regions:
   town:
   land:
 global:
+  disp:
+    name: ""
+    lore: ""
   auth:
     - "region.global"

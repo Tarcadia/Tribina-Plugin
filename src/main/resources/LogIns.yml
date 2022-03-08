@@ -1,0 +1,7 @@
+enabled:
+players:
+auth:
+  non-login:
+    - login.non-login
+  login:
+    - login.login

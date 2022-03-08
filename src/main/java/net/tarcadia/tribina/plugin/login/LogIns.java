@@ -15,16 +15,18 @@ import java.util.Set;
 
 public class LogIns {
 
-    public static final String KEY_LOGIN_ENABLED = "login.enabled";
-    public static final String KEY_LOGIN_PASSWORDS = "login.passwords";
-    public static final String KEY_LOGIN_NONLOGIN_AUTH = "login.non-login-auth";
-    public static final String KEY_LOGIN_LOGIN_AUTH = "login.login-auth";
+    public static final String LI = "[LI] ";
 
-    public static final String AUTH_LOGIN_NONLOGIN = "login.non-login";
-    public static final String AUTH_LOGIN_LOGIN = "login.login";
+    public static final String KEY_LOGINS_ENABLED = "enabled";
+    public static final String KEY_LOGINS_PLAYERS = "players.";
+    public static final String KEY_LOGINS_PLAYER_PASSWORDS = ".password";
+    public static final String KEY_LOGINS_AUTH_NONLOGIN = "auth.non-login";
+    public static final String KEY_LOGINS_AUTH_LOGIN = "auth.login";
 
-    public static final String PATH_LOGINS = "/Logins/";
-    public static final String PATH_FILE_CONFIG = PATH_LOGINS + "/config.yml";
+    public static final String AUTH_LOGINS_NONLOGIN = "login.non-login";
+    public static final String AUTH_LOGINS_LOGIN = "login.login";
+
+    public static final String PATH_FILE_CONFIG = "/LogIns.yml";
 
     private static Configuration config;
     private static MessageDigest md5;
@@ -38,7 +40,7 @@ public class LogIns {
             LogIns.md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             LogIns.md5 = null;
-            Main.logger.severe("[LI] Encoder MD5 load failed.");
+            Main.logger.severe(LI + "Encoder MD5 load failed.");
         }
         LogIns.md = LogIns.md5;
     }
@@ -56,24 +58,24 @@ public class LogIns {
     }
 
     private static boolean hasPassword(@NotNull Player player) {
-        return LogIns.config.getString(KEY_LOGIN_PASSWORDS + "." + player.getName()) != null;
+        return LogIns.config.getString(KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS) != null;
     }
 
     private static void setPassword(@NotNull Player player, @NotNull String password) {
-        LogIns.config.set(KEY_LOGIN_PASSWORDS + "." + player.getName(), LogIns.encode(password));
+        LogIns.config.set(KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS, LogIns.encode(password));
     }
 
     private static boolean checkPassword(@NotNull Player player, @NotNull String password) {
-        return LogIns.encode(password).equals(LogIns.config.getString(KEY_LOGIN_PASSWORDS + "." + player.getName()));
+        return LogIns.encode(password).equals(LogIns.config.getString(KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS));
     }
 
     public static boolean regPlayer(Player player, String password) {
         if (LogIns.hasPassword(player)) {
-            Main.logger.warning("[LI] Login reg player " + player.getName() + " already exists.");
+            Main.logger.warning(LI + "Login reg player " + player.getName() + " already exists.");
             return false;
         } else {
             LogIns.setPassword(player, password);
-            Main.logger.info("[LI] Login reg player " + player.getName() + " accepted.");
+            Main.logger.info(LI + "Login reg player " + player.getName() + " accepted.");
             return true;
         }
     }
@@ -81,11 +83,11 @@ public class LogIns {
     public static boolean loginPlayer(Player player, String password) {
         if (player.isOnline() && checkPassword(player, password)) {
             LogIns.loggedPlayers.add(player.getName());
-            Main.logger.info("[LI] Login log player " + player.getName() + " accepted.");
+            Main.logger.info(LI + "Login log player " + player.getName() + " accepted.");
             return true;
         } else {
             LogIns.loggedPlayers.remove(player.getName());
-            Main.logger.info("[LI] Login log player " + player.getName() + " denied.");
+            Main.logger.info(LI + "Login log player " + player.getName() + " denied.");
             return false;
         }
     }

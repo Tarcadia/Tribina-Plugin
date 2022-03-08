@@ -1,6 +1,5 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
-import net.tarcadia.tribina.plugin.mapregion.MapRegions;
 import net.tarcadia.tribina.plugin.mapregion.region.base.BaseDisjointSubRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.BaseRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.DisjointRegion;
@@ -40,7 +39,7 @@ public class AssetRegion extends BaseDisjointSubRegion {
 
     @Override
     @NotNull
-    public List<String> getAuth() {
+    public List<String> getAuthTags() {
         if (!this.isNull()) {
             return this.config().getStringList(BaseRegion.KEY_AUTH);
         } else {
@@ -50,7 +49,7 @@ public class AssetRegion extends BaseDisjointSubRegion {
 
     @Override
     @NotNull
-    public List<String> getAuth(@NotNull Player player) {
+    public List<String> getAuthTags(@NotNull Player player) {
         List<String> pAuth = new LinkedList<>();
         if (!this.isNull()) {
             pAuth.addAll(this.config().getStringList(BaseRegion.KEY_AUTH));

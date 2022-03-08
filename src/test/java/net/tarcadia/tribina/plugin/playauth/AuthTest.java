@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class AuthTest {
 
     private void sleep(long millis) {
@@ -24,24 +22,24 @@ class AuthTest {
         Auth auth = new Auth(fileA);
         Configuration config = Configuration.getConfiguration(fileA);
 
-        System.out.println(auth.getAuth("play"));
-        System.out.println(auth.getAuth("play.place.dirt"));
-        System.out.println(auth.getAuth("play.place.grass"));
-        System.out.println(auth.getAuth("play.place.flower"));
-        System.out.println(auth.getAuth("play.break.dirt"));
-        System.out.println(auth.getAuth("play.break.grass"));
-        System.out.println(auth.getAuth("play.break.flower"));
+        System.out.println(auth.getPlaySet("play"));
+        System.out.println(auth.getPlaySet("play.place.dirt"));
+        System.out.println(auth.getPlaySet("play.place.grass"));
+        System.out.println(auth.getPlaySet("play.place.flower"));
+        System.out.println(auth.getPlaySet("play.break.dirt"));
+        System.out.println(auth.getPlaySet("play.break.grass"));
+        System.out.println(auth.getPlaySet("play.break.flower"));
         config.set("play.break.flower", "play_break_flower");
-        System.out.println(auth.getAuth("play.break.flower"));
+        System.out.println(auth.getPlaySet("play.break.flower"));
         sleep(5000);
-        System.out.println(auth.getAuth("play.break.flower"));
+        System.out.println(auth.getPlaySet("play.break.flower"));
         config.set("play.break.flower", null);
-        System.out.println(auth.getAuth("play.place"));
-        System.out.println(auth.getAuth("play.break"));
-        System.out.println(auth.getAuth("play.place*"));
+        System.out.println(auth.getPlaySet("play.place"));
+        System.out.println(auth.getPlaySet("play.break"));
+        System.out.println(auth.getPlaySet("play.place*"));
         sleep(5000);
-        System.out.println(auth.getAuth("play.place"));
-        System.out.println(auth.getAuth("play.break"));
-        System.out.println(auth.getAuth("play.place*"));
+        System.out.println(auth.getPlaySet("play.place"));
+        System.out.println(auth.getPlaySet("play.break"));
+        System.out.println(auth.getPlaySet("play.place*"));
     }
 }
