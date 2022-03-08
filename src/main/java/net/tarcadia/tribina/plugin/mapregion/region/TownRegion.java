@@ -5,9 +5,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TownRegion extends BaseDisjointParentRegion {
+
+    public static TownRegion create(String id, File fileConfig, File fileBitmap, List<? extends TownRegion> peers) {
+        // TODO: Add a new implementation for creating empty region in BaseRegion and call that for this method
+        return new TownRegion(id, fileConfig, fileBitmap, peers, new LinkedList<>());
+    }
 
     private final List<? extends AssetRegion> assets;
 
@@ -30,6 +36,10 @@ public class TownRegion extends BaseDisjointParentRegion {
     ) {
         super("town." + regionId, fileConfig, fileBitmap, peers, assets);
         this.assets = assets;
+    }
+
+    public List<? extends AssetRegion> assets() {
+        return this.assets;
     }
 
     // TODO: More implements that make town works.

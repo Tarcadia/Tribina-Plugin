@@ -10,6 +10,11 @@ import java.util.List;
 
 public class LandRegion extends BaseDisjointRegion {
 
+    public static LandRegion create(String id, File fileConfig, File fileBitmap, List<? extends TownRegion> peers) {
+        // TODO: Add a new implementation for creating empty region in BaseRegion and call that for this method
+        return new LandRegion(id, fileConfig, fileBitmap, peers);
+    }
+
     public LandRegion(
             @NotNull String regionId,
             @NotNull Path fileRoot,
