@@ -47,8 +47,8 @@ public class PlayAuths {
     }
 
     @NotNull
-    public static Set<String> getAuth(@NotNull Collection<String> keys) {
-        return PlayAuths.auth.getAuth(keys);
+    public static Set<String> getPlaySet(@NotNull Collection<String> authTags) {
+        return PlayAuths.auth.getPlaySet(authTags);
     }
 
 }

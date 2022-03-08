@@ -39,10 +39,10 @@ public class Auth {
     }
 
     @NotNull
-    public Set<String> getAuth(@NotNull String key) {
+    public Set<String> getPlaySet(@NotNull String authTag) {
         Set<String> ret = new HashSet<>();
         Set<String> vis = new HashSet<>();
-        List<String> lst = new LinkedList<>(this.getStrings(key));
+        List<String> lst = new LinkedList<>(this.getStrings(authTag));
         while (!lst.isEmpty()) {
             var s = lst.remove(0);
             if (!vis.contains(s)) {
@@ -58,10 +58,10 @@ public class Auth {
     }
 
     @NotNull
-    public Set<String> getAuth(@NotNull Collection<String> keys) {
+    public Set<String> getPlaySet(@NotNull Collection<String> authTags) {
         Set<String> ret = new HashSet<>();
-        for (var key : keys) {
-            ret.addAll(this.getAuth(key));
+        for (var key : authTags) {
+            ret.addAll(this.getPlaySet(key));
         }
         return ret;
     }
