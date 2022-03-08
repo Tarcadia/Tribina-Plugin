@@ -1,6 +1,5 @@
 package net.tarcadia.tribina.plugin.playauth;
 
-import net.tarcadia.tribina.plugin.mapregion.MapRegions;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.wasted.mapregions.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
