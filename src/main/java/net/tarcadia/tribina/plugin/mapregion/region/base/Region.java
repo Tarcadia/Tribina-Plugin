@@ -50,8 +50,8 @@ public interface Region extends PosSet {
 
     void setName(@NotNull String name);
     void setLore(@NotNull String lore);
-    void addAuthTags(@NotNull String auth);
-    void removeAuth(@NotNull String auth);
+    void addAuthTag(@NotNull String auth);
+    void removeAuthTag(@NotNull String auth);
 
     @Override
     boolean contains(long x, long z);
