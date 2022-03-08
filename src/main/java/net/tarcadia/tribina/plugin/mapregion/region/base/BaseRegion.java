@@ -288,17 +288,27 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
-    public void addAuthTags(@NotNull String auth) {
+    public void addAuthTag(@NotNull String auth) {
         var lst = this.config.getStringList(KEY_AUTH);
         lst.add(auth);
         this.config.set(KEY_AUTH, lst);
     }
 
     @Override
-    public void removeAuth(@NotNull String auth) {
+    public void removeAuthTag(@NotNull String auth) {
         var lst = this.config.getStringList(KEY_AUTH);
         lst.remove(auth);
         this.config.set(KEY_AUTH, lst);
+    }
+
+    @Override
+    public boolean inRegion(@NotNull Player player) {
+        Location pLoc = player.getLocation();
+        if (Objects.equals(pLoc.getWorld(), this.loc.getWorld())) {
+            Pair<Long, Long> pPos = new Pair<>((long) pLoc.getBlockX(), (long) pLoc.getBlockZ());
+            return this.contains(pPos);
+        }
+        return false;
     }
 
     @Override
