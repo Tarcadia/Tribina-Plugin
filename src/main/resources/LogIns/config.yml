@@ -1,7 +1,0 @@
-login:
-  enabled:
-  passwords:
-  non-login-auth:
-    - login.non-login
-  login-auth:
-    - login.login
