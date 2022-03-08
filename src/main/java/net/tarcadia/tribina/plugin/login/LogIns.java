@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class LogIns {
@@ -87,7 +88,7 @@ public class LogIns {
         return LogIns.encode(password).equals(LogIns.config.getString(KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS));
     }
 
-    public static boolean regPlayer(Player player, String password) {
+    public static boolean regPlayer(@NotNull Player player, @NotNull String password) {
         if (LogIns.hasPassword(player)) {
             Main.logger.warning(LI + "Login reg player " + player.getName() + " already exists.");
             return false;
@@ -98,7 +99,7 @@ public class LogIns {
         }
     }
 
-    public static boolean loginPlayer(Player player, String password) {
+    public static boolean loginPlayer(@NotNull Player player, @NotNull String password) {
         if (player.isOnline() && checkPassword(player, password)) {
             LogIns.loggedPlayers.add(player.getName());
             Main.logger.info(LI + "Login log player " + player.getName() + " accepted.");
@@ -110,12 +111,20 @@ public class LogIns {
         }
     }
 
-    public static boolean checkPlayer(Player player) {
+    public static boolean checkPlayer(@NotNull Player player) {
         if (player.isOnline()) {
             return LogIns.loggedPlayers.contains(player.getName());
         } else {
             LogIns.loggedPlayers.remove(player.getName());
             return false;
+        }
+    }
+
+    public static List<String> getAuthTags(@NotNull Player player) {
+        if (checkPlayer(player)) {
+            return LogIns.config.getStringList(KEY_LOGINS_AUTH_LOGIN);
+        } else {
+            return LogIns.config.getStringList(KEY_LOGINS_AUTH_NONLOGIN);
         }
     }
 
