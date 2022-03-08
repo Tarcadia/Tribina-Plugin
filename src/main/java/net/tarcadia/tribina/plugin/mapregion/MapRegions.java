@@ -4,6 +4,7 @@ import net.tarcadia.tribina.plugin.mapregion.region.AssetRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
+import net.tarcadia.tribina.plugin.mapregion.region.base.Region;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.Location;
@@ -14,8 +15,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class MapRegions {
 
@@ -45,6 +48,8 @@ public class MapRegions {
     public static final String PATH_ROOT_LANDS = PATH_ROOT + "/Lands/";
     public static final String PATH_ROOT_TOWNS = PATH_ROOT + "/Towns/";
     public static final String PATH_FILE_CONFIG = PATH_ROOT + "/config.yml";
+
+    public static final Map<String, Region> regionMap = new HashMap<>();
 
     public static final List<PathRegion> regionPaths = new LinkedList<>();
     public static final List<LandRegion> regionLands = new LinkedList<>();
@@ -81,6 +86,7 @@ public class MapRegions {
                 var fileBitmap = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".bmp");
                 var pathRegion = new PathRegion(id, fileConfig, fileBitmap);
                 MapRegions.regionPaths.add(pathRegion);
+                MapRegions.regionMap.put(pathRegion.id(), pathRegion);
                 Main.logger.info(MR + "Loaded path " + pathRegion.id() + ".");
             }
         }
@@ -95,6 +101,7 @@ public class MapRegions {
                 var fileBitmap = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".bmp");
                 var landRegion = new LandRegion(id, fileConfig, fileBitmap, MapRegions.regionLands);
                 MapRegions.regionLands.add(landRegion);
+                MapRegions.regionMap.put(landRegion.id(), landRegion);
                 Main.logger.info(MR + "Loaded land " + landRegion.id() + ".");
             }
         }
@@ -111,15 +118,17 @@ public class MapRegions {
                 var assets = new LinkedList<AssetRegion>();
                 var townRegion = new TownRegion(id, fileConfig, fileBitmap, MapRegions.regionTowns, assets);
                 MapRegions.regionTowns.add(townRegion);
+                MapRegions.regionMap.put(townRegion.id(), townRegion);
 
                 if (subConfigSec != null) for (var subId : subConfigSec.getKeys(false)) {
                     var subFileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + id + "/" + subId + ".yml");
                     var subFileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + id + "/" + subId + ".bmp");
                     var assetRegion = new AssetRegion(subId, subFileConfig, subFileBitmap, assets, townRegion);
                     assets.add(assetRegion);
-                    Main.logger.info(MR + "Loaded asset " + assetRegion.id() + "@" + townRegion.id() + ".");
+                    MapRegions.regionAssets.add(assetRegion);
+                    MapRegions.regionMap.put(assetRegion.id(), assetRegion);
+                    Main.logger.info(MR + "Loaded asset " + assetRegion.id() + ".");
                 }
-                MapRegions.regionAssets.addAll(assets);
                 Main.logger.info(MR + "Loaded town " + townRegion.id() + ".");
             }
         }
@@ -142,6 +151,10 @@ public class MapRegions {
     public static void disable() {
         MapRegions.config.set(KEY_MAPREGIONS_ENABLED, false);
         Main.logger.info(MR + "Set disabled.");
+    }
+
+    public static Region getRegion(@NotNull String regionId) {
+        return regionMap.get(regionId);
     }
 
     @NotNull
