@@ -14,9 +14,9 @@ import java.util.List;
 
 public class AssetRegion extends BaseDisjointSubRegion {
 
-    public static String KEY_ASSET_AUTHS = "asset-info.auths";
-    public static String KEY_ASSET_AUTH_OWNER = "asset-info.auth-owner";
-    public static String KEY_ASSET_OWNER = "asset-info.owner";
+    public static final String KEY_ASSET_AUTHS = "asset-info.auths";
+    public static final String KEY_ASSET_AUTH_OWNER = "asset-info.auth-owner";
+    public static final String KEY_ASSET_OWNER = "asset-info.owner";
 
     public static AssetRegion create(String id, File fileConfig, File fileBitmap, TownRegion parent) {
         // TODO: Add a new implementation for creating empty region in BaseRegion and call that for this method

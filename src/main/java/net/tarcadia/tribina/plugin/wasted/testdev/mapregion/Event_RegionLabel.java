@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 
 public class Event_RegionLabel implements Listener {
 
-    private JavaPlugin plugin;
-    private Logger logger;
+    private final JavaPlugin plugin;
+    private final Logger logger;
 
     public Event_RegionLabel(@NonNull JavaPlugin plugin)
     {
