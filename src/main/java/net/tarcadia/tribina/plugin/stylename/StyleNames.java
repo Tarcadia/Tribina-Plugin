@@ -83,15 +83,11 @@ public class StyleNames {
     }
 
     public static void addStyle(@NotNull Player player, @NotNull String style) {
-        var styleLst = StyleNames.config.getStringList(KEY_STYLENAMES_PLAYERS + player.getName() + KEY_STYLENAMES_STYLE_LIST);
-        styleLst.add(style);
-        StyleNames.config.set(KEY_STYLENAMES_PLAYERS + player.getName() + KEY_STYLENAMES_STYLE_LIST, styleLst);
+        StyleNames.config.addStringList(KEY_STYLENAMES_PLAYERS + player.getName() + KEY_STYLENAMES_STYLE_LIST, style);
     }
 
     public static void addTag(@NotNull Player player, @NotNull String tag) {
-        var tagLst = StyleNames.config.getStringList(KEY_STYLENAMES_PLAYERS + player.getName() + KEY_STYLENAMES_TAG_LIST);
-        tagLst.add(tag);
-        StyleNames.config.set(KEY_STYLENAMES_PLAYERS + player.getName() + KEY_STYLENAMES_STYLE_LIST, tagLst);
+        StyleNames.config.addStringList(KEY_STYLENAMES_PLAYERS + player.getName() + KEY_STYLENAMES_TAG_LIST, tag);
     }
 
     public static void setName(@NotNull Player player, @NotNull String name) {
