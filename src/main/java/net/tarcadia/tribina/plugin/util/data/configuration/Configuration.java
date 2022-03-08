@@ -334,6 +334,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     public synchronized void set(@NotNull String path, Object value) {
+        this.tryUpdate();
         this.configBuff.set(path, value);
         this.didUpdate();
     }
@@ -351,6 +352,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     @Override
     @NotNull
     public synchronized ConfigurationSection createSection(@NotNull String path) {
+        this.tryUpdate();
         var ret = this.configBuff.createSection(path);
         this.didUpdate();
         return ret;
@@ -371,6 +373,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     @Override
     @NotNull
     public synchronized ConfigurationSection createSection(@NotNull String path, @NotNull Map<?, ?> map) {
+        this.tryUpdate();
         var ret = this.configBuff.createSection(path, map);
         this.didUpdate();
         return ret;
@@ -708,6 +711,50 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     }
 
     /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addStringList(@NotNull String path, @NotNull String value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getStringList(path);
+        var val = this.configBuff.getString(path);
+        List<String> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else if (val != null) {
+            added = new ArrayList<>(2);
+            added.set(0, val);
+            added.set(1, value);
+        } else {
+            added = new ArrayList<>(1);
+            added.set(0, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
+    }
+
+    /**
+     * Remove the value from the requested List by path.
+     * <p>
+     * If the List does not exist, this will do nothing.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void subStringList(@NotNull String path, @NotNull String value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getStringList(path);
+        lst.remove(value);
+        this.configBuff.set(path, lst);
+        this.didUpdate();
+    }
+
+    /**
      * Gets the requested List of Integer by path.
      * <p>
      * If the List does not exist but a default value has been specified, this
@@ -725,6 +772,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     public synchronized List<Integer> getIntegerList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getIntegerList(path);
+    }
+
+    /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addIntegerList(@NotNull String path, int value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getIntegerList(path);
+        var val = this.configBuff.getInt(path);
+        List<Integer> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else {
+            added = new ArrayList<>(2);
+            added.set(0, val);
+            added.set(1, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
     }
 
     /**
@@ -748,6 +821,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     }
 
     /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addBooleanList(@NotNull String path, boolean value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getBooleanList(path);
+        var val = this.configBuff.getBoolean(path);
+        List<Boolean> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else {
+            added = new ArrayList<>(2);
+            added.set(0, val);
+            added.set(1, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
+    }
+
+    /**
      * Gets the requested List of Double by path.
      * <p>
      * If the List does not exist but a default value has been specified, this
@@ -765,6 +864,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     public synchronized List<Double> getDoubleList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getDoubleList(path);
+    }
+
+    /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addDoubleList(@NotNull String path, double value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getDoubleList(path);
+        var val = this.configBuff.getDouble(path);
+        List<Double> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else {
+            added = new ArrayList<>(2);
+            added.set(0, val);
+            added.set(1, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
     }
 
     /**
@@ -788,6 +913,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     }
 
     /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addFloatList(@NotNull String path, float value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getFloatList(path);
+        var val = this.configBuff.getDouble(path);
+        List<Float> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else {
+            added = new ArrayList<>(2);
+            added.set(0, (float) val);
+            added.set(1, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
+    }
+
+    /**
      * Gets the requested List of Long by path.
      * <p>
      * If the List does not exist but a default value has been specified, this
@@ -805,6 +956,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     public synchronized List<Long> getLongList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getLongList(path);
+    }
+
+    /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addLongList(@NotNull String path, long value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getLongList(path);
+        var val = this.configBuff.getLong(path);
+        List<Long> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else {
+            added = new ArrayList<>(2);
+            added.set(0, val);
+            added.set(1, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
     }
 
     /**
@@ -828,6 +1005,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     }
 
     /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addByteList(@NotNull String path, byte value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getByteList(path);
+        var val = this.configBuff.getInt(path);
+        List<Byte> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else {
+            added = new ArrayList<>(2);
+            added.set(0, (byte) val);
+            added.set(1, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
+    }
+
+    /**
      * Gets the requested List of Character by path.
      * <p>
      * If the List does not exist but a default value has been specified, this
@@ -848,6 +1051,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     }
 
     /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addCharacterList(@NotNull String path, char value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getCharacterList(path);
+        var val = this.configBuff.getInt(path);
+        List<Character> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else {
+            added = new ArrayList<>(2);
+            added.set(0, (char) val);
+            added.set(1, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
+    }
+
+    /**
      * Gets the requested List of Short by path.
      * <p>
      * If the List does not exist but a default value has been specified, this
@@ -865,6 +1094,32 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     public synchronized List<Short> getShortList(@NotNull String path) {
         this.tryUpdate();
         return this.configBuff.getShortList(path);
+    }
+
+    /**
+     * Append to the requested List by path.
+     * <p>
+     * If the List does not exist and no value is attached, this will create and
+     * append to a new empty list. If the List does not exist but a value is
+     * attached, this will turn the value into a list.
+     *
+     * @param path Path of the List to get.
+     */
+    public synchronized void addShortList(@NotNull String path, short value) {
+        this.tryUpdate();
+        var lst = this.configBuff.getShortList(path);
+        var val = this.configBuff.getInt(path);
+        List<Short> added;
+        if (!lst.isEmpty()) {
+            added = lst;
+            added.add(value);
+        } else {
+            added = new ArrayList<>(2);
+            added.set(0, (short) val);
+            added.set(1, value);
+        }
+        this.configBuff.set(path, added);
+        this.didUpdate();
     }
 
     /**
@@ -1360,6 +1615,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     public synchronized void setComments(@NotNull String path, List<String> comments) {
+        this.tryUpdate();
         this.configBuff.setComments(path, comments);
         this.didUpdate();
     }
@@ -1380,6 +1636,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
      */
     @Override
     public synchronized void setInlineComments(@NotNull String path, List<String> comments) {
+        this.tryUpdate();
         this.configBuff.setInlineComments(path, comments);
         this.didUpdate();
     }
