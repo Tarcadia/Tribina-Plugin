@@ -29,7 +29,7 @@ public class LogIns {
     public static final String AUTH_LOGINS_NONLOGIN = "login.non-login";
     public static final String AUTH_LOGINS_LOGIN = "login.login";
 
-    public static final String PATH_FILE_CONFIG = "/LogIns.yml";
+    public static final String PATH_FILE_CONFIG = "LogIns.yml";
 
     private static Configuration config;
     private static MessageDigest md5;

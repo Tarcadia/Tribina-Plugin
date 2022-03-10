@@ -14,7 +14,7 @@ public class PlayAuths {
 
     public static final String PA = "[PA] ";
 
-    public static final String PATH_ROOT = "/PlayAuths/";
+    public static final String PATH_ROOT = "PlayAuths/";
     public static final String PATH_FILE_CONFIG = PATH_ROOT + "/config.yml";
     public static final String PATH_FILE_AUTHS = PATH_ROOT + "/auths.yml";
 
