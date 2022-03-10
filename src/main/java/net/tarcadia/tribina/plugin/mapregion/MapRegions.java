@@ -153,6 +153,7 @@ public class MapRegions {
     public static Configuration config() {
         return MapRegions.config;
     }
+    public static List<Listener> events() { return MapRegions.events; }
 
     public static boolean enabled() {
         return MapRegions.config.getBoolean(KEY_MAPREGIONS_ENABLED);
