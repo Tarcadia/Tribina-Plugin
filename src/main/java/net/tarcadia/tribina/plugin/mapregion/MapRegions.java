@@ -51,6 +51,11 @@ public class MapRegions {
     public static final String PATH_ROOT_TOWNS = PATH_ROOT + "Towns/";
     public static final String PATH_FILE_CONFIG = PATH_ROOT + "config.yml";
 
+    public static final String PATH_FILE_DEFAULT_MAP_R1 = PATH_ROOT + "default-r1.bmp";
+    public static final String PATH_FILE_DEFAULT_MAP_R3 = PATH_ROOT + "default-r3.bmp";
+    public static final String PATH_FILE_DEFAULT_MAP_R5 = PATH_ROOT + "default-r5.bmp";
+    public static final String PATH_FILE_DEFAULT_MAP_R9 = PATH_ROOT + "default-r9.bmp";
+
     public static final Map<String, Region> regionMap = new HashMap<>();
 
     public static final List<PathRegion> regionPaths = new LinkedList<>();
