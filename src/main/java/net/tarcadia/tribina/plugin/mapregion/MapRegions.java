@@ -181,10 +181,10 @@ public class MapRegions {
 
     public static void createPathRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_PATH_LIST + "." + id)) {
+            MapRegions.config.createSection(KEY_MAPREGIONS_PATH_LIST + "." + id);
             var fileConfig = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".bmp");
             var pathRegion = PathRegion.create(id, fileConfig, fileBitmap, loc);
-            // TODO: make a create function;
             MapRegions.regionPaths.add(pathRegion);
             MapRegions.regionMap.put(pathRegion.id(), pathRegion);
             Main.logger.info(MR + "Added path " + pathRegion.id() + ".");
@@ -195,6 +195,7 @@ public class MapRegions {
 
     public static void createLandRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_LAND_LIST + "." + id)) {
+            MapRegions.config.createSection(KEY_MAPREGIONS_LAND_LIST + "." + id);
             var fileConfig = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".bmp");
             var landRegion = LandRegion.create(id, fileConfig, fileBitmap, MapRegions.regionLands, loc);
@@ -208,6 +209,7 @@ public class MapRegions {
 
     public static void createTownRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + id)) {
+            MapRegions.config.createSection(KEY_MAPREGIONS_TOWN_LIST + "." + id);
             var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".bmp");
             var townRegion = TownRegion.create(id, fileConfig, fileBitmap, MapRegions.regionTowns, loc);
@@ -222,6 +224,7 @@ public class MapRegions {
     public static void createAssetRegion(@NotNull String townId, @NotNull String id, @NotNull Location loc) {
         var townRegion = MapRegions.getRegion("town." + townId);
         if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id) && (townRegion instanceof TownRegion)) {
+            MapRegions.config.createSection(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id);
             var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".bmp");
             var assetRegion = AssetRegion.create(id, fileConfig, fileBitmap, (TownRegion) townRegion, loc);
