@@ -12,13 +12,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CommandReg extends BaseCommand implements TabExecutor {
+public class CommandRegIn extends BaseCommand implements TabExecutor {
 
-    public CommandReg(@NotNull String cmd) {
+    public CommandRegIn(@NotNull String cmd) {
         super(cmd);
     }
 
-    public CommandReg(@NotNull JavaPlugin plugin, @NotNull String cmd) {
+    public CommandRegIn(@NotNull JavaPlugin plugin, @NotNull String cmd) {
         super(plugin, cmd);
     }
 

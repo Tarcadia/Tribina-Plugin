@@ -1,6 +1,11 @@
 package net.tarcadia.tribina.plugin.login;
 
 import net.tarcadia.tribina.plugin.Main;
+import net.tarcadia.tribina.plugin.login.command.CommandLogIn;
+import net.tarcadia.tribina.plugin.login.command.CommandRegIn;
+import net.tarcadia.tribina.plugin.login.event.EventLogInNoMove;
+import net.tarcadia.tribina.plugin.util.BaseCommand;
+import net.tarcadia.tribina.plugin.util.BaseListener;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -13,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +37,9 @@ public class LogIns {
 
     public static final String PATH_FILE_CONFIG = "LogIns.yml";
 
+    private static final List<BaseListener> events = new LinkedList<>();
+    private static final List<BaseCommand> commands = new LinkedList<>();
+
     private static Configuration config;
     private static MessageDigest md5;
     private static MessageDigest md;
@@ -38,8 +47,10 @@ public class LogIns {
     private static final Set<String> loggedPlayers = new HashSet<>();
 
     public static void load() {
+        Main.logger.info(LI + "Loading...");
         loadConfig();
         loadEncoder();
+        Main.logger.info(LI + "Loaded.");
     }
 
     private static void loadConfig() {
@@ -58,6 +69,17 @@ public class LogIns {
             Main.logger.severe(LI + "Encoder MD5 load failed.");
         }
         LogIns.md = LogIns.md5;
+    }
+
+    private static void loadEvents() {
+        LogIns.events.add(new EventLogInNoMove());
+        Main.logger.info(LI + "Loaded events.");
+    }
+
+    private static void loadCommands() {
+        LogIns.commands.add(new CommandRegIn("RegIn"));
+        LogIns.commands.add(new CommandLogIn("LogIn"));
+        Main.logger.info(LI + "Loaded commands.");
     }
 
     public static Configuration config() {
