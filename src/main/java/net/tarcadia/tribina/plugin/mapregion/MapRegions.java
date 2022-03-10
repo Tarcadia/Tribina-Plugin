@@ -169,7 +169,7 @@ public class MapRegions {
         Main.logger.info(MR + "Set disabled.");
     }
 
-    public static void addPathRegion(@NotNull String id, @NotNull Location loc) {
+    public static void createPathRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_PATH_LIST + "." + id)) {
             var fileConfig = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".bmp");
@@ -183,7 +183,7 @@ public class MapRegions {
         }
     }
 
-    public static void addLandRegion(@NotNull String id, @NotNull Location loc) {
+    public static void createLandRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_LAND_LIST + "." + id)) {
             var fileConfig = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".bmp");
@@ -196,7 +196,7 @@ public class MapRegions {
         }
     }
 
-    public static void addTownRegion(@NotNull String id, @NotNull Location loc) {
+    public static void createTownRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + id)) {
             var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".bmp");
@@ -209,7 +209,7 @@ public class MapRegions {
         }
     }
 
-    public static void addAssetRegion(@NotNull String townId, @NotNull String id, @NotNull Location loc) {
+    public static void createAssetRegion(@NotNull String townId, @NotNull String id, @NotNull Location loc) {
         var townRegion = MapRegions.getRegion("town." + townId);
         if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id) && (townRegion instanceof TownRegion)) {
             var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".yml");
