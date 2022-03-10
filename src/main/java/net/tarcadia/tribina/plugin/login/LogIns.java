@@ -149,6 +149,11 @@ public class LogIns {
         }
     }
 
+    public static void logoutPlayer(@NotNull Player player) {
+        LogIns.loggedPlayers.remove(player.getName());
+        Main.logger.info(LI + "Login log player " + player.getName() + " out.");
+    }
+
     public static boolean checkPlayer(@NotNull Player player) {
         if (player.isOnline()) {
             return LogIns.loggedPlayers.contains(player.getName());
