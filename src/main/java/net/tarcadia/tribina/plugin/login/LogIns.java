@@ -2,10 +2,12 @@ package net.tarcadia.tribina.plugin.login;
 
 import net.tarcadia.tribina.plugin.Main;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -36,7 +38,19 @@ public class LogIns {
     private static final Set<String> loggedPlayers = new HashSet<>();
 
     public static void load() {
+        loadConfig();
+        loadEncoder();
+    }
+
+    private static void loadConfig() {
+        var defConfig = YamlConfiguration.loadConfiguration(
+                new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
+        );
         LogIns.config = Configuration.getConfiguration(new File(PATH_FILE_CONFIG));
+        LogIns.config.setDefaults(defConfig);
+    }
+
+    private static void loadEncoder() {
         try {
             LogIns.md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
