@@ -6,3 +6,7 @@ prefix: TRBN
 load: STARTUP
 authors: [ Tarcadia, HYC ]
 description: Plugin for Tribina
+commands:
+  tribinaCreateRegion:
+    description: "Create a Tribina Region at the place"
+    usage: "tribinaCreateRegion <id>"
