@@ -78,6 +78,7 @@ public class MapRegions {
         MapRegions.loadLands();
         MapRegions.loadTowns();
         MapRegions.loadEvents();
+        MapRegions.loadCommands();
         Main.logger.info(MR + "Loaded.");
     }
 
