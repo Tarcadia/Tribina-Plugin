@@ -2,10 +2,12 @@ package net.tarcadia.tribina.plugin.stylename;
 
 import net.tarcadia.tribina.plugin.Main;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.InputStreamReader;
 
 public class StyleNames {
 
@@ -30,7 +32,30 @@ public class StyleNames {
     }
 
     private static void loadConfig() {
+        var defConfig = YamlConfiguration.loadConfiguration(
+                new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
+        );
         StyleNames.config = Configuration.getConfiguration(new File(PATH_FILE_CONFIG));
+        StyleNames.config.setDefaults(defConfig);
+        Main.logger.info(SN + "Loaded config.");
+    }
+
+    public static Configuration config() {
+        return StyleNames.config;
+    }
+
+    public static boolean enabled() {
+        return StyleNames.config.getBoolean(KEY_STYLENAMES_ENABLED);
+    }
+
+    public static void enable() {
+        StyleNames.config.set(KEY_STYLENAMES_ENABLED, true);
+        Main.logger.info(SN + "Set enabled.");
+    }
+
+    public static void disable() {
+        StyleNames.config.set(KEY_STYLENAMES_ENABLED, false);
+        Main.logger.info(SN + "Set disabled.");
     }
 
     public static String getDisplay(@NotNull Player player) {
