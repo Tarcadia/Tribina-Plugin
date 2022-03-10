@@ -231,7 +231,7 @@ public class BaseRegion implements PosSet, Region {
 
     @Override
     public boolean reLoc(@NotNull Location loc) {
-        if (loc.getWorld() == this.loc.getWorld()) {
+        if (!this.isNull && (loc.getWorld() == this.loc.getWorld())) {
             long offsetX = this.biasX - loc.getBlockX();
             long offsetZ = this.biasZ - loc.getBlockZ();
             this.config.set(KEY_LOC_OFFSET_X, offsetX);
@@ -247,87 +247,127 @@ public class BaseRegion implements PosSet, Region {
 
     @Override
     public boolean reBias(long x, long z) {
-        long offsetX = x - this.loc.getBlockX();
-        long offsetZ = z - this.loc.getBlockZ();
-        this.biasX = x;
-        this.biasZ = z;
-        this.config.set(KEY_LOC_OFFSET_X, offsetX);
-        this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
-        Main.logger.warning(MapRegions.MR + "Region " + this.id + " re-Bias accessed.");
-        return true;
+        if (!this.isNull) {
+            long offsetX = x - this.loc.getBlockX();
+            long offsetZ = z - this.loc.getBlockZ();
+            this.biasX = x;
+            this.biasZ = z;
+            this.config.set(KEY_LOC_OFFSET_X, offsetX);
+            this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
+            Main.logger.warning(MapRegions.MR + "Region " + this.id + " re-Bias accessed.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     @NotNull
     public String getName() {
-        return this.config.getString(KEY_DISP_NAME, "");
+        if (!this.isNull) {
+            return this.config.getString(KEY_DISP_NAME, "");
+        } else {
+            return "";
+        }
     }
 
     @Override
     @NotNull
     public String getName(@NotNull Player player) {
-        return this.getName();
+        if (!this.isNull) {
+            return this.getName();
+        } else {
+            return "";
+        }
     }
 
     @Override
     @NotNull
     public String getLore() {
-        return this.config.getString(KEY_DISP_LORE, "");
+        if (!this.isNull) {
+            return this.config.getString(KEY_DISP_LORE, "");
+        } else {
+            return "";
+        }
     }
 
     @Override
     @NotNull
     public String getLore(@NotNull Player player) {
-        return this.getLore();
+        if (!this.isNull) {
+            return this.getLore();
+        } else {
+            return "";
+        }
     }
 
     @Override
     @NotNull
     public List<String> getAuthTags() {
-        return this.config.getStringList(KEY_AUTH);
+        if (!this.isNull) {
+            return this.config.getStringList(KEY_AUTH);
+        } else {
+            return List.of();
+        }
     }
 
     @Override
     @NotNull
     public List<String> getAuthTags(@NotNull Player player) {
-        return this.getAuthTags();
+        if (!this.isNull) {
+            return this.getAuthTags();
+        } else {
+            return List.of();
+        }
     }
 
     @Override
     public void setName(@NotNull String name) {
-        this.config.set(KEY_DISP_NAME, name);
+        if (!this.isNull) {
+            this.config.set(KEY_DISP_NAME, name);
+        }
     }
 
     @Override
     public void setLore(@NotNull String lore) {
-        this.config.set(KEY_DISP_LORE, lore);
+        if (!this.isNull) {
+            this.config.set(KEY_DISP_LORE, lore);
+        }
     }
 
     @Override
     public void addAuthTag(@NotNull String auth) {
-        this.config.addStringList(KEY_AUTH, auth);
+        if (!this.isNull) {
+            this.config.addStringList(KEY_AUTH, auth);
+        }
     }
 
     @Override
     public void removeAuthTag(@NotNull String auth) {
-        this.config.addStringList(KEY_AUTH, auth);
+        if (!this.isNull) {
+            this.config.addStringList(KEY_AUTH, auth);
+        }
     }
 
     @Override
     public boolean inRegion(@NotNull Location loc) {
-        if (Objects.equals(loc.getWorld(), this.loc.getWorld())) {
-            Pair<Long, Long> pPos = new Pair<>((long) loc.getBlockX(), (long) loc.getBlockZ());
-            return this.contains(pPos);
+        if (!this.isNull) {
+            if (Objects.equals(loc.getWorld(), this.loc.getWorld())) {
+                Pair<Long, Long> pPos = new Pair<>((long) loc.getBlockX(), (long) loc.getBlockZ());
+                return this.contains(pPos);
+            }
         }
         return false;
     }
 
     @Override
     public boolean inRegion(@NotNull Player player) {
-        Location pLoc = player.getLocation();
-        if (Objects.equals(pLoc.getWorld(), this.loc.getWorld())) {
-            Pair<Long, Long> pPos = new Pair<>((long) pLoc.getBlockX(), (long) pLoc.getBlockZ());
-            return this.contains(pPos);
+        if (!this.isNull) {
+            Location pLoc = player.getLocation();
+            if (Objects.equals(pLoc.getWorld(), this.loc.getWorld())) {
+                Pair<Long, Long> pPos = new Pair<>((long) pLoc.getBlockX(), (long) pLoc.getBlockZ());
+                return this.contains(pPos);
+            }
         }
         return false;
     }
