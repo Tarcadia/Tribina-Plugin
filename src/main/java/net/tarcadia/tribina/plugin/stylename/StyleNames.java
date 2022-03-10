@@ -23,7 +23,7 @@ public class StyleNames {
     public static final String KEY_STYLENAMES_STYLE_LIST = ".style-list";
 
     public static final String PATH_ROOT = "StyleNames/";
-    public static final String PATH_FILE_CONFIG = PATH_ROOT + "/config.yml";
+    public static final String PATH_FILE_CONFIG = PATH_ROOT + "config.yml";
 
     private static Configuration config;
 
