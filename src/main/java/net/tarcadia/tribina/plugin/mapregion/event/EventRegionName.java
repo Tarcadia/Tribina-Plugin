@@ -5,12 +5,13 @@ import net.tarcadia.tribina.plugin.util.BaseListener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class EventRegionName extends BaseListener {
 
-    private Map<String, String> lastRegion;
+    private final Map<String, String> lastRegion = new HashMap<>();
 
     public EventRegionName() {
         super();
