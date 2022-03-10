@@ -1,0 +1,4 @@
+enabled: true
+default:
+  range: 100;
+players:

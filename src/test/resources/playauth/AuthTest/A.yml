@@ -1,0 +1,12 @@
+play:
+  place:
+    dirt: play_place_dirt
+    grass: play_place_grass
+    flower: play_place_flower
+  place*:
+  - play.place
+  - play.place*
+  - play_place_xxx
+  break:
+    dirt: play_break_dirt
+    grass: play_break_grass

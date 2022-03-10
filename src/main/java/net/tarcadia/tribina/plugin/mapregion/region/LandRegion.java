@@ -1,0 +1,37 @@
+package net.tarcadia.tribina.plugin.mapregion.region;
+
+import net.tarcadia.tribina.plugin.mapregion.region.base.BaseDisjointRegion;
+import net.tarcadia.tribina.plugin.mapregion.region.base.DisjointRegion;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+
+public class LandRegion extends BaseDisjointRegion {
+
+    public static LandRegion create(String id, File fileConfig, File fileBitmap, List<? extends LandRegion> peers) {
+        // TODO: Add a new implementation for creating empty region in BaseRegion and call that for this method
+        return new LandRegion(id, fileConfig, fileBitmap, peers);
+    }
+
+    public LandRegion(
+            @NotNull String regionId,
+            @NotNull Path fileRoot,
+            @NotNull List<? extends DisjointRegion> peers
+    ) {
+        super("land." + regionId, fileRoot, peers);
+    }
+
+    public LandRegion(
+            @NotNull String regionId,
+            @NotNull File fileConfig,
+            @NotNull File fileBitmap,
+            @NotNull List<? extends DisjointRegion> peers
+    ) {
+        super("land." + regionId, fileConfig, fileBitmap, peers);
+    }
+
+    // TODO: More implements that make land a region that looks interesting
+
+}
