@@ -1,14 +1,18 @@
 package net.tarcadia.tribina.plugin.rangetalk;
 
 import net.tarcadia.tribina.plugin.Main;
+import net.tarcadia.tribina.plugin.rangetalk.event.EventTalkRange;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RangeTalks {
 
@@ -21,10 +25,13 @@ public class RangeTalks {
 
     public static final String PATH_FILE_CONFIG = "/RangeTalks.yml";
 
+    private static final List<Listener> events = new LinkedList<>();
+
     private static Configuration config;
 
     public static void load() {
         loadConfig();
+        loadEvents();
     }
 
     private static void loadConfig() {
@@ -36,6 +43,11 @@ public class RangeTalks {
         RangeTalks.config.setDefaults(defConfig);
 
         Main.logger.info(RT + "Loaded config.");
+    }
+
+    private static void loadEvents() {
+        RangeTalks.events.add(new EventTalkRange());
+        Main.logger.info(RT + "Loaded events.");
     }
 
     public static Configuration config() {

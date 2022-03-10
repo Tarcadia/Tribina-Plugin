@@ -7,6 +7,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class EventTalkRange extends BaseListener {
 
+    public EventTalkRange() {
+        super();
+    }
+
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         var player = event.getPlayer();
