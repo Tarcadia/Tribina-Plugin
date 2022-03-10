@@ -59,7 +59,7 @@ public class LogIns {
         var defConfig = YamlConfiguration.loadConfiguration(
                 new InputStreamReader(Main.plugin.getResource(PATH_FILE_CONFIG))
         );
-        LogIns.config = Configuration.getConfiguration(new File(PATH_FILE_CONFIG));
+        LogIns.config = Configuration.getConfiguration(new File(Main.dataPath + PATH_FILE_CONFIG));
         LogIns.config.setDefaults(defConfig);
     }
 
