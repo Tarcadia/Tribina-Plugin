@@ -61,10 +61,13 @@ public class RangeTalks {
     }
 
     private static Double range(@NotNull Player player) {
-        return RangeTalks.config.getDouble(
-                KEY_RANGETALKS_PLAYER + player.getName() + KEY_RANGETALKS_PLAYER_RANGE,
-                RangeTalks.config.getDouble(KEY_RANGETALKS_DEFAULT_RANGE)
-        );
+        if (!RangeTalks.config.contains(KEY_RANGETALKS_PLAYER + player.getName())) {
+            RangeTalks.config.set(
+                    KEY_RANGETALKS_PLAYER + player.getName() + KEY_RANGETALKS_PLAYER_RANGE,
+                    RangeTalks.config.getDouble(KEY_RANGETALKS_DEFAULT_RANGE)
+            );
+        }
+        return RangeTalks.config.getDouble(KEY_RANGETALKS_PLAYER + player.getName() + KEY_RANGETALKS_PLAYER_RANGE);
     }
 
     public static boolean checkDist(@NotNull Location loc1, @NotNull Location loc2) {
