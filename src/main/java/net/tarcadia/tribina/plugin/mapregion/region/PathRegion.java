@@ -1,6 +1,7 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
 import net.tarcadia.tribina.plugin.mapregion.region.base.BaseRegion;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -8,8 +9,18 @@ import java.nio.file.Path;
 
 public class PathRegion extends BaseRegion {
 
-    public static PathRegion create(String id, File fileConfig, File fileBitmap) {
-        // TODO: Add a new implementation for creating empty region in BaseRegion and call that for this method
+    public static void initPathRegion(@NotNull String id, @NotNull File fileConfig, @NotNull File fileBitmap, @NotNull Location loc) {
+        BaseRegion.initBaseRegion(id, fileConfig, fileBitmap, loc);
+        // TODO: More init, when further implements finished.
+    }
+
+    public static PathRegion create(
+            @NotNull String id,
+            @NotNull File fileConfig,
+            @NotNull File fileBitmap,
+            @NotNull Location loc
+    ) {
+        PathRegion.initPathRegion(id, fileConfig, fileBitmap, loc);
         return new PathRegion(id, fileConfig, fileBitmap);
     }
 
