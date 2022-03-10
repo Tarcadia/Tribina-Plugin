@@ -1,7 +1,7 @@
 package net.tarcadia.tribina.plugin.mapregion.command;
 
 import net.tarcadia.tribina.plugin.mapregion.MapRegions;
-import net.tarcadia.tribina.plugin.util.BaseCommand;
+import net.tarcadia.tribina.plugin.util.sys.BaseCommand;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
