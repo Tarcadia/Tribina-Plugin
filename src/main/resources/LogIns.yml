@@ -1,4 +1,4 @@
-enabled:
+enabled: true
 players:
 auth:
   non-login:
