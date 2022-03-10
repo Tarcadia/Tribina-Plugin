@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.util;
+package net.tarcadia.tribina.plugin.util.sys;
 
 import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.command.*;

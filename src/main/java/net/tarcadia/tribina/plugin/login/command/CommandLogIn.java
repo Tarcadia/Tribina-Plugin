@@ -1,7 +1,7 @@
 package net.tarcadia.tribina.plugin.login.command;
 
 import net.tarcadia.tribina.plugin.login.LogIns;
-import net.tarcadia.tribina.plugin.util.BaseCommand;
+import net.tarcadia.tribina.plugin.util.sys.BaseCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CommandLogIn extends BaseCommand implements TabExecutor {
 
@@ -43,7 +44,7 @@ public class CommandLogIn extends BaseCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if ((sender instanceof Player) && (args.length == 1)) {
             if (
-                    System.currentTimeMillis() - playerLastTry.get(sender.getName()) <
+                    System.currentTimeMillis() - Objects.requireNonNullElse(playerLastTry.get(sender.getName()), 0L) <
                     Long.min(60000, 1L << playerFails.get(sender.getName()))
             ) {
                 if (LogIns.loginPlayer((Player) sender, args[0])) {

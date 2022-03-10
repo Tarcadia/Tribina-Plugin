@@ -1,7 +1,7 @@
 package net.tarcadia.tribina.plugin.login.command;
 
 import net.tarcadia.tribina.plugin.login.LogIns;
-import net.tarcadia.tribina.plugin.util.BaseCommand;
+import net.tarcadia.tribina.plugin.util.sys.BaseCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

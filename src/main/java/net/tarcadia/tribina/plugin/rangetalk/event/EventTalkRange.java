@@ -1,7 +1,7 @@
 package net.tarcadia.tribina.plugin.rangetalk.event;
 
 import net.tarcadia.tribina.plugin.rangetalk.RangeTalks;
-import net.tarcadia.tribina.plugin.util.BaseListener;
+import net.tarcadia.tribina.plugin.util.sys.BaseListener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 

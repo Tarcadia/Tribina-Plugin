@@ -32,7 +32,6 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        Main.logger.info("Enabling " + Main.descrp.getName() + " v" + Main.descrp.getVersion() + ".");
         LogIns.load();
         StyleNames.load();
         RangeTalks.load();

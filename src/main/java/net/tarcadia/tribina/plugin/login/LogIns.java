@@ -4,8 +4,8 @@ import net.tarcadia.tribina.plugin.Main;
 import net.tarcadia.tribina.plugin.login.command.CommandLogIn;
 import net.tarcadia.tribina.plugin.login.command.CommandRegIn;
 import net.tarcadia.tribina.plugin.login.event.EventLogInNoMove;
-import net.tarcadia.tribina.plugin.util.BaseCommand;
-import net.tarcadia.tribina.plugin.util.BaseListener;
+import net.tarcadia.tribina.plugin.util.sys.BaseCommand;
+import net.tarcadia.tribina.plugin.util.sys.BaseListener;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -147,6 +147,11 @@ public class LogIns {
             Main.logger.info(LI + "Login log player " + player.getName() + " denied.");
             return false;
         }
+    }
+
+    public static void logoutPlayer(@NotNull Player player) {
+        LogIns.loggedPlayers.remove(player.getName());
+        Main.logger.info(LI + "Login log player " + player.getName() + " out.");
     }
 
     public static boolean checkPlayer(@NotNull Player player) {

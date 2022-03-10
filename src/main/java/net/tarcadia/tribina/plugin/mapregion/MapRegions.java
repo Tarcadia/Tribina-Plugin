@@ -7,14 +7,13 @@ import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.Region;
-import net.tarcadia.tribina.plugin.util.BaseCommand;
-import net.tarcadia.tribina.plugin.util.BaseListener;
+import net.tarcadia.tribina.plugin.util.sys.BaseCommand;
+import net.tarcadia.tribina.plugin.util.sys.BaseListener;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

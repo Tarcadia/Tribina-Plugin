@@ -1,6 +1,6 @@
 package net.tarcadia.tribina.plugin;
 
-import net.tarcadia.tribina.plugin.util.BaseListener;
+import net.tarcadia.tribina.plugin.util.sys.BaseListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
