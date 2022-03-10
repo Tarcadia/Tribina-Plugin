@@ -23,7 +23,7 @@ public class RangeTalks {
     public static final String KEY_RANGETALKS_PLAYER_RANGE = ".range";
     public static final String KEY_RANGETALKS_DEFAULT_RANGE = "default.range";
 
-    public static final String PATH_FILE_CONFIG = "/RangeTalks.yml";
+    public static final String PATH_FILE_CONFIG = "RangeTalks.yml";
 
     private static final List<Listener> events = new LinkedList<>();
 

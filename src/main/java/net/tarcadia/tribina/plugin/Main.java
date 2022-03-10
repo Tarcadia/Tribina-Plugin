@@ -25,7 +25,7 @@ public final class Main extends JavaPlugin {
         Main.config = this.getConfig();
         Main.descrp = this.getDescription();
         Main.logger = this.getLogger();
-        Main.dataPath = this.getDataFolder().getPath();
+        Main.dataPath = this.getDataFolder().getPath() + "/";
         Main.logger.info("Loaded " + Main.descrp.getName() + " v" + Main.descrp.getVersion() + ".");
     }
 

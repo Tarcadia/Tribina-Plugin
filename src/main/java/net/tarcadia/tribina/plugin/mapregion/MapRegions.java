@@ -45,7 +45,7 @@ public class MapRegions {
     public static final String AUTH_MAPREGIONS_ASSET_PUBLIC = "region.asset.public";
     public static final String AUTH_MAPREGIONS_ASSET_OWNER = "region.asset.owner";
 
-    public static final String PATH_ROOT = "/MapRegions/";
+    public static final String PATH_ROOT = "MapRegions/";
     public static final String PATH_ROOT_PATHS = PATH_ROOT + "/Paths/";
     public static final String PATH_ROOT_LANDS = PATH_ROOT + "/Lands/";
     public static final String PATH_ROOT_TOWNS = PATH_ROOT + "/Towns/";
