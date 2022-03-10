@@ -1,6 +1,8 @@
 package net.tarcadia.tribina.plugin.mapregion.region;
 
 import net.tarcadia.tribina.plugin.mapregion.region.base.BaseDisjointParentRegion;
+import net.tarcadia.tribina.plugin.mapregion.region.base.BaseRegion;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -10,8 +12,19 @@ import java.util.List;
 
 public class TownRegion extends BaseDisjointParentRegion {
 
-    public static TownRegion create(String id, File fileConfig, File fileBitmap, List<? extends TownRegion> peers) {
-        // TODO: Add a new implementation for creating empty region in BaseRegion and call that for this method
+    public static void initAssetRegion(@NotNull String id, @NotNull File fileConfig, @NotNull File fileBitmap, @NotNull Location loc) {
+        BaseRegion.initBaseRegion(id, fileConfig, fileBitmap, loc);
+        // TODO: More init, when further implements finished.
+    }
+
+    public static TownRegion create(
+            @NotNull String id,
+            @NotNull File fileConfig,
+            @NotNull File fileBitmap,
+            @NotNull List<? extends TownRegion> peers,
+            @NotNull Location loc
+    ) {
+        TownRegion.initAssetRegion(id, fileConfig, fileBitmap, loc);
         return new TownRegion(id, fileConfig, fileBitmap, peers, new LinkedList<>());
     }
 

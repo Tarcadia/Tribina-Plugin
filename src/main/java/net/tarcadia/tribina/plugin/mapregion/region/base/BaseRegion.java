@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.logging.Level;
 
 public class BaseRegion implements PosSet, Region {
 
@@ -27,7 +26,24 @@ public class BaseRegion implements PosSet, Region {
     public static final String KEY_DISP_LORE = "disp.lore";
     public static final String KEY_AUTH = "auth";
 
+    public static final String PATH_DEFAULT_MAP = MapRegions.PATH_FILE_DEFAULT_MAP_R3;
+
     public static final long MAX_MAP_SCALE = 8192;
+
+    public static void initBaseRegion(@NotNull String id, @NotNull File fileConfig, @NotNull File fileBitmap, @NotNull Location loc) {
+        var config = Configuration.getConfiguration(fileConfig);
+        config.set(KEY_LOC_LOC, loc);
+        config.set(KEY_LOC_OFFSET_X, -3);
+        config.set(KEY_LOC_OFFSET_Z, -3);
+        config.set(KEY_DISP_NAME, "");
+        config.set(KEY_DISP_LORE, "");
+        config.set(KEY_AUTH, List.of());
+        try {
+            Bitmaps.saveListToBmp(Bitmaps.loadBmpToList(Main.plugin.getResource(PATH_DEFAULT_MAP)), fileBitmap);
+        } catch (Exception e) {
+            Main.logger.severe(MapRegions.MR + "Init new region " + id + " failed.");
+        }
+    }
 
     private final String id;
     private final File fileConfig;

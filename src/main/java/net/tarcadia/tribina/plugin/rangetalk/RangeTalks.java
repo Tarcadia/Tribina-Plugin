@@ -53,6 +53,7 @@ public class RangeTalks {
     public static Configuration config() {
         return RangeTalks.config;
     }
+    public static List<Listener> events() { return RangeTalks.events; }
 
     public static boolean enabled() {
         return RangeTalks.config.getBoolean(KEY_RANGETALKS_ENABLED);
