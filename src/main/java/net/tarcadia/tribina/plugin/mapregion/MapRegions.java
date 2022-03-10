@@ -1,5 +1,6 @@
 package net.tarcadia.tribina.plugin.mapregion;
 
+import net.tarcadia.tribina.plugin.mapregion.event.EventRegionName;
 import net.tarcadia.tribina.plugin.mapregion.region.AssetRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
@@ -10,6 +11,7 @@ import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,6 +58,8 @@ public class MapRegions {
     public static final List<TownRegion> regionTowns = new LinkedList<>();
     public static final List<AssetRegion> regionAssets = new LinkedList<>();
 
+    private static List<Listener> events = new LinkedList<>();
+
     private static Configuration config = null;
 
     public static void load() {
@@ -64,6 +68,7 @@ public class MapRegions {
         MapRegions.loadPaths();
         MapRegions.loadLands();
         MapRegions.loadTowns();
+        MapRegions.loadEvents();
         Main.logger.info(MR + "Loaded.");
     }
 
@@ -133,6 +138,11 @@ public class MapRegions {
             }
         }
         Main.logger.info(MR + "Loaded towns.");
+    }
+
+    private static void loadEvents() {
+        MapRegions.events.add(new EventRegionName());
+        Main.logger.info(MR + "Loaded events.");
     }
 
     public static Configuration config() {

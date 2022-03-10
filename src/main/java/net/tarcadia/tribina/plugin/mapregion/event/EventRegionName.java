@@ -12,6 +12,10 @@ public class EventRegionName extends BaseListener {
 
     private Map<String, String> lastRegion;
 
+    public EventRegionName() {
+        super();
+    }
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         var to = event.getTo();
