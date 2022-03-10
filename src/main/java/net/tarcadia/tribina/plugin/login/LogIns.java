@@ -50,6 +50,8 @@ public class LogIns {
         Main.logger.info(LI + "Loading...");
         loadConfig();
         loadEncoder();
+        loadCommands();
+        loadEvents();
         Main.logger.info(LI + "Loaded.");
     }
 
