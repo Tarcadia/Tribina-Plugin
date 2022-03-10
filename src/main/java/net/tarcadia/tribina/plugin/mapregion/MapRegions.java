@@ -1,11 +1,14 @@
 package net.tarcadia.tribina.plugin.mapregion;
 
+import net.tarcadia.tribina.plugin.mapregion.command.CommandCreateRegion;
 import net.tarcadia.tribina.plugin.mapregion.event.EventRegionName;
 import net.tarcadia.tribina.plugin.mapregion.region.AssetRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.Region;
+import net.tarcadia.tribina.plugin.util.BaseCommand;
+import net.tarcadia.tribina.plugin.util.BaseListener;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.Location;
@@ -63,7 +66,8 @@ public class MapRegions {
     public static final List<TownRegion> regionTowns = new LinkedList<>();
     public static final List<AssetRegion> regionAssets = new LinkedList<>();
 
-    private static final List<Listener> events = new LinkedList<>();
+    private static final List<BaseListener> events = new LinkedList<>();
+    private static final List<BaseCommand> commands = new LinkedList<>();
 
     private static Configuration config = null;
 
@@ -150,10 +154,16 @@ public class MapRegions {
         Main.logger.info(MR + "Loaded events.");
     }
 
+    private static void loadCommands() {
+        MapRegions.commands.add(new CommandCreateRegion("tribinaCreateRegion"));
+        Main.logger.info(MR + "Loaded commands.");
+    }
+
     public static Configuration config() {
         return MapRegions.config;
     }
-    public static List<Listener> events() { return MapRegions.events; }
+    public static List<BaseListener> events() { return MapRegions.events; }
+    public static List<BaseCommand> commands() { return MapRegions.commands; }
 
     public static boolean enabled() {
         return MapRegions.config.getBoolean(KEY_MAPREGIONS_ENABLED);
