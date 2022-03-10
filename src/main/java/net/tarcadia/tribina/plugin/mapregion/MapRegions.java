@@ -58,7 +58,7 @@ public class MapRegions {
     public static final List<TownRegion> regionTowns = new LinkedList<>();
     public static final List<AssetRegion> regionAssets = new LinkedList<>();
 
-    private static List<Listener> events = new LinkedList<>();
+    private static final List<Listener> events = new LinkedList<>();
 
     private static Configuration config = null;
 
