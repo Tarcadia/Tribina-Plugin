@@ -1,0 +1,8 @@
+name: ErodLogIn
+version: '${project.version}'
+main: net.tarcadia.tribina.erod.login.LogIn
+api-version: 1.18
+prefix: EROD LI
+load: STARTUP
+authors: [ Tarcadia ]
+description: '${project.description}'
