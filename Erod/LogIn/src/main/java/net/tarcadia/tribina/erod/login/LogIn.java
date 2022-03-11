@@ -132,7 +132,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     public long timeLogin(@NotNull Player player) {
         return (Objects.requireNonNullElse(playerLastTry.get(player.getName()), 0L)
-                + Long.min(60000, 1000L << playerFails.get(player.getName()))
+                + Long.min(60000, 1000L << Objects.requireNonNullElse(playerFails.get(player.getName()), 0L))
                 - System.currentTimeMillis()
         );
     }
