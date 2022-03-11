@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public final class LogIn extends JavaPlugin {
+public final class LogIn extends JavaPlugin implements InterfaceLogIn {
 
     public static LogIn plugin = null;
     public static FileConfiguration config = null;
@@ -21,9 +21,12 @@ public final class LogIn extends JavaPlugin {
     public static Logger logger = null;
     public static String dataPath = null;
 
-    public static final String KEY_LOGINS_ENABLED = "enabled";
-    public static final String KEY_LOGINS_PLAYERS = "players.";
-    public static final String KEY_LOGINS_PLAYER_PASSWORDS = ".password";
+    public static final String KEY_ENABLED = "enabled";
+    public static final String KEY_WELCOME_FORE_REGIN = "welcome.fore-regin";
+    public static final String KEY_WELCOME_FORE_LOGIN = "welcome.fore-login";
+    public static final String KEY_WELCOME_POST_LOGIN = "welcome.post-login";
+    public static final String KEY_PLAYERS = "players.";
+    public static final String KEY_PLAYER_PASSWORDS = ".password";
 
     private MessageDigest md5;
     private final Set<String> playerLogged = new HashSet<>();
@@ -37,6 +40,7 @@ public final class LogIn extends JavaPlugin {
         descrp = this.getDescription();
         logger = this.getLogger();
         dataPath = this.getDataFolder().getPath() + "/";
+        this.saveDefaultConfig();
         this.onInitEncoder();
         logger.info("Loaded " + descrp.getName() + " v" + descrp.getVersion() + ".");
     }
@@ -68,23 +72,54 @@ public final class LogIn extends JavaPlugin {
         return new BigInteger(1, this.md5.digest()).toString(16);
     }
 
-    private boolean checkPassword(@NotNull Player player, @NotNull String password) {
-        return Objects.equals(
-                this.encodeMd5(password),
-                (config.getString(KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS))
+    @Override
+    public boolean enabled() {
+        return config.getBoolean(KEY_ENABLED);
+    }
+
+    @Override
+    public void enable() {
+        config.set(KEY_ENABLED, true);
+        this.saveConfig();
+    }
+
+    @Override
+    public void disable() {
+        config.set(KEY_ENABLED, false);
+        this.saveConfig();
+    }
+
+    @Override
+    public long timeLogin(@NotNull Player player) {
+        return (Objects.requireNonNullElse(playerLastTry.get(player.getName()), 0L)
+                + Long.min(60000, 1000L << playerFails.get(player.getName()))
+                - System.currentTimeMillis()
         );
     }
 
-    public boolean hasPlayer(@NotNull Player player) {
-        return config.getString(KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS) != null;
+    @Override
+    public @NotNull String getWelcome(@NotNull Player player) {
+        if (!hasPlayer(player)) {
+            return Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_REGIN), "");
+        } else if (!this.playerLogged.contains(player.getName())) {
+            return Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_LOGIN), "");
+        } else {
+            return Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), "");
+        }
     }
 
+    @Override
+    public boolean hasPlayer(@NotNull Player player) {
+        return config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYER_PASSWORDS) != null;
+    }
+
+    @Override
     public boolean regPlayer(@NotNull Player player, @NotNull String password) {
         if (
-                config.getString(KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS) == null
+                config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYER_PASSWORDS) == null
         ) {
             config.set(
-                    KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS,
+                    KEY_PLAYERS + player.getName() + KEY_PLAYER_PASSWORDS,
                     this.encodeMd5(password)
             );
             logger.info("Reg player " + player.getName() + " in accepted.");
@@ -95,21 +130,26 @@ public final class LogIn extends JavaPlugin {
         }
     }
 
+    @Override
     public boolean loginPlayer(@NotNull Player player, @NotNull String password) {
         if (player.isOnline() && Objects.equals(
                 this.encodeMd5(password),
-                (config.getString(KEY_LOGINS_PLAYERS + player.getName() + KEY_LOGINS_PLAYER_PASSWORDS))
+                (config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYER_PASSWORDS))
         )) {
             this.playerLogged.add(player.getName());
+            this.playerFails.put(player.getName(), 0L);
             logger.info("Log player " + player.getName() + " in accepted.");
             return true;
         } else {
             this.playerLogged.remove(player.getName());
+            this.playerLastTry.put(player.getName(), System.currentTimeMillis());
+            this.playerFails.compute(player.getName(), (k, v) -> (v != null ? v + 1 : 1));
             logger.info("Log player " + player.getName() + " in denied.");
             return false;
         }
     }
 
+    @Override
     public void logoutPlayer(@NotNull Player player) {
         this.playerLogged.remove(player.getName());
         logger.info("Log player " + player.getName() + " out.");
