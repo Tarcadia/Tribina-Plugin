@@ -35,8 +35,6 @@ public class BaseRegion implements PosSet, Region {
 
     public static void initBaseRegion(@NotNull String id, @NotNull File fileConfig, @NotNull File fileBitmap, @NotNull Location loc) {
         try {
-            if (fileConfig.getParent() != null) new File(fileConfig.getParent()).mkdirs();
-            if (fileBitmap.getParent() != null) new File(fileBitmap.getParent()).mkdirs();
             var config = Configuration.getConfiguration(fileConfig);
             config.set(KEY_LOC_LOC_X, loc.getBlockX());
             config.set(KEY_LOC_LOC_Z, loc.getBlockZ());

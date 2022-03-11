@@ -47,6 +47,7 @@ public class Bitmaps {
         for (var pos : pSet) {
             image.setRGB(pos.x(), pos.y(), Bitmaps.IN_REGION);
         }
+        if (file.getParent() != null) new File(file.getParent()).mkdirs();
         if (!ImageIO.write(image, "BMP", file)) {
             throw new Exception("No appropriate writer is found");
         }
@@ -122,6 +123,7 @@ public class Bitmaps {
         for (var pos : pLst) {
             image.setRGB(pos.x(), pos.y(), Bitmaps.IN_REGION);
         }
+        if (file.getParent() != null) new File(file.getParent()).mkdirs();
         if (!ImageIO.write(image, "BMP", file)) {
             throw new Exception("No appropriate writer is found");
         }
