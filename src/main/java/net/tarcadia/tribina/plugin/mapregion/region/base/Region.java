@@ -3,6 +3,7 @@ package net.tarcadia.tribina.plugin.mapregion.region.base;
 import net.tarcadia.tribina.plugin.mapregion.posset.GlobalPosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
+import net.tarcadia.tribina.plugin.util.type.Loc;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public interface Region extends PosSet {
     boolean isNull();
 
     @Nullable
-    Location loc();
+    Loc loc();
     long biasX();
     long biasZ();
 

@@ -6,6 +6,7 @@ import net.tarcadia.tribina.plugin.mapregion.posset.GlobalPosSet;
 import net.tarcadia.tribina.plugin.mapregion.posset.PosSet;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.util.func.Bitmaps;
+import net.tarcadia.tribina.plugin.util.type.Loc;
 import net.tarcadia.tribina.plugin.util.type.Pair;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -18,7 +19,9 @@ import java.util.*;
 
 public class BaseRegion implements PosSet, Region {
 
-    public static final String KEY_LOC_LOC = "loc.loc";
+    public static final String KEY_LOC_LOC_X = "loc.loc.x";
+    public static final String KEY_LOC_LOC_Z = "loc.loc.z";
+    public static final String KEY_LOC_LOC_WORLD = "loc.loc.world";
     public static final String KEY_LOC_OFFSET_X = "loc.offset.x";
     public static final String KEY_LOC_OFFSET_Z = "loc.offset.z";
 
@@ -31,14 +34,16 @@ public class BaseRegion implements PosSet, Region {
     public static final long MAX_MAP_SCALE = 8192;
 
     public static void initBaseRegion(@NotNull String id, @NotNull File fileConfig, @NotNull File fileBitmap, @NotNull Location loc) {
-        var config = Configuration.getConfiguration(fileConfig);
-        config.set(KEY_LOC_LOC, loc);
-        config.set(KEY_LOC_OFFSET_X, -3);
-        config.set(KEY_LOC_OFFSET_Z, -3);
-        config.set(KEY_DISP_NAME, "");
-        config.set(KEY_DISP_LORE, "");
-        config.set(KEY_AUTH, List.of());
         try {
+            var config = Configuration.getConfiguration(fileConfig);
+            config.set(KEY_LOC_LOC_X, loc.getBlockX());
+            config.set(KEY_LOC_LOC_Z, loc.getBlockZ());
+            config.set(KEY_LOC_LOC_WORLD, loc.getWorld().getName());
+            config.set(KEY_LOC_OFFSET_X, -3);
+            config.set(KEY_LOC_OFFSET_Z, -3);
+            config.set(KEY_DISP_NAME, "");
+            config.set(KEY_DISP_LORE, "");
+            config.set(KEY_AUTH, List.of());
             Bitmaps.saveListToBmp(Bitmaps.loadBmpToList(Main.plugin.getResource(PATH_DEFAULT_MAP)), fileBitmap);
         } catch (Exception e) {
             Main.logger.severe(MapRegions.MR + "Init new region " + id + " failed.");
@@ -52,7 +57,7 @@ public class BaseRegion implements PosSet, Region {
     private final GlobalPosSet map;
     private final boolean isNull;
 
-    private Location loc;
+    private Loc loc;
     private long biasX;
     private long biasZ;
 
@@ -77,7 +82,10 @@ public class BaseRegion implements PosSet, Region {
         this.fileBitmap = new File(fileRoot + "/" + regionId + ".bmp");
         this.config = Configuration.getConfiguration(fileConfig);
         this.map = new GlobalPosSet();
-        if (this.config.isLocation(KEY_LOC_LOC) &&
+        if (
+                this.config.isLong(KEY_LOC_LOC_X) &&
+                this.config.isLong(KEY_LOC_LOC_Z) &&
+                this.config.isString(KEY_LOC_LOC_WORLD) &&
                 this.config.isLong(KEY_LOC_OFFSET_X) &&
                 this.config.isLong(KEY_LOC_OFFSET_Z)
         ) {
@@ -85,16 +93,19 @@ public class BaseRegion implements PosSet, Region {
             try {
                 long offsetX = this.config.getLong(KEY_LOC_OFFSET_X);
                 long offsetZ = this.config.getLong(KEY_LOC_OFFSET_Z);
-                this.loc = this.config.getLocation(KEY_LOC_LOC);
-                this.biasX = loc.getBlockX() + offsetX;
-                this.biasZ = loc.getBlockZ() + offsetZ;
+                long locX = this.config.getLong(KEY_LOC_LOC_X);
+                long locZ = this.config.getLong(KEY_LOC_LOC_Z);
+                String locWorld = this.config.getString(KEY_LOC_LOC_WORLD);
+                this.loc = new Loc(locWorld, locX, locZ);
+                this.biasX = this.loc.x() + offsetX;
+                this.biasZ = this.loc.z() + offsetZ;
                 var posSet = Bitmaps.loadBmpToSet(fileBitmap);
                 for (var pos : posSet) {
                     this.map.add(pos.x() + biasX, pos.y() + biasZ);
                 }
                 isNull = false;
             } catch (Exception e) {
-                this.loc = null;
+                this.loc =null;
                 this.biasX = 0;
                 this.biasZ = 0;
                 isNull = true;
@@ -118,7 +129,10 @@ public class BaseRegion implements PosSet, Region {
         this.fileBitmap = fileBitmap;
         this.config = Configuration.getConfiguration(fileConfig);
         this.map = new GlobalPosSet();
-        if (this.config.isLocation(KEY_LOC_LOC) &&
+        if (
+                this.config.isLong(KEY_LOC_LOC_X) &&
+                this.config.isLong(KEY_LOC_LOC_Z) &&
+                this.config.isString(KEY_LOC_LOC_WORLD) &&
                 this.config.isLong(KEY_LOC_OFFSET_X) &&
                 this.config.isLong(KEY_LOC_OFFSET_Z)
         ) {
@@ -126,9 +140,12 @@ public class BaseRegion implements PosSet, Region {
             try {
                 long offsetX = this.config.getLong(KEY_LOC_OFFSET_X);
                 long offsetZ = this.config.getLong(KEY_LOC_OFFSET_Z);
-                this.loc = this.config.getLocation(KEY_LOC_LOC);
-                this.biasX = loc.getBlockX() + offsetX;
-                this.biasZ = loc.getBlockZ() + offsetZ;
+                long locX = this.config.getLong(KEY_LOC_LOC_X);
+                long locZ = this.config.getLong(KEY_LOC_LOC_Z);
+                String locWorld = this.config.getString(KEY_LOC_LOC_WORLD);
+                this.loc = new Loc(locWorld, locX, locZ);
+                this.biasX = this.loc.x() + offsetX;
+                this.biasZ = this.loc.z() + offsetZ;
                 var posSet = Bitmaps.loadBmpToSet(fileBitmap);
                 for (var pos : posSet) {
                     this.map.add(pos.x() + biasX, pos.y() + biasZ);
@@ -185,8 +202,8 @@ public class BaseRegion implements PosSet, Region {
     }
 
     @Override
-    @Nullable
-    public Location loc() {
+    @NotNull
+    public Loc loc() {
         return this.loc;
     }
 
@@ -231,12 +248,14 @@ public class BaseRegion implements PosSet, Region {
 
     @Override
     public boolean reLoc(@NotNull Location loc) {
-        if (!this.isNull && (loc.getWorld() == this.loc.getWorld())) {
+        if (!this.isNull && (loc.getWorld() != null) && Objects.equals(loc.getWorld().getName(), this.loc.world())) {
             long offsetX = this.biasX - loc.getBlockX();
             long offsetZ = this.biasZ - loc.getBlockZ();
             this.config.set(KEY_LOC_OFFSET_X, offsetX);
             this.config.set(KEY_LOC_OFFSET_Z, offsetZ);
-            this.config.set(KEY_LOC_LOC, loc);
+            this.config.set(KEY_LOC_LOC_X, loc.getBlockX());
+            this.config.set(KEY_LOC_LOC_Z, loc.getBlockZ());
+            this.config.set(KEY_LOC_LOC_WORLD, loc.getWorld().getName());
             Main.logger.warning(MapRegions.MR + "Region " + this.id + " re-Location accessed.");
             return true;
         } else {
@@ -248,8 +267,8 @@ public class BaseRegion implements PosSet, Region {
     @Override
     public boolean reBias(long x, long z) {
         if (!this.isNull) {
-            long offsetX = x - this.loc.getBlockX();
-            long offsetZ = z - this.loc.getBlockZ();
+            long offsetX = x - this.loc.x();
+            long offsetZ = z - this.loc.z();
             this.biasX = x;
             this.biasZ = z;
             this.config.set(KEY_LOC_OFFSET_X, offsetX);
@@ -351,8 +370,8 @@ public class BaseRegion implements PosSet, Region {
 
     @Override
     public boolean inRegion(@NotNull Location loc) {
-        if (!this.isNull) {
-            if (Objects.equals(loc.getWorld(), this.loc.getWorld())) {
+        if (!this.isNull && (loc.getWorld() != null)) {
+            if (Objects.equals(loc.getWorld().getName(), this.loc.world())) {
                 Pair<Long, Long> pPos = new Pair<>((long) loc.getBlockX(), (long) loc.getBlockZ());
                 return this.contains(pPos);
             }
@@ -362,9 +381,9 @@ public class BaseRegion implements PosSet, Region {
 
     @Override
     public boolean inRegion(@NotNull Player player) {
-        if (!this.isNull) {
-            Location pLoc = player.getLocation();
-            if (Objects.equals(pLoc.getWorld(), this.loc.getWorld())) {
+        Location pLoc = player.getLocation();
+        if (!this.isNull && (pLoc.getWorld() != null)) {
+            if (Objects.equals(pLoc.getWorld().getName(), this.loc.world())) {
                 Pair<Long, Long> pPos = new Pair<>((long) pLoc.getBlockX(), (long) pLoc.getBlockZ());
                 return this.contains(pPos);
             }
