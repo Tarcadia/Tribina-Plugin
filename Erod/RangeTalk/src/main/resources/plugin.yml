@@ -1,0 +1,7 @@
+name: ErodRangeTalk
+version: '${project.version}'
+main: net.tarcadia.tribina.erod.rangetalk.RangeTalk
+api-version: 1.18
+prefix: EROD RT
+authors: [ Tarcadia ]
+description: '${project.description}'
