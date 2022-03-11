@@ -14,6 +14,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     public static LogIn plugin = null;
-    public static FileConfiguration config = null;
+    public static Configuration config = null;
     public static PluginDescriptionFile descrp = null;
     public static Logger logger = null;
     public static String dataPath = null;
@@ -36,8 +37,6 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String KEY_WELCOME_POST_LOGIN = "texts.welcome.post-login";
     public static final String KEY_TEXT_FUNCTION_ENABLE = "texts.function-enable";
     public static final String KEY_TEXT_FUNCTION_DISABLE = "texts.function-disable";
-    public static final String KEY_TEXT_CONFIG_SAVE = "texts.config-save";
-    public static final String KEY_TEXT_CONFIG_RELOAD = "texts.config-reload";
     public static final String KEY_TEXT_REG_ACCEPT = "texts.reg-accept";
     public static final String KEY_TEXT_REG_DENIED = "texts.reg-denied";
     public static final String KEY_TEXT_LOGIN_ACCEPT = "texts.login-accept";
@@ -51,8 +50,6 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String CMD_REG = "reg";
     public static final String CMD_ENABLE = "enable";
     public static final String CMD_DISABLE = "disable";
-    public static final String CMD_SAVE_CONFIG = "save-config";
-    public static final String CMD_RELOAD_CONFIG = "reload-config";
 
     private MessageDigest md5;
     private final Set<String> playerLogged = new HashSet<>();
@@ -67,35 +64,22 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     public void functionEnable() {
         config.set(KEY_ENABLED, true);
-        this.saveConfig();
         logger.info("Plugin functional enabled.");
     }
 
     public void functionDisable() {
         config.set(KEY_ENABLED, false);
-        this.saveConfig();
         logger.info("Plugin functional disabled.");
-    }
-
-    public void functionReloadConfig() {
-        super.reloadConfig();
-        config = this.getConfig();
-        logger.info("Config reloaded.");
-    }
-
-    public void functionSaveConfig() {
-        super.saveConfig();
-        logger.info("Config saved.");
     }
 
     @Override
     public void onLoad() {
+        this.saveDefaultConfig();
         plugin = this;
-        config = this.getConfig();
+        config = Configuration.getConfiguration(new File(this.getConfig().getCurrentPath()));
         descrp = this.getDescription();
         logger = this.getLogger();
         dataPath = this.getDataFolder().getPath() + "/";
-        this.saveDefaultConfig();
         this.initEncoder();
         logger.info("Loaded " + descrp.getName() + " v" + descrp.getVersion() + ".");
     }
@@ -149,7 +133,6 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     KEY_PLAYERS + player.getName() + KEY_PLAYER_PASSWORDS,
                     this.encodeMd5(player.getName() + password)
             );
-            this.saveConfig();
             logger.info("Reg player " + player.getName() + " in accepted.");
             return true;
         } else {
@@ -223,18 +206,6 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
             }
             return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_SAVE_CONFIG))) {
-            if (sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) {
-                this.functionSaveConfig();
-                sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_SAVE), ""));
-            }
-            return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_RELOAD_CONFIG))) {
-            if (sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) {
-                this.functionReloadConfig();
-                sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_RELOAD), ""));
-            }
-            return true;
         } else if ((args.length == 3) && (args[0].equals(CMD_REG)) && Objects.equals(args[1], args[2])) {
             if (this.isFunctionEnabled() && (sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_ACCEPT), ""));
@@ -277,8 +248,6 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         List<String> ret = new LinkedList<>();
         if ((args.length <= 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_ENABLE);
         if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && this.isFunctionEnabled()) ret.add(CMD_DISABLE);
-        if ((args.length <= 1) && sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) ret.add(CMD_SAVE_CONFIG);
-        if ((args.length <= 1) && sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) ret.add(CMD_RELOAD_CONFIG);
         if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName())) ret.add(CMD_REG);
         if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName())) ret.add("<password>");
         return ret;

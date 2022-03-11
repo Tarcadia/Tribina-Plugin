@@ -10,9 +10,7 @@ commands:
   erodlogin:
     description: "Register or login into Tribina"
     usage: |
-      erodlogin <password>
-      erodlogin reg <password> <password>
       erodlogin enable
       erodlogin disable
-      erodlogin save-config
-      erodlogin reload-config
+      erodlogin <password>
+      erodlogin reg <password> <password>
