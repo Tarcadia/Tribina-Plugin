@@ -10,9 +10,9 @@ texts:
   config-save: Erod LogIn config saved.
   config-reload: Erod LogIn config reloaded.
   reg-accept: Your register accepted.
-  reg-denied: Your register failed. It may because that you have already registered, or two times of inputing passwords are not compatible, or you are not a player.
+  reg-denied: Your register failed. It may because that you have already registered, or you are not a player, or the system is not enabled.
   login-accept: Your login accepted.
   login-denied: Your login denied.
-  login-error: Your login failed. It may because that you are not a player.
+  login-error: Your login failed. It may because that you are not a player, or you have already logged in, or the system is not enabled.
   login-wait: Your login is too frequent, please wait $time$ seconds.
 players:
