@@ -59,6 +59,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     private final Map<String, Long> playerLastTry = new HashMap<>();
     private final Map<String, Long> playerFails = new HashMap<>();
     private final Map<String, Location> playerLoginLoc = new HashMap<>();
+    private final Map<String, GameMode> playerLoginMode = new HashMap<>();
 
     public boolean isFunctionEnabled() {
         return config.getBoolean(KEY_ENABLED);
@@ -192,6 +193,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         if (this.isFunctionEnabled()) {
             event.getPlayer().setGameMode(GameMode.SPECTATOR);
             this.playerLoginLoc.put(event.getPlayer().getName(), event.getPlayer().getLocation());
+            this.playerLoginMode.put(event.getPlayer().getName(), event.getPlayer().getGameMode());
             if (!hasPlayer(event.getPlayer())) {
                 event.getPlayer().sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_REGIN), ""));
             } else if (hasPlayer(event.getPlayer())) {
@@ -227,6 +229,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
             if ((sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_ACCEPT), ""));
                 this.loginPlayer((Player) sender, args[1]);
+                ((Player) sender).setGameMode(Objects.requireNonNullElse(this.playerLoginMode.get(sender.getName()), sender.getServer().getDefaultGameMode()));
                 ((Player) sender).teleport(Objects.requireNonNullElse(this.playerLoginLoc.get(sender.getName()), ((Player) sender).getWorld().getSpawnLocation()));
                 ((Player) sender).setGameMode(sender.getServer().getDefaultGameMode());
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
