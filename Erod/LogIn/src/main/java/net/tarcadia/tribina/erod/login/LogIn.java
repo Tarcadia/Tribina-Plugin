@@ -209,19 +209,19 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if ((args.length == 1) && (args[0].equals(CMD_ENABLE))) {
+        if ((args.length == 1) && (args[0].equals(CMD_ENABLE)) && this.playerLogged.contains(sender.getName())) {
             this.functionEnable();
             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
             return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_DISABLE))) {
+        } else if ((args.length == 1) && (args[0].equals(CMD_DISABLE)) && this.playerLogged.contains(sender.getName())) {
             this.functionDisable();
             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
             return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_SAVE_CONFIG))) {
+        } else if ((args.length == 1) && (args[0].equals(CMD_SAVE_CONFIG)) && this.playerLogged.contains(sender.getName())) {
             this.functionSaveConfig();
             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_SAVE), ""));
             return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_RELOAD_CONFIG))) {
+        } else if ((args.length == 1) && (args[0].equals(CMD_RELOAD_CONFIG)) && this.playerLogged.contains(sender.getName())) {
             this.functionReloadConfig();
             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_RELOAD), ""));
             return true;
@@ -238,7 +238,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_DENIED), ""));
                 return false;
             }
-        } else if ((args.length == 1)) {
+        } else if ((args.length == 1) && !this.playerLogged.contains(sender.getName())) {
             if ((sender instanceof Player)) {
                 var t = timeLogin((Player) sender);
                 if (t <= 0) {
