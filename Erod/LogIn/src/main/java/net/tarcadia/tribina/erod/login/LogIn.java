@@ -58,19 +58,6 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     private final Map<String, Long> playerLastTry = new HashMap<>();
     private final Map<String, Long> playerFails = new HashMap<>();
 
-    @Override
-    public void reloadConfig() {
-        super.reloadConfig();
-        config = this.getConfig();
-        logger.info("Config reloaded.");
-    }
-
-    @Override
-    public void saveConfig() {
-        super.saveConfig();
-        logger.info("Config saved.");
-    }
-
     public boolean isFunctionEnabled() {
         return config.getBoolean(KEY_ENABLED);
     }
@@ -85,6 +72,17 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         config.set(KEY_ENABLED, false);
         this.saveConfig();
         logger.info("Plugin functional disabled.");
+    }
+
+    public void functionReloadConfig() {
+        super.reloadConfig();
+        config = this.getConfig();
+        logger.info("Config reloaded.");
+    }
+
+    public void functionSaveConfig() {
+        super.saveConfig();
+        logger.info("Config saved.");
     }
 
     @Override
@@ -203,11 +201,11 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
             return true;
         } else if ((args.length == 1) && (args[0].equals(CMD_SAVE_CONFIG))) {
-            this.saveConfig();
+            this.functionSaveConfig();
             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_SAVE), ""));
             return true;
         } else if ((args.length == 1) && (args[0].equals(CMD_RELOAD_CONFIG))) {
-            this.reloadConfig();
+            this.functionReloadConfig();
             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_RELOAD), ""));
             return true;
         } else if ((args.length == 3) && (args[0].equals(CMD_REG)) && Objects.equals(args[1], args[2])) {
