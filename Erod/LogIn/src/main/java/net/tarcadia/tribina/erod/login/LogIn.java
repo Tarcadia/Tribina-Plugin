@@ -211,41 +211,49 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if ((args.length == 1) && (args[0].equals(CMD_ENABLE)) && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) {
-            this.functionEnable();
-            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
+        if ((args.length == 1) && (args[0].equals(CMD_ENABLE))) {
+            if (sender.isOp()) {
+                this.functionEnable();
+                sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
+            }
             return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_DISABLE)) && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) {
-            this.functionDisable();
-            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
+        } else if ((args.length == 1) && (args[0].equals(CMD_DISABLE))) {
+            if (sender.isOp()) {
+                this.functionDisable();
+                sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
+            }
             return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_SAVE_CONFIG)) && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) {
-            this.functionSaveConfig();
-            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_SAVE), ""));
+        } else if ((args.length == 1) && (args[0].equals(CMD_SAVE_CONFIG))) {
+            if (sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) {
+                this.functionSaveConfig();
+                sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_SAVE), ""));
+            }
             return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_RELOAD_CONFIG)) && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) {
-            this.functionReloadConfig();
-            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_RELOAD), ""));
+        } else if ((args.length == 1) && (args[0].equals(CMD_RELOAD_CONFIG))) {
+            if (sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) {
+                this.functionReloadConfig();
+                sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_CONFIG_RELOAD), ""));
+            }
             return true;
-        } else if (this.isFunctionEnabled() && (args.length == 3) && (args[0].equals(CMD_REG)) && Objects.equals(args[1], args[2])) {
-            if ((sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
+        } else if ((args.length == 3) && (args[0].equals(CMD_REG)) && Objects.equals(args[1], args[2])) {
+            if (this.isFunctionEnabled() && (sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_ACCEPT), ""));
                 this.loginPlayer((Player) sender, args[1]);
                 ((Player) sender).setGameMode(Objects.requireNonNullElse(this.playerLoginMode.get(sender.getName()), sender.getServer().getDefaultGameMode()));
                 ((Player) sender).teleport(Objects.requireNonNullElse(this.playerLoginLoc.get(sender.getName()), ((Player) sender).getWorld().getSpawnLocation()));
-                ((Player) sender).setGameMode(sender.getServer().getDefaultGameMode());
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                 return true;
             } else {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_DENIED), ""));
                 return false;
             }
-        } else if (this.isFunctionEnabled() && (args.length == 1) && !this.playerLogged.contains(sender.getName())) {
-            if ((sender instanceof Player)) {
+        } else if ((args.length == 1)) {
+            if (this.isFunctionEnabled() && (sender instanceof Player) && !this.playerLogged.contains(sender.getName())) {
                 var t = timeLogin((Player) sender);
                 if (t <= 0) {
                     if (loginPlayer((Player) sender, args[0])) {
-                        ((Player) sender).setGameMode(sender.getServer().getDefaultGameMode());
+                        ((Player) sender).setGameMode(Objects.requireNonNullElse(this.playerLoginMode.get(sender.getName()), sender.getServer().getDefaultGameMode()));
+                        ((Player) sender).teleport(Objects.requireNonNullElse(this.playerLoginLoc.get(sender.getName()), ((Player) sender).getWorld().getSpawnLocation()));
                         sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_ACCEPT), ""));
                         sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                     } else {
@@ -267,8 +275,8 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> ret = new LinkedList<>();
+        if ((args.length <= 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_ENABLE);
         if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && this.isFunctionEnabled()) ret.add(CMD_DISABLE);
-        if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && !this.isFunctionEnabled()) ret.add(CMD_ENABLE);
         if ((args.length <= 1) && sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) ret.add(CMD_SAVE_CONFIG);
         if ((args.length <= 1) && sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) ret.add(CMD_RELOAD_CONFIG);
         if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName())) ret.add(CMD_REG);
