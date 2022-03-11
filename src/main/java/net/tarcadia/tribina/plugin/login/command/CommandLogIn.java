@@ -45,7 +45,7 @@ public class CommandLogIn extends BaseCommand implements TabExecutor {
         if ((sender instanceof Player) && (args.length == 1)) {
             playerFails.putIfAbsent(sender.getName(), 0L);
             if (
-                    System.currentTimeMillis() - Objects.requireNonNullElse(playerLastTry.get(sender.getName()), 0L) <
+                    System.currentTimeMillis() - Objects.requireNonNullElse(playerLastTry.get(sender.getName()), 0L) >=
                     Long.min(60000, 1L << playerFails.get(sender.getName()))
             ) {
                 if (LogIns.loginPlayer((Player) sender, args[0])) {
