@@ -265,12 +265,12 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> ret = new LinkedList<>();
-        if ((args.length == 0) && sender.isOp() && this.isFunctionEnabled()) ret.add(CMD_DISABLE);
-        if ((args.length == 0) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_ENABLE);
-        if ((args.length == 0) && sender.isOp()) ret.add(CMD_SAVE_CONFIG);
-        if ((args.length == 0) && sender.isOp()) ret.add(CMD_RELOAD_CONFIG);
-        if ((sender instanceof Player) && (args.length == 0) && !hasPlayer((Player) sender)) ret.add(CMD_REG);
-        if ((sender instanceof Player) && (args.length == 0) && hasPlayer((Player) sender)) ret.add("<password>");
+        if ((args.length <= 1) && sender.isOp() && this.isFunctionEnabled()) ret.add(CMD_DISABLE);
+        if ((args.length <= 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_ENABLE);
+        if ((args.length <= 1) && sender.isOp()) ret.add(CMD_SAVE_CONFIG);
+        if ((args.length <= 1) && sender.isOp()) ret.add(CMD_RELOAD_CONFIG);
+        if ((sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender)) ret.add(CMD_REG);
+        if ((sender instanceof Player) && (args.length <= 1) && hasPlayer((Player) sender)) ret.add("<password>");
         return ret;
     }
 
