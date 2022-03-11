@@ -1,16 +1,15 @@
 package net.tarcadia.tribina.erod.login;
 
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +30,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static String dataPath = null;
 
     public static final String KEY_ENABLED = "enabled";
+    public static final String KEY_ALLOW_VISIT = "allow-visit";
     public static final String KEY_WELCOME_FORE_REGIN = "texts.welcome.fore-regin";
     public static final String KEY_WELCOME_FORE_LOGIN = "texts.welcome.fore-login";
     public static final String KEY_WELCOME_POST_LOGIN = "texts.welcome.post-login";
@@ -47,6 +47,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String KEY_PLAYERS = "players.";
     public static final String KEY_PLAYER_PASSWORDS = ".password";
 
+    public static final String CMD = "erodlogin";
     public static final String CMD_REG = "reg";
     public static final String CMD_ENABLE = "enable";
     public static final String CMD_DISABLE = "disable";
@@ -57,6 +58,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     private final Set<String> playerLogged = new HashSet<>();
     private final Map<String, Long> playerLastTry = new HashMap<>();
     private final Map<String, Long> playerFails = new HashMap<>();
+    private final Map<String, Location> playerLoginLoc = new HashMap<>();
 
     public boolean isFunctionEnabled() {
         return config.getBoolean(KEY_ENABLED);
@@ -93,11 +95,11 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         logger = this.getLogger();
         dataPath = this.getDataFolder().getPath() + "/";
         this.saveDefaultConfig();
-        this.onInitEncoder();
+        this.initEncoder();
         logger.info("Loaded " + descrp.getName() + " v" + descrp.getVersion() + ".");
     }
 
-    private void onInitEncoder() {
+    private void initEncoder() {
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
@@ -108,6 +110,9 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @Override
     public void onEnable() {
+        var command = this.getCommand(CMD);
+        if (command != null) command.setExecutor(this);
+        this.getServer().getPluginManager().registerEvents(this, this);
         logger.info("Enabled " + descrp.getName() + " v" + descrp.getVersion() + ".");
     }
 
@@ -176,18 +181,28 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     }
 
     @EventHandler
-    public void onPlayerAction(PlayerEvent event) {
+    public void onPlayerMove(PlayerMoveEvent e) {
+        if (this.isFunctionEnabled() && !this.playerLogged.contains(e.getPlayer().getName()) && !config.getBoolean(KEY_ALLOW_VISIT, false)) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
         if (this.isFunctionEnabled()) {
-            if (event instanceof PlayerJoinEvent && !hasPlayer(event.getPlayer())) {
+            event.getPlayer().setGameMode(GameMode.SPECTATOR);
+            this.playerLoginLoc.put(event.getPlayer().getName(), event.getPlayer().getLocation());
+            if (!hasPlayer(event.getPlayer())) {
                 event.getPlayer().sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_REGIN), ""));
-            } else if (event instanceof PlayerJoinEvent && hasPlayer(event.getPlayer())) {
+            } else if (hasPlayer(event.getPlayer())) {
                 event.getPlayer().sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_LOGIN), ""));
-            } else if (event instanceof PlayerQuitEvent) {
-                this.logoutPlayer(event.getPlayer());
-            } else if (this.playerLogged.contains(event.getPlayer().getName()) && event instanceof Cancellable) {
-                ((Cancellable) event).setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        this.logoutPlayer(event.getPlayer());
     }
 
     @Override
@@ -212,6 +227,8 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
             if ((sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_ACCEPT), ""));
                 this.loginPlayer((Player) sender, args[1]);
+                ((Player) sender).teleport(Objects.requireNonNullElse(this.playerLoginLoc.get(sender.getName()), ((Player) sender).getWorld().getSpawnLocation()));
+                ((Player) sender).setGameMode(sender.getServer().getDefaultGameMode());
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                 return true;
             } else {
@@ -223,6 +240,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                 var t = timeLogin((Player) sender);
                 if (t <= 0) {
                     if (loginPlayer((Player) sender, args[0])) {
+                        ((Player) sender).setGameMode(sender.getServer().getDefaultGameMode());
                         sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_ACCEPT), ""));
                         sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                     } else {
