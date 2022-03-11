@@ -1,0 +1,6 @@
+enabled: true
+welcome:
+  fore-regin: Welcome. Please use /erodlogin reg <password> <password> to register into Tribina.
+  fore-login: Welcome back. Please use /erodlogin <password> to log into Tribina.
+  post-login: Welcome to Tribina.
+players:
