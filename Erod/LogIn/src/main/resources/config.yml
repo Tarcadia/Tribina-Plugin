@@ -1,6 +1,17 @@
 enabled: true
-welcome:
-  fore-regin: Welcome. Please use /erodlogin reg <password> <password> to register into Tribina.
-  fore-login: Welcome back. Please use /erodlogin <password> to log into Tribina.
-  post-login: Welcome to Tribina.
+texts:
+  welcome:
+    fore-regin: Welcome. Please use /erodlogin reg <password> <password> to register into Tribina.
+    fore-login: Welcome back. Please use /erodlogin <password> to log into Tribina.
+    post-login: Welcome to Tribina.
+  function-enable: Erod LogIn enabled.
+  function-disable: Erod LogIn disabled.
+  config-save: Erod LogIn config saved.
+  config-reload: Erod LogIn config reloaded.
+  reg-accept: Your register accepted.
+  reg-denied: Your register failed. It may because that you have already registered, or two times of inputing passwords are not compatible, or you are not a player.
+  login-accept: Your login accepted.
+  login-denied: Your login denied.
+  login-error: Your login failed. It may because that you are not a player.
+  login-wait: Your login is too frequent, please wait $time$ seconds.
 players:
