@@ -271,8 +271,8 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && !this.isFunctionEnabled()) ret.add(CMD_ENABLE);
         if ((args.length <= 1) && sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) ret.add(CMD_SAVE_CONFIG);
         if ((args.length <= 1) && sender.isOp() && (this.playerLogged.contains(sender.getName()) || !this.isFunctionEnabled())) ret.add(CMD_RELOAD_CONFIG);
-        if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender)) ret.add(CMD_REG);
-        if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && hasPlayer((Player) sender)) ret.add("<password>");
+        if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName())) ret.add(CMD_REG);
+        if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName())) ret.add("<password>");
         return ret;
     }
 
