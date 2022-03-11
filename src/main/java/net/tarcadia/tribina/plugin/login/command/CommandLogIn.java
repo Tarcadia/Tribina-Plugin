@@ -43,6 +43,7 @@ public class CommandLogIn extends BaseCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if ((sender instanceof Player) && (args.length == 1)) {
+            playerFails.putIfAbsent(sender.getName(), 0L);
             if (
                     System.currentTimeMillis() - Objects.requireNonNullElse(playerLastTry.get(sender.getName()), 0L) <
                     Long.min(60000, 1L << playerFails.get(sender.getName()))
@@ -53,7 +54,6 @@ public class CommandLogIn extends BaseCommand implements TabExecutor {
                     playerFails.put(sender.getName(), 0L);
                 } else {
                     playerLastTry.put(sender.getName(), System.currentTimeMillis());
-                    playerFails.putIfAbsent(sender.getName(), 0L);
                     playerFails.compute(sender.getName(), (k, v) -> v + 1);
                     sender.sendMessage("Login denied.");
                 }
