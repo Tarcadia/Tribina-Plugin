@@ -26,7 +26,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
 
         ToSave(Configuration thisConfig) {
             super();
-            thisConfig.running = true;
+            thisConfig.saving = true;
             this.thisConfig = thisConfig;
         }
 
@@ -35,7 +35,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             try {
                 sleep(thisConfig.ttl);
             } catch (InterruptedException ignored) {}
-            thisConfig.running = false;
+            thisConfig.saving = false;
             thisConfig.save(thisConfig.file);
         }
     }
@@ -47,7 +47,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     private long timeFile;
     private long timeUpdate;
 
-    private boolean running = false;
+    private boolean saving = false;
 
     private org.bukkit.configuration.Configuration def;
     private YamlConfiguration configBuff;
@@ -127,7 +127,7 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     }
 
     public synchronized void didUpdate() {
-        if (!this.running) {
+        if (!this.saving) {
             var toSave = new ToSave(this);
             toSave.start();
         }
