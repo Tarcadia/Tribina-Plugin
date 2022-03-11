@@ -20,13 +20,34 @@ import java.util.logging.Level;
 
 public class Configuration implements org.bukkit.configuration.Configuration {
 
+    static class ToSave extends Thread{
+
+        private final Configuration thisConfig;
+
+        ToSave(Configuration thisConfig) {
+            super();
+            thisConfig.running = true;
+            this.thisConfig = thisConfig;
+        }
+
+        @Override
+        public void run() {
+            try {
+                sleep(thisConfig.ttl);
+            } catch (InterruptedException ignored) {}
+            thisConfig.running = false;
+            thisConfig.save(thisConfig.file);
+        }
+    }
+
     private static final Map<File, Configuration> configs = new HashMap<>();
 
     private final File file;
     private final long ttl;
     private long timeFile;
     private long timeUpdate;
-    private long timeWrite;
+
+    private boolean running = false;
 
     private org.bukkit.configuration.Configuration def;
     private YamlConfiguration configBuff;
@@ -106,9 +127,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
     }
 
     public synchronized void didUpdate() {
-        if (System.currentTimeMillis() - this.timeWrite > this.ttl) {
-            this.save(this.file);
-            this.timeWrite = System.currentTimeMillis();
+        if (!this.running) {
+            var toSave = new ToSave(this);
+            toSave.start();
         }
     }
 
