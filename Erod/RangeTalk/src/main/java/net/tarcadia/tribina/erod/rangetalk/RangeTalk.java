@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class RangeTalk extends JavaPlugin implements Listener {
@@ -69,10 +70,6 @@ public final class RangeTalk extends JavaPlugin implements Listener {
         return config.getDouble(KEY_PLAYERS + player.getName() + KEY_PLAYERS_RANGE);
     }
 
-    private void setRange(@NotNull Player player, double range) {
-        config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_RANGE, range);
-    }
-
     public boolean checkRange(@NotNull Player player1, @NotNull Player player2) {
         var r = this.getRange(player1);
         var loc1 = player1.getLocation();
@@ -81,14 +78,16 @@ public final class RangeTalk extends JavaPlugin implements Listener {
         var sqrY = (loc1.getY() - loc2.getY()) * (loc1.getY() - loc2.getY());
         var sqrZ = (loc1.getZ() - loc2.getZ()) * (loc1.getZ() - loc2.getZ());
         var sqrR = r * r;
-        return (loc1.getWorld() == loc2.getWorld()) && (sqrX + sqrY + sqrZ < sqrR);
+        return Objects.equals(loc1.getWorld(), loc2.getWorld()) && (sqrX + sqrY + sqrZ <= sqrR);
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        var player = event.getPlayer();
-        var recipients = event.getRecipients();
-        recipients.removeIf(p -> !this.checkRange(player, p));
+        if (this.isFunctionEnabled()) {
+            var player = event.getPlayer();
+            var recipients = event.getRecipients();
+            recipients.removeIf((p) -> !this.checkRange(player, p));
+        }
     }
 
 }
