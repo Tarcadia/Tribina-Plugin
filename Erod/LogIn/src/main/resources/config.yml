@@ -1,4 +1,5 @@
 enabled: true
+allow-visit : true
 texts:
   welcome:
     fore-regin: Welcome. Please use /erodlogin reg <password> <password> to register into Tribina.
