@@ -8,7 +8,7 @@ authors: [ Tarcadia ]
 description: '${project.description}'
 commands:
   erodlogin:
-    description: "Register or login into Tribina"
+    description: "Register or login into Tribina."
     usage: |
       erodlogin enable
       erodlogin disable
