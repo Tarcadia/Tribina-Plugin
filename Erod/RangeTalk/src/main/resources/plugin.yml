@@ -7,15 +7,15 @@ authors: [ Tarcadia ]
 description: '${project.description}'
 commands:
   erodrangetalk:
+    aliases: [ erodrt ]
     description: "Manage player talking range."
     usage: |
       ... enable
       ... disable
       ... set <player> range <number>
       ... set <player> can-shout <true|false>
-    aliases: [ erodrt ];
   erodrangetalk-shout:
+    aliases: [ erodrt-shout, shout ]
     description: "Shout out."
     usage: |
       ... <message>
-    aliases: [ erodrt-shout, shout ];

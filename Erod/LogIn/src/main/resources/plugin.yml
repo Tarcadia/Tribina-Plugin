@@ -8,10 +8,10 @@ authors: [ Tarcadia ]
 description: '${project.description}'
 commands:
   erodlogin:
+    aliases: [ erodli, login ]
     description: "Register or login into Tribina."
     usage: |
       ... enable
       ... disable
       ... <password>
       ... reg <password> <password>
-    aliases: [ erodli, login ];
