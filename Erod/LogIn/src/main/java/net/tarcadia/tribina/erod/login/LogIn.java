@@ -41,15 +41,15 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String KEY_WELCOME_POST_LOGIN = "texts.welcome.post-login";
     public static final String KEY_TEXT_FUNCTION_ENABLE = "texts.function-enable";
     public static final String KEY_TEXT_FUNCTION_DISABLE = "texts.function-disable";
-    public static final String KEY_TEXT_FUNCTION_FAILED = "texts.function-failed";
-    public static final String KEY_TEXT_VISIT_ALLOW = "texts.visit-allow";
+    public static final String KEY_TEXT_FUNCTION_FAIL = "texts.function-fail";
+    public static final String KEY_TEXT_VISIT_ALLOW = "texts.visit-accept";
     public static final String KEY_TEXT_VISIT_DENY = "texts.visit-deny";
-    public static final String KEY_TEXT_VISIT_FAILED = "texts.visit-failed";
+    public static final String KEY_TEXT_VISIT_FAIL = "texts.visit-fail";
     public static final String KEY_TEXT_REG_ACCEPT = "texts.reg-accept";
-    public static final String KEY_TEXT_REG_DENIED = "texts.reg-denied";
+    public static final String KEY_TEXT_REG_DENY = "texts.reg-deny";
     public static final String KEY_TEXT_LOGIN_ACCEPT = "texts.login-accept";
-    public static final String KEY_TEXT_LOGIN_DENIED = "texts.login-denied";
-    public static final String KEY_TEXT_LOGIN_ERROR = "texts.login-error";
+    public static final String KEY_TEXT_LOGIN_DENY = "texts.login-deny";
+    public static final String KEY_TEXT_LOGIN_FAIL = "texts.login-fail";
     public static final String KEY_TEXT_LOGIN_WAIT = "texts.login-wait";
     public static final String KEY_PLAYERS = "players.";
     public static final String KEY_PLAYER_PASSWORDS = ".password";
@@ -232,7 +232,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     this.functionEnable();
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
                 } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAILED), ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAIL), ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_DISABLE))) {
@@ -240,7 +240,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     this.functionDisable();
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
                 } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAILED), ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAIL), ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_VISIT_ALLOW))) {
@@ -248,7 +248,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     this.setVisit(true);
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_ALLOW), ""));
                 } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_FAILED), ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_FAIL), ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_VISIT_DENY))) {
@@ -256,7 +256,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     this.setVisit(false);
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_DENY), ""));
                 } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_FAILED), ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_FAIL), ""));
                 }
                 return true;
             } else if ((args.length == 3) && (args[0].equals(CMD_LI_ARG_REG)) && Objects.equals(args[1], args[2])) {
@@ -269,7 +269,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     if (loc != null) ((Player) sender).teleport(loc);
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                 } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_DENIED), ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_DENY), ""));
                 }
                 return true;
             } else if ((args.length == 1)) {
@@ -284,14 +284,14 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                             if (loc != null) ((Player) sender).teleport(loc);
                             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                         } else {
-                            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_DENIED), ""));
+                            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_DENY), ""));
                         }
                     } else {
                         sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_WAIT), "").replace("$time$", Long.toString(t)));
                     }
                     return true;
                 } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_FAILED), ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_FAIL), ""));
                     return false;
                 }
             } else {

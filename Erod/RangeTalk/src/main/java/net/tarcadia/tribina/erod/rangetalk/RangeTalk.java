@@ -37,12 +37,12 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
 
     public static final String KEY_TEXT_FUNCTION_ENABLE = "texts.function-enable";
     public static final String KEY_TEXT_FUNCTION_DISABLE = "texts.function-disable";
-    public static final String KEY_TEXT_SET_RANGE_ACCEPT = "texts.set-range-accept";
-    public static final String KEY_TEXT_SET_RANGE_FAILED = "texts.set-range-failed";
-    public static final String KEY_TEXT_SET_CAN_SHOUT_TRUE = "texts.set-can-shout-true";
-    public static final String KEY_TEXT_SET_CAN_SHOUT_FALSE = "texts.set-can-shout-false";
-    public static final String KEY_TEXT_SET_CAN_SHOUT_FAILED = "texts.set-can-shout-failed";
-    public static final String KEY_TEXT_SHOUT_FAILED = "texts.shout-failed";
+    public static final String KEY_TEXT_SET_RANGE = "texts.set-range";
+    public static final String KEY_TEXT_SET_RANGE_FAIL = "texts.set-range-fail";
+    public static final String KEY_TEXT_SET_CAN_SHOUT_ACCEPT = "texts.set-can-shout-accept";
+    public static final String KEY_TEXT_SET_CAN_SHOUT_DENY = "texts.set-can-shout-deny";
+    public static final String KEY_TEXT_SET_CAN_SHOUT_FAIL = "texts.set-can-shout-fail";
+    public static final String KEY_TEXT_SHOUT_FAIL = "texts.shout-fail";
 
     public static final String CMD_RT = "erodrangetalk";
     public static final String CMD_RT_ARG_ENABLE = "enable";
@@ -170,9 +170,9 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                 var range = Double.parseDouble(args[3]);
                 if (sender.isOp() && (player != null) && (Double.isNaN(range))) {
                     this.setRange(player, range);
-                    sender.sendMessage(config.getString(KEY_TEXT_SET_RANGE_ACCEPT, "").replace("$player$", player.getName()).replace("$range$", Double.toString(range)));
+                    sender.sendMessage(config.getString(KEY_TEXT_SET_RANGE, "").replace("$player$", player.getName()).replace("$range$", Double.toString(range)));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_SET_RANGE_FAILED, ""));
+                    sender.sendMessage(config.getString(KEY_TEXT_SET_RANGE_FAIL, ""));
                 }
                 return true;
             } else if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT))) {
@@ -182,11 +182,11 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                 if (sender.isOp() && (player != null)) {
                     this.setShout(player, canShout);
                     if (canShout)
-                        sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_TRUE, "").replace("$player$", player.getName()));
+                        sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_ACCEPT, "").replace("$player$", player.getName()));
                     else
-                        sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_FALSE, "").replace("$player$", player.getName()));
+                        sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_DENY, "").replace("$player$", player.getName()));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_FAILED, ""));
+                    sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_FAIL, ""));
                 }
                 return true;
             } else {
@@ -197,7 +197,7 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                 this.doShout((Player) sender, String.join(" ", args));
                 return true;
             } else {
-                sender.sendMessage(config.getString(KEY_TEXT_SHOUT_FAILED, ""));
+                sender.sendMessage(config.getString(KEY_TEXT_SHOUT_FAIL, ""));
                 return false;
             }
         } else {
