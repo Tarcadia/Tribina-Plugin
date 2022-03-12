@@ -71,6 +71,10 @@ public final class RangeTalk extends JavaPlugin implements Listener {
         return config.getDouble(KEY_PLAYERS + player.getName() + KEY_PLAYERS_RANGE, config.getDouble(KEY_DEFAULT_RANGE));
     }
 
+    public void setRange(@NotNull Player player, double range) {
+        config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_RANGE, range);
+    }
+
     public boolean checkRange(@NotNull Player player1, @NotNull Player player2) {
         var r = this.getRange(player1);
         var loc1 = player1.getLocation();
