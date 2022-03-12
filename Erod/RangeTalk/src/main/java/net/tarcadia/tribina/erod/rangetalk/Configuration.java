@@ -133,6 +133,14 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         }
     }
 
+    public synchronized void addAllDefault() {
+        for (var key : this.def.getKeys(true)) {
+            this.tryUpdate();
+            this.configBuff.set(key, this.def.get(key));
+            this.didUpdate();
+        }
+    }
+
     /**
      * Gets a set containing all keys in this section.
      * <p>
