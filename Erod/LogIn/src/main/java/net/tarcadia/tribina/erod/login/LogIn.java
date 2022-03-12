@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +29,9 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static PluginDescriptionFile descrp = null;
     public static Logger logger = null;
     public static String dataPath = null;
+
+    public static final String PATH_CONFIG_DEFAULT = "config.yml";
+    public static final String PATH_CONFIG = "Erod/LogIn.yml";
 
     public static final String KEY_ENABLED = "enabled";
     public static final String KEY_ALLOW_VISIT = "allow-visit";
@@ -77,9 +81,9 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @Override
     public void onLoad() {
-        this.saveDefaultConfig();
         plugin = this;
-        config = Configuration.getConfiguration(new File(this.getConfig().getCurrentPath()));
+        config = Configuration.getConfiguration(new File(PATH_CONFIG));
+        config.setDefaults(YamlConfiguration.loadConfiguration(Objects.requireNonNull(this.getTextResource(PATH_CONFIG_DEFAULT))));
         descrp = this.getDescription();
         logger = this.getLogger();
         dataPath = this.getDataFolder().getPath() + "/";
