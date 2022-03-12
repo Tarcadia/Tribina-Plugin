@@ -75,7 +75,6 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
         descrp = this.getDescription();
         logger = this.getLogger();
         dataPath = this.getDataFolder().getPath() + "/";
-        this.saveDefaultConfig();
         logger.info("Loaded " + descrp.getName() + " v" + descrp.getVersion() + ".");
     }
 
