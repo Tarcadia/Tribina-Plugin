@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,10 +45,10 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String KEY_PLAYERS = "players.";
     public static final String KEY_PLAYER_PASSWORDS = ".password";
 
-    public static final String CMD = "erodlogin";
-    public static final String CMD_REG = "reg";
-    public static final String CMD_ENABLE = "enable";
-    public static final String CMD_DISABLE = "disable";
+    public static final String CMD_LI = "erodlogin";
+    public static final String CMD_LI_ARG_REG = "reg";
+    public static final String CMD_LI_ARG_ENABLE = "enable";
+    public static final String CMD_LI_ARG_DISABLE = "disable";
 
     private MessageDigest md5;
     private final Set<String> playerLogged = new HashSet<>();
@@ -95,7 +94,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @Override
     public void onEnable() {
-        var command = this.getCommand(CMD);
+        var command = this.getCommand(CMD_LI);
         if (command != null) command.setExecutor(this);
         this.getServer().getPluginManager().registerEvents(this, this);
         logger.info("Enabled " + descrp.getName() + " v" + descrp.getVersion() + ".");
@@ -194,19 +193,19 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if ((args.length == 1) && (args[0].equals(CMD_ENABLE))) {
+        if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_ENABLE))) {
             if (sender.isOp()) {
                 this.functionEnable();
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
             }
             return true;
-        } else if ((args.length == 1) && (args[0].equals(CMD_DISABLE))) {
+        } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_DISABLE))) {
             if (sender.isOp()) {
                 this.functionDisable();
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
             }
             return true;
-        } else if ((args.length == 3) && (args[0].equals(CMD_REG)) && Objects.equals(args[1], args[2])) {
+        } else if ((args.length == 3) && (args[0].equals(CMD_LI_ARG_REG)) && Objects.equals(args[1], args[2])) {
             if (this.isFunctionEnabled() && (sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_ACCEPT), ""));
                 this.loginPlayer((Player) sender, args[1]);
@@ -246,9 +245,9 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> ret = new LinkedList<>();
-        if ((args.length <= 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_ENABLE);
-        if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && this.isFunctionEnabled()) ret.add(CMD_DISABLE);
-        if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName())) ret.add(CMD_REG);
+        if ((args.length <= 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_LI_ARG_ENABLE);
+        if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && this.isFunctionEnabled()) ret.add(CMD_LI_ARG_DISABLE);
+        if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName())) ret.add(CMD_LI_ARG_REG);
         if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName())) ret.add("<password>");
         return ret;
     }
