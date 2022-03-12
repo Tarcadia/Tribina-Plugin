@@ -218,6 +218,8 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         if (!this.loggedPlayer(player)) {
             var gm = this.playerLoginMode.get(player.getName());
             var loc = this.playerLoginLoc.get(player.getName());
+            this.playerLoginMode.remove(player.getName());
+            this.playerLoginLoc.remove(player.getName());
             if (gm != null) player.setGameMode(gm);
             if (loc != null) player.teleport(loc);
         }
