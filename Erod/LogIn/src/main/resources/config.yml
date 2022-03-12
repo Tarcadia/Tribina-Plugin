@@ -1,5 +1,6 @@
 enabled: true
 allow-visit : true
+players:
 texts:
   welcome:
     fore-regin: Welcome. Please use /erodlogin reg <password> <password> to register into Tribina.
@@ -13,4 +14,3 @@ texts:
   login-denied: Your login denied.
   login-error: Your login failed. It may because that you are not a player, or you have already logged in, or the system is not enabled.
   login-wait: Your login is too frequent, please wait $time$ seconds.
-players:
