@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.util.data.configuration;
+package net.tarcadia.tribina.erod.login;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;

@@ -1,6 +1,6 @@
-package net.tarcadia.tribina.plugin.login.command;
+package net.tarcadia.tribina.plugin.wasted.login.command;
 
-import net.tarcadia.tribina.plugin.login.LogIns;
+import net.tarcadia.tribina.plugin.wasted.login.LogIns;
 import net.tarcadia.tribina.plugin.util.sys.BaseCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,15 +10,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public class CommandRegIn extends BaseCommand implements TabExecutor {
+public class CommandLogIn extends BaseCommand implements TabExecutor {
 
-    public CommandRegIn(@NotNull String cmd) {
+    private Map<String, Long> playerLastTry = new HashMap<>();
+    private Map<String, Long> playerFails = new HashMap<>();
+
+    public CommandLogIn(@NotNull String cmd) {
         super(cmd);
     }
 
-    public CommandRegIn(@NotNull JavaPlugin plugin, @NotNull String cmd) {
+    public CommandLogIn(@NotNull JavaPlugin plugin, @NotNull String cmd) {
         super(plugin, cmd);
     }
 
@@ -36,12 +42,23 @@ public class CommandRegIn extends BaseCommand implements TabExecutor {
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if ((sender instanceof Player) && (args.length == 2) && (args[0].equals(args[1]))) {
-            if (LogIns.regPlayer((Player) sender, args[0])) {
-                LogIns.loginPlayer((Player) sender, args[0]);
-                sender.sendMessage("Reg in accessed.");
+        if ((sender instanceof Player) && (args.length == 1)) {
+            playerFails.putIfAbsent(sender.getName(), 0L);
+            if (
+                    System.currentTimeMillis() - Objects.requireNonNullElse(playerLastTry.get(sender.getName()), 0L) >=
+                    Long.min(60000, 1L << playerFails.get(sender.getName()))
+            ) {
+                if (LogIns.loginPlayer((Player) sender, args[0])) {
+                    sender.sendMessage("Login accessed.");
+                    playerLastTry.put(sender.getName(), System.currentTimeMillis());
+                    playerFails.put(sender.getName(), 0L);
+                } else {
+                    playerLastTry.put(sender.getName(), System.currentTimeMillis());
+                    playerFails.compute(sender.getName(), (k, v) -> v + 1);
+                    sender.sendMessage("Login denied.");
+                }
             } else {
-                sender.sendMessage("Reg in denied. Already exists.");
+                sender.sendMessage("Login too fast.");
             }
             return true;
         } else {
@@ -68,5 +85,4 @@ public class CommandRegIn extends BaseCommand implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         return null;
     }
-
 }

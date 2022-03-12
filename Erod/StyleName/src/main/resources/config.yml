@@ -1,0 +1,15 @@
+enable: true
+players:
+texts:
+  function-enable: Erod StyleName enabled.
+  function-disable: Erod StyleName enabled.
+  set-name: Player $player$'s custom name set to $name$.
+  set-name-fail: You cannot set the player's name. It may because you are not an op, or the name contains illegal characters.
+  add-tag: Player $player$ added tag $tag$.
+  set-tag: Player $player$ setted tag $tag$.
+  set-tag-fail: You cannot set the player's tag. It may because you are not an op, or the player does not have this tag.
+  set-tag-visible: Player $player$'s tag is visible now.
+  set-tag-invisible: Player $player$'s tag is invisible now.
+  add-style: Player $player$ added style $style$.
+  set-style: Player $player$ setted style $style$.
+  set-style-fail: You cannot set the player's style. It may because you are not an op, or the player does not have this style.

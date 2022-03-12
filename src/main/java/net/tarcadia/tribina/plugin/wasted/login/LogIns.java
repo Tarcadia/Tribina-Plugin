@@ -1,9 +1,9 @@
-package net.tarcadia.tribina.plugin.login;
+package net.tarcadia.tribina.plugin.wasted.login;
 
 import net.tarcadia.tribina.plugin.Main;
-import net.tarcadia.tribina.plugin.login.command.CommandLogIn;
-import net.tarcadia.tribina.plugin.login.command.CommandRegIn;
-import net.tarcadia.tribina.plugin.login.event.EventLogInNoMove;
+import net.tarcadia.tribina.plugin.wasted.login.command.CommandLogIn;
+import net.tarcadia.tribina.plugin.wasted.login.command.CommandRegIn;
+import net.tarcadia.tribina.plugin.wasted.login.event.EventLogInNoMove;
 import net.tarcadia.tribina.plugin.util.sys.BaseCommand;
 import net.tarcadia.tribina.plugin.util.sys.BaseListener;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;

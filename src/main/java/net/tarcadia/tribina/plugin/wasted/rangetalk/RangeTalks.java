@@ -1,7 +1,7 @@
-package net.tarcadia.tribina.plugin.rangetalk;
+package net.tarcadia.tribina.plugin.wasted.rangetalk;
 
 import net.tarcadia.tribina.plugin.Main;
-import net.tarcadia.tribina.plugin.rangetalk.event.EventTalkRange;
+import net.tarcadia.tribina.plugin.wasted.rangetalk.event.EventTalkRange;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.stylename;
+package net.tarcadia.tribina.erod.stylename;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +18,10 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "";
+            return "{\"text\": " +
+                    "\"" + name + "\", " +
+                    "\"color\": \"green\", " +
+                    "}";
         }
     },
 

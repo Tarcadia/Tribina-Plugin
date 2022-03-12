@@ -8,11 +8,12 @@ authors: [ Tarcadia ]
 description: '${project.description}'
 commands:
   erodlogin:
-    description: "Register or login into Tribina"
+    aliases: [ erodli, login ]
+    description: "Register or login into Tribina."
     usage: |
-      erodlogin <password>
-      erodlogin reg <password> <password>
-      erodlogin enable
-      erodlogin disable
-      erodlogin save-config
-      erodlogin reload-config
+      ... enable
+      ... disable
+      ... visit-allow
+      ... visit-deny
+      ... <password>
+      ... reg <password> <password>
