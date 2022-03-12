@@ -44,7 +44,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String KEY_TEXT_FUNCTION_FAILED = "texts.function-failed";
     public static final String KEY_TEXT_VISIT_ALLOW = "texts.visit-allow";
     public static final String KEY_TEXT_VISIT_DENY = "texts.visit-deny";
-    public static final String KEY_TEXT_VISIT_FAILED = "visit-failed";
+    public static final String KEY_TEXT_VISIT_FAILED = "texts.visit-failed";
     public static final String KEY_TEXT_REG_ACCEPT = "texts.reg-accept";
     public static final String KEY_TEXT_REG_DENIED = "texts.reg-denied";
     public static final String KEY_TEXT_LOGIN_ACCEPT = "texts.login-accept";
