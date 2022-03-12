@@ -94,8 +94,11 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @Override
     public void onEnable() {
-        var command = this.getCommand(CMD_LI);
-        if (command != null) command.setExecutor(this);
+        var commandLI = this.getCommand(CMD_LI);
+        if (commandLI != null) {
+            commandLI.setExecutor(this);
+            commandLI.setTabCompleter(this);
+        }
         this.getServer().getPluginManager().registerEvents(this, this);
         logger.info("Enabled " + descrp.getName() + " v" + descrp.getVersion() + ".");
     }
