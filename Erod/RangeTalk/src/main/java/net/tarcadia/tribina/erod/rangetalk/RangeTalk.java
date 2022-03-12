@@ -64,11 +64,11 @@ public final class RangeTalk extends JavaPlugin implements Listener {
         logger.info("Disabled " + descrp.getName() + " v" + descrp.getVersion() + ".");
     }
 
-    private Double getRange(@NotNull Player player) {
-        if (!config.contains(KEY_PLAYERS + player.getName())) {
+    public double getRange(@NotNull Player player) {
+        if (!config.contains(KEY_PLAYERS + player.getName() + KEY_PLAYERS_RANGE)) {
             config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_RANGE, config.getDouble(KEY_DEFAULT_RANGE));
         }
-        return config.getDouble(KEY_PLAYERS + player.getName() + KEY_PLAYERS_RANGE);
+        return config.getDouble(KEY_PLAYERS + player.getName() + KEY_PLAYERS_RANGE, config.getDouble(KEY_DEFAULT_RANGE));
     }
 
     public boolean checkRange(@NotNull Player player1, @NotNull Player player2) {
