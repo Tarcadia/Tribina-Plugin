@@ -132,12 +132,8 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
 
     public void doShout(@NotNull Player player, String shout) {
         if (isFunctionEnabled() && checkShout(player)) {
-            var name = (!player.getDisplayName().equals("") ? player.getDisplayName() : ("\"" + player.getName() + "\""));
-            player.getServer().broadcastMessage("{\"text\": \"\", \"extra\": [" +
-                    name + ", " +
-                    "{\"text\": \"" + shout + "\", \"color\": \"gold\", \"bold\": true}" +
-                    "]}"
-            );
+            var name = (!player.getDisplayName().equals("") ? player.getDisplayName() : player.getName());
+            player.getServer().broadcastMessage( "<" + name + "> " + shout);
         }
     }
 
