@@ -50,6 +50,7 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
     public static final String CMD_RT_ARG_SET = "set";
     public static final String CMD_RT_ARG_SET_RANGE = "range";
     public static final String CMD_RT_ARG_SET_CAN_SHOUT = "can-shout";
+    public static final String CMD_RT_ARG_SET_CANNOT_SHOUT = "cannot-shout";
 
     public static final String CMD_RT_SHOUT = "erodrangetalk-shout";
 
@@ -161,6 +162,24 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
                 }
                 return true;
+            } else if ((args.length == 3) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null)) {
+                    this.setShout(player, true);
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_ACCEPT), "").replace("$player$", player.getName()));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_FAIL), ""));
+                }
+                return true;
+            } else if ((args.length == 3) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CANNOT_SHOUT))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null)) {
+                    this.setShout(player, false);
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_DENY), "").replace("$player$", player.getName()));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_FAIL), ""));
+                }
+                return true;
             } else if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_RANGE))) {
                 var player = this.getServer().getPlayer(args[1]);
                 var range = Double.parseDouble(args[3]);
@@ -169,20 +188,6 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_RANGE), "").replace("$player$", player.getName()).replace("$range$", Double.toString(range)));
                 } else {
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_RANGE_FAIL), ""));
-                }
-                return true;
-            } else if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT))) {
-                var player = this.getServer().getPlayer(args[1]);
-                var canShout = Boolean.parseBoolean(args[3]);
-                System.out.println(canShout);
-                if (sender.isOp() && (player != null)) {
-                    this.setShout(player, canShout);
-                    if (canShout)
-                        sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_ACCEPT), "").replace("$player$", player.getName()));
-                    else
-                        sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_DENY), "").replace("$player$", player.getName()));
-                } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_FAIL), ""));
                 }
                 return true;
             } else {
@@ -214,12 +219,9 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
             }
             if ((args.length == 3) && sender.isOp()) ret.add(CMD_RT_ARG_SET_RANGE);
             if ((args.length == 3) && sender.isOp()) ret.add(CMD_RT_ARG_SET_CAN_SHOUT);
+            if ((args.length == 3) && sender.isOp()) ret.add(CMD_RT_ARG_SET_CANNOT_SHOUT);
             if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_RANGE)) && sender.isOp())
                 ret.add("<number>");
-            if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT)) && sender.isOp())
-                ret.add("true");
-            if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT)) && sender.isOp())
-                ret.add("false");
             return ret;
         } else if (command.getName().equals(CMD_RT_SHOUT)) {
             List<String> ret = new LinkedList<>();

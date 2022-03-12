@@ -13,8 +13,9 @@ commands:
     usage: |
       ... enable
       ... disable
+      ... set <player> can-shout
+      ... set <player> cannot-shout
       ... set <player> range <number>
-      ... set <player> can-shout <true|false>
   erodrangetalk-shout:
     aliases: [ erodrt-shout, shout ]
     description: "Shout out."
