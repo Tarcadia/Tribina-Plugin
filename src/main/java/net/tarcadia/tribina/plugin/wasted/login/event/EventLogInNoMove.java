@@ -1,6 +1,6 @@
-package net.tarcadia.tribina.plugin.login.event;
+package net.tarcadia.tribina.plugin.wasted.login.event;
 
-import net.tarcadia.tribina.plugin.login.LogIns;
+import net.tarcadia.tribina.plugin.wasted.login.LogIns;
 import net.tarcadia.tribina.plugin.util.sys.BaseListener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
