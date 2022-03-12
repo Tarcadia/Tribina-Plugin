@@ -135,7 +135,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     }
 
     public boolean canVisit() {
-        return config.getBoolean(KEY_ALLOW_VISIT, false);
+        return config.getBoolean(KEY_ALLOW_VISIT);
     }
 
     public void setVisit(boolean canVisit) {
@@ -230,46 +230,46 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
             if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_ENABLE))) {
                 if (sender.isOp()) {
                     this.functionEnable();
-                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_ENABLE, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_FAILED, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAILED), ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_DISABLE))) {
                 if (sender.isOp() && ((sender instanceof ConsoleCommandSender) || ((sender instanceof Player) && this.loggedPlayer((Player) sender)))) {
                     this.functionDisable();
-                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_DISABLE, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_FAILED, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAILED), ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_VISIT_ALLOW))) {
                 if (sender.isOp() && ((sender instanceof ConsoleCommandSender) || ((sender instanceof Player) && this.loggedPlayer((Player) sender)))) {
                     this.setVisit(true);
-                    sender.sendMessage(config.getString(KEY_TEXT_VISIT_ALLOW, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_ALLOW), ""));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_VISIT_FAILED, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_FAILED), ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_VISIT_DENY))) {
                 if (sender.isOp() && ((sender instanceof ConsoleCommandSender) || ((sender instanceof Player) && this.loggedPlayer((Player) sender)))) {
                     this.setVisit(false);
-                    sender.sendMessage(config.getString(KEY_TEXT_VISIT_DENY, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_DENY), ""));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_VISIT_FAILED, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_FAILED), ""));
                 }
                 return true;
             } else if ((args.length == 3) && (args[0].equals(CMD_LI_ARG_REG)) && Objects.equals(args[1], args[2])) {
                 if ((sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
-                    sender.sendMessage(config.getString(KEY_TEXT_REG_ACCEPT, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_ACCEPT), ""));
                     this.loginPlayer((Player) sender, args[1]);
                     var gm = this.playerLoginMode.get(sender.getName());
                     var loc = this.playerLoginLoc.get(sender.getName());
                     if (gm != null) ((Player) sender).setGameMode(gm);
                     if (loc != null) ((Player) sender).teleport(loc);
-                    sender.sendMessage(config.getString(KEY_WELCOME_POST_LOGIN, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_REG_DENIED, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_DENIED), ""));
                 }
                 return true;
             } else if ((args.length == 1)) {
@@ -277,21 +277,21 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     var t = timeLogin((Player) sender);
                     if (t <= 0) {
                         if (loginPlayer((Player) sender, args[0])) {
-                            sender.sendMessage(config.getString(KEY_TEXT_LOGIN_ACCEPT, ""));
+                            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_ACCEPT), ""));
                             var gm = this.playerLoginMode.get(sender.getName());
                             var loc = this.playerLoginLoc.get(sender.getName());
                             if (gm != null) ((Player) sender).setGameMode(gm);
                             if (loc != null) ((Player) sender).teleport(loc);
-                            sender.sendMessage(config.getString(KEY_WELCOME_POST_LOGIN, ""));
+                            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                         } else {
-                            sender.sendMessage(config.getString(KEY_TEXT_LOGIN_DENIED, ""));
+                            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_DENIED), ""));
                         }
                     } else {
-                        sender.sendMessage(config.getString(KEY_TEXT_LOGIN_WAIT, "").replace("$time$", Long.toString(t)));
+                        sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_WAIT), "").replace("$time$", Long.toString(t)));
                     }
                     return true;
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_LOGIN_ERROR, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_FAILED), ""));
                     return false;
                 }
             } else {
