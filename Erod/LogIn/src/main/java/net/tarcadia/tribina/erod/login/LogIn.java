@@ -4,6 +4,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -40,8 +41,10 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String KEY_WELCOME_POST_LOGIN = "texts.welcome.post-login";
     public static final String KEY_TEXT_FUNCTION_ENABLE = "texts.function-enable";
     public static final String KEY_TEXT_FUNCTION_DISABLE = "texts.function-disable";
+    public static final String KEY_TEXT_FUNCTION_FAILED = "texts.function-failed";
     public static final String KEY_TEXT_VISIT_ALLOW = "texts.visit-allow";
     public static final String KEY_TEXT_VISIT_DENY = "texts.visit-deny";
+    public static final String KEY_TEXT_VISIT_FAILED = "visit-failed";
     public static final String KEY_TEXT_REG_ACCEPT = "texts.reg-accept";
     public static final String KEY_TEXT_REG_DENIED = "texts.reg-denied";
     public static final String KEY_TEXT_LOGIN_ACCEPT = "texts.login-accept";
@@ -159,6 +162,10 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         }
     }
 
+    public boolean loggedPlayer(@NotNull Player player) {
+        return this.playerLogged.contains(player.getName());
+    }
+
     public boolean loginPlayer(@NotNull Player player, @NotNull String password) {
         if (player.isOnline() && Objects.equals(
                 this.encodeMd5(player.getName() + password),
@@ -184,7 +191,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if (this.isFunctionEnabled() && !this.playerLogged.contains(e.getPlayer().getName()) && !this.canVisit()) {
+        if (this.isFunctionEnabled() && !this.loggedPlayer(e.getPlayer()) && !this.canVisit()) {
             e.setCancelled(true);
         }
     }
@@ -208,9 +215,11 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         var player = event.getPlayer();
-        if (!this.playerLogged.contains(player.getName())) {
-            player.setGameMode(Objects.requireNonNullElse(this.playerLoginMode.get(player.getName()), player.getServer().getDefaultGameMode()));
-            player.teleport(Objects.requireNonNullElse(this.playerLoginLoc.get(player.getName()), player.getWorld().getSpawnLocation()));
+        if (!this.loggedPlayer(player)) {
+            var gm = this.playerLoginMode.get(player.getName());
+            var loc = this.playerLoginLoc.get(player.getName());
+            if (gm != null) player.setGameMode(gm);
+            if (loc != null) player.teleport(loc);
         }
         this.logoutPlayer(event.getPlayer());
     }
@@ -221,57 +230,68 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
             if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_ENABLE))) {
                 if (sender.isOp()) {
                     this.functionEnable();
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
+                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_ENABLE, ""));
+                } else {
+                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_FAILED, ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_DISABLE))) {
-                if (sender.isOp()) {
+                if (sender.isOp() && ((sender instanceof ConsoleCommandSender) || ((sender instanceof Player) && this.loggedPlayer((Player) sender)))) {
                     this.functionDisable();
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
+                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_DISABLE, ""));
+                } else {
+                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_FAILED, ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_VISIT_ALLOW))) {
-                if (sender.isOp()) {
+                if (sender.isOp() && ((sender instanceof ConsoleCommandSender) || ((sender instanceof Player) && this.loggedPlayer((Player) sender)))) {
                     this.setVisit(true);
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_ALLOW), ""));
+                    sender.sendMessage(config.getString(KEY_TEXT_VISIT_ALLOW, ""));
+                } else {
+                    sender.sendMessage(config.getString(KEY_TEXT_VISIT_FAILED, ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_VISIT_DENY))) {
-                if (sender.isOp()) {
+                if (sender.isOp() && ((sender instanceof ConsoleCommandSender) || ((sender instanceof Player) && this.loggedPlayer((Player) sender)))) {
                     this.setVisit(false);
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_DENY), ""));
+                    sender.sendMessage(config.getString(KEY_TEXT_VISIT_DENY, ""));
+                } else {
+                    sender.sendMessage(config.getString(KEY_TEXT_VISIT_FAILED, ""));
                 }
                 return true;
             } else if ((args.length == 3) && (args[0].equals(CMD_LI_ARG_REG)) && Objects.equals(args[1], args[2])) {
-                if (this.isFunctionEnabled() && (sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_ACCEPT), ""));
+                if ((sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
+                    sender.sendMessage(config.getString(KEY_TEXT_REG_ACCEPT, ""));
                     this.loginPlayer((Player) sender, args[1]);
-                    ((Player) sender).setGameMode(Objects.requireNonNullElse(this.playerLoginMode.get(sender.getName()), sender.getServer().getDefaultGameMode()));
-                    ((Player) sender).teleport(Objects.requireNonNullElse(this.playerLoginLoc.get(sender.getName()), ((Player) sender).getWorld().getSpawnLocation()));
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
-                    return true;
+                    var gm = this.playerLoginMode.get(sender.getName());
+                    var loc = this.playerLoginLoc.get(sender.getName());
+                    if (gm != null) ((Player) sender).setGameMode(gm);
+                    if (loc != null) ((Player) sender).teleport(loc);
+                    sender.sendMessage(config.getString(KEY_WELCOME_POST_LOGIN, ""));
                 } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_DENIED), ""));
-                    return false;
+                    sender.sendMessage(config.getString(KEY_TEXT_REG_DENIED, ""));
                 }
+                return true;
             } else if ((args.length == 1)) {
-                if (this.isFunctionEnabled() && (sender instanceof Player) && !this.playerLogged.contains(sender.getName())) {
+                if (this.isFunctionEnabled() && (sender instanceof Player) && !this.loggedPlayer((Player) sender)) {
                     var t = timeLogin((Player) sender);
                     if (t <= 0) {
                         if (loginPlayer((Player) sender, args[0])) {
-                            ((Player) sender).setGameMode(Objects.requireNonNullElse(this.playerLoginMode.get(sender.getName()), sender.getServer().getDefaultGameMode()));
-                            ((Player) sender).teleport(Objects.requireNonNullElse(this.playerLoginLoc.get(sender.getName()), ((Player) sender).getWorld().getSpawnLocation()));
-                            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_ACCEPT), ""));
-                            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
+                            sender.sendMessage(config.getString(KEY_TEXT_LOGIN_ACCEPT, ""));
+                            var gm = this.playerLoginMode.get(sender.getName());
+                            var loc = this.playerLoginLoc.get(sender.getName());
+                            if (gm != null) ((Player) sender).setGameMode(gm);
+                            if (loc != null) ((Player) sender).teleport(loc);
+                            sender.sendMessage(config.getString(KEY_WELCOME_POST_LOGIN, ""));
                         } else {
-                            sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_DENIED), ""));
+                            sender.sendMessage(config.getString(KEY_TEXT_LOGIN_DENIED, ""));
                         }
                     } else {
-                        sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_WAIT), "").replace("$time$", Long.toString(t)));
+                        sender.sendMessage(config.getString(KEY_TEXT_LOGIN_WAIT, "").replace("$time$", Long.toString(t)));
                     }
                     return true;
                 } else {
-                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_ERROR), ""));
+                    sender.sendMessage(config.getString(KEY_TEXT_LOGIN_ERROR, ""));
                     return false;
                 }
             } else {
@@ -287,15 +307,12 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         if (command.getName().equals(CMD_LI)) {
             List<String> ret = new LinkedList<>();
             if ((args.length <= 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_LI_ARG_ENABLE);
-            if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && this.isFunctionEnabled())
-                ret.add(CMD_LI_ARG_DISABLE);
-            if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && this.canVisit())
-                ret.add(CMD_LI_ARG_VISIT_DENY);
-            if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && !this.canVisit())
-                ret.add(CMD_LI_ARG_VISIT_ALLOW);
-            if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName()))
+            if ((args.length <= 1) && sender.isOp() && this.isFunctionEnabled()) ret.add(CMD_LI_ARG_DISABLE);
+            if ((args.length <= 1) && sender.isOp() && this.canVisit()) ret.add(CMD_LI_ARG_VISIT_DENY);
+            if ((args.length <= 1) && sender.isOp() && !this.canVisit()) ret.add(CMD_LI_ARG_VISIT_ALLOW);
+            if ((args.length <= 1) && (sender instanceof Player) && this.isFunctionEnabled() && !hasPlayer((Player) sender) && !this.loggedPlayer((Player) sender))
                 ret.add(CMD_LI_ARG_REG);
-            if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName()))
+            if ((args.length <= 1) && (sender instanceof Player) && this.isFunctionEnabled() && hasPlayer((Player) sender) && !this.loggedPlayer((Player) sender))
                 ret.add("<password>");
             return ret;
         } else {
