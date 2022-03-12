@@ -195,11 +195,10 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
         } else if (command.getName().equals(CMD_RT_SHOUT)) {
             if ((args.length >= 1) && (sender instanceof Player) && this.checkShout((Player) sender)) {
                 this.doShout((Player) sender, String.join(" ", args));
-                return true;
             } else {
                 sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SHOUT_FAIL), ""));
-                return false;
             }
+            return true;
         } else {
             return false;
         }
