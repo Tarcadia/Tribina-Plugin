@@ -86,6 +86,14 @@ public final class RangeTalk extends JavaPlugin implements Listener {
         return Objects.equals(loc1.getWorld(), loc2.getWorld()) && (sqrX + sqrY + sqrZ <= sqrR);
     }
 
+    public void setShout(@NotNull Player player, boolean canShout) {
+        config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_CAN_SHOUT, canShout);
+    }
+
+    public boolean checkShout(@NotNull Player player) {
+        return config.getBoolean(KEY_PLAYERS + player.getName() + KEY_PLAYERS_CAN_SHOUT, false);
+    }
+
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (this.isFunctionEnabled()) {
