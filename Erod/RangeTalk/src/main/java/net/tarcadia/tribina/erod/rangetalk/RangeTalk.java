@@ -127,7 +127,7 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
     }
 
     public boolean checkShout(@NotNull Player player) {
-        return config.getBoolean(KEY_PLAYERS + player.getName() + KEY_PLAYERS_CAN_SHOUT, false);
+        return config.getBoolean(KEY_PLAYERS + player.getName() + KEY_PLAYERS_CAN_SHOUT);
     }
 
     public void doShout(@NotNull Player player, String shout) {
@@ -156,13 +156,13 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
             if ((args.length == 1) && (args[0].equals(CMD_RT_ARG_ENABLE))) {
                 if (sender.isOp()) {
                     this.functionEnable();
-                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_ENABLE, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_RT_ARG_DISABLE))) {
                 if (sender.isOp()) {
                     this.functionDisable();
-                    sender.sendMessage(config.getString(KEY_TEXT_FUNCTION_DISABLE, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
                 }
                 return true;
             } else if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_RANGE))) {
@@ -170,9 +170,9 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                 var range = Double.parseDouble(args[3]);
                 if (sender.isOp() && (player != null) && (Double.isNaN(range))) {
                     this.setRange(player, range);
-                    sender.sendMessage(config.getString(KEY_TEXT_SET_RANGE, "").replace("$player$", player.getName()).replace("$range$", Double.toString(range)));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_RANGE), "").replace("$player$", player.getName()).replace("$range$", Double.toString(range)));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_SET_RANGE_FAIL, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_RANGE_FAIL), ""));
                 }
                 return true;
             } else if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT))) {
@@ -182,11 +182,11 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                 if (sender.isOp() && (player != null)) {
                     this.setShout(player, canShout);
                     if (canShout)
-                        sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_ACCEPT, "").replace("$player$", player.getName()));
+                        sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_ACCEPT), "").replace("$player$", player.getName()));
                     else
-                        sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_DENY, "").replace("$player$", player.getName()));
+                        sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_DENY), "").replace("$player$", player.getName()));
                 } else {
-                    sender.sendMessage(config.getString(KEY_TEXT_SET_CAN_SHOUT_FAIL, ""));
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_CAN_SHOUT_FAIL), ""));
                 }
                 return true;
             } else {
@@ -197,7 +197,7 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                 this.doShout((Player) sender, String.join(" ", args));
                 return true;
             } else {
-                sender.sendMessage(config.getString(KEY_TEXT_SHOUT_FAIL, ""));
+                sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SHOUT_FAIL), ""));
                 return false;
             }
         } else {
