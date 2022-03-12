@@ -1,0 +1,8 @@
+name: ErodStyleName
+version: '${project.version}'
+main: net.tarcadia.tribina.erod.stylename.StyleName
+api-version: 1.18
+prefix: EROD SN
+load: STARTUP
+authors: [ Tarcadia ]
+description: Display name management for Tribina
