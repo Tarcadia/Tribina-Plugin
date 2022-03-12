@@ -5,3 +5,17 @@ api-version: 1.18
 prefix: EROD RT
 authors: [ Tarcadia ]
 description: '${project.description}'
+commands:
+  erodrangetalk:
+    description: "Manage player talking range."
+    usage: |
+      ... enable
+      ... disable
+      ... <player> range <range>
+      ... <player> can-shout <can-shout>
+    aliases: [ erodrt ];
+  erodrangetalk-shout:
+    description: "Shout out."
+    usage: |
+      ... <message>
+    aliases: [ erodrt-shout, shout ];
