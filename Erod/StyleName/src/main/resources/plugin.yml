@@ -5,4 +5,4 @@ api-version: 1.18
 prefix: EROD SN
 load: STARTUP
 authors: [ Tarcadia ]
-description: Display name management for Tribina
+description: '${project.description}'
