@@ -23,6 +23,7 @@ public final class RangeTalk extends JavaPlugin implements Listener {
     public static final String KEY_ENABLED = "enabled";
     public static final String KEY_DEFAULT_RANGE = "default-range";
     public static final String KEY_PLAYERS = "players.";
+    public static final String KEY_PLAYERS_CAN_SHOUT = ".can-shout";
     public static final String KEY_PLAYERS_RANGE = ".range";
 
     public boolean isFunctionEnabled() {
