@@ -8,7 +8,9 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "\"" + name + "\"";
+            return "{\"text\": " +
+                    "\"" + name + "\", " +
+                    "}";
         }
     },
 
