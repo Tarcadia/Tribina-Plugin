@@ -222,7 +222,9 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
             if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_RANGE)) && sender.isOp())
                 ret.add("<number>");
             if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT)) && sender.isOp())
-                ret.add("<true|false>");
+                ret.add("true");
+            if ((args.length == 4) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT)) && sender.isOp())
+                ret.add("false");
             return ret;
         } else if (command.getName().equals(CMD_RT_SHOUT)) {
             List<String> ret = new LinkedList<>();
