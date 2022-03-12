@@ -211,6 +211,7 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
             List<String> ret = new LinkedList<>();
             if ((args.length == 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_RT_ARG_ENABLE);
             if ((args.length == 1) && sender.isOp() && this.isFunctionEnabled()) ret.add(CMD_RT_ARG_DISABLE);
+            if ((args.length == 1) && sender.isOp()) ret.add(CMD_RT_ARG_SET);
             if ((args.length == 2) && (args[0].equals(CMD_RT_ARG_SET)) && sender.isOp()) {
                 List<String> playerLst = new LinkedList<>();
                 for (var p : this.getServer().getOnlinePlayers()) playerLst.add(p.getName());
