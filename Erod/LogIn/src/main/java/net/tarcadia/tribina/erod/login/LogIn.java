@@ -36,6 +36,8 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String KEY_WELCOME_POST_LOGIN = "texts.welcome.post-login";
     public static final String KEY_TEXT_FUNCTION_ENABLE = "texts.function-enable";
     public static final String KEY_TEXT_FUNCTION_DISABLE = "texts.function-disable";
+    public static final String KEY_TEXT_VISIT_ALLOW = "texts.visit-allow";
+    public static final String KEY_TEXT_VISIT_DENY = "texts.visit-deny";
     public static final String KEY_TEXT_REG_ACCEPT = "texts.reg-accept";
     public static final String KEY_TEXT_REG_DENIED = "texts.reg-denied";
     public static final String KEY_TEXT_LOGIN_ACCEPT = "texts.login-accept";
@@ -49,6 +51,8 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String CMD_LI_ARG_REG = "reg";
     public static final String CMD_LI_ARG_ENABLE = "enable";
     public static final String CMD_LI_ARG_DISABLE = "disable";
+    public static final String CMD_LI_ARG_VISIT_ALLOW = "visit-allow";
+    public static final String CMD_LI_ARG_VISIT_DENY = "visit-deny";
 
     private MessageDigest md5;
     private final Set<String> playerLogged = new HashSet<>();
@@ -123,6 +127,14 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         );
     }
 
+    public boolean canVisit() {
+        return config.getBoolean(KEY_ALLOW_VISIT, false);
+    }
+
+    public void setVisit(boolean canVisit) {
+        config.set(KEY_ALLOW_VISIT, canVisit);
+    }
+
     public boolean hasPlayer(@NotNull Player player) {
         return config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYER_PASSWORDS) != null;
     }
@@ -168,7 +180,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if (this.isFunctionEnabled() && !this.playerLogged.contains(e.getPlayer().getName()) && !config.getBoolean(KEY_ALLOW_VISIT, false)) {
+        if (this.isFunctionEnabled() && !this.playerLogged.contains(e.getPlayer().getName()) && !this.canVisit()) {
             e.setCancelled(true);
         }
     }
@@ -207,6 +219,18 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                 if (sender.isOp()) {
                     this.functionDisable();
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
+                }
+                return true;
+            } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_VISIT_ALLOW))) {
+                if (sender.isOp()) {
+                    this.setVisit(true);
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_ALLOW), ""));
+                }
+                return true;
+            } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_VISIT_DENY))) {
+                if (sender.isOp()) {
+                    this.setVisit(false);
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_VISIT_DENY), ""));
                 }
                 return true;
             } else if ((args.length == 3) && (args[0].equals(CMD_LI_ARG_REG)) && Objects.equals(args[1], args[2])) {
@@ -256,6 +280,10 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
             if ((args.length <= 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_LI_ARG_ENABLE);
             if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && this.isFunctionEnabled())
                 ret.add(CMD_LI_ARG_DISABLE);
+            if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && this.canVisit())
+                ret.add(CMD_LI_ARG_VISIT_DENY);
+            if ((args.length <= 1) && sender.isOp() && this.playerLogged.contains(sender.getName()) && !this.canVisit())
+                ret.add(CMD_LI_ARG_VISIT_ALLOW);
             if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && !hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName()))
                 ret.add(CMD_LI_ARG_REG);
             if (this.isFunctionEnabled() && (sender instanceof Player) && (args.length <= 1) && hasPlayer((Player) sender) && !this.playerLogged.contains(sender.getName()))

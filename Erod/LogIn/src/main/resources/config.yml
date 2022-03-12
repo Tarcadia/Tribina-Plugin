@@ -8,6 +8,8 @@ texts:
     post-login: Welcome to Tribina.
   function-enable: Erod LogIn enabled.
   function-disable: Erod LogIn disabled.
+  visit-allow: Visit allowed.
+  visit-deny: Visit denied.
   reg-accept: Your register accepted.
   reg-denied: Your register failed. It may because that you have already registered, or you are not a player, or the system is not enabled.
   login-accept: Your login accepted.

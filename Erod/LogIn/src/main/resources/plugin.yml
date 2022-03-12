@@ -13,5 +13,7 @@ commands:
     usage: |
       ... enable
       ... disable
+      ... visit-allow
+      ... visit-deny
       ... <password>
       ... reg <password> <password>
