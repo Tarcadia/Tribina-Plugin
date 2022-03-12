@@ -8,7 +8,7 @@ authors: [ Tarcadia ]
 description: '${project.description}'
 commands:
   erodrangetalk:
-    aliases: [ erodrt ]
+    aliases: [ erodrt, rangetalk ]
     description: "Manage player talking range."
     usage: |
       ... enable
