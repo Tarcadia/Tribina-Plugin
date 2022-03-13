@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.erod.rangetalk;
+package net.tarcadia.tribina.erod.mapregion.util.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
