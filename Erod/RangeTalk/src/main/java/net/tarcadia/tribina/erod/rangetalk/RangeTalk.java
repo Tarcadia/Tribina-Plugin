@@ -37,6 +37,7 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
 
     public static final String KEY_TEXT_FUNCTION_ENABLE = "texts.function-enable";
     public static final String KEY_TEXT_FUNCTION_DISABLE = "texts.function-disable";
+    public static final String KEY_TEXT_FUNCTION_FAIL = "texts.function-fail";
     public static final String KEY_TEXT_SET_RANGE = "texts.set-range";
     public static final String KEY_TEXT_SET_RANGE_FAIL = "texts.set-range-fail";
     public static final String KEY_TEXT_SET_CAN_SHOUT_ACCEPT = "texts.set-can-shout-accept";
@@ -154,12 +155,16 @@ public final class RangeTalk extends JavaPlugin implements TabExecutor, Listener
                 if (sender.isOp()) {
                     this.functionEnable();
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAIL), ""));
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_RT_ARG_DISABLE))) {
                 if (sender.isOp()) {
                     this.functionDisable();
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAIL), ""));
                 }
                 return true;
             } else if ((args.length == 3) && (args[0].equals(CMD_RT_ARG_SET)) && (args[2].equals(CMD_RT_ARG_SET_CAN_SHOUT))) {

@@ -267,6 +267,8 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
                 if (sender.isOp()) {
                     this.functionDisable();
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_FAIL), ""));
                 }
                 return true;
             } else if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_LIST))) {
