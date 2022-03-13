@@ -52,6 +52,8 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public static final String KEY_TEXT_LOGIN_DENY = "texts.login-deny";
     public static final String KEY_TEXT_LOGIN_FAIL = "texts.login-fail";
     public static final String KEY_TEXT_LOGIN_WAIT = "texts.login-wait";
+    public static final String KEY_TEXT_PLAYER_COMMAND_DENY = "player-command-deny";
+
     public static final String KEY_PLAYERS = "players.";
     public static final String KEY_PLAYER_PASSWORDS = ".password";
 
