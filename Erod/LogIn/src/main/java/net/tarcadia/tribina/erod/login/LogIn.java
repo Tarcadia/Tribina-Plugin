@@ -192,6 +192,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     }
 
     public void playerJoinControl(@NotNull Player player) {
+        this.logoutPlayer(player);
         this.playerLoginLoc.put(player.getName(), player.getLocation());
         this.playerLoginMode.put(player.getName(), player.getGameMode());
         player.setGameMode(GameMode.SPECTATOR);
