@@ -4,6 +4,7 @@ players:
 texts:
   function-enable: Erod RangeTalk enabled.
   function-disable: Erod RangeTalk disabled.
+  function-fail: You cannot set enability. It may because you are not an op.
   set-range: Player $player$'s talk range is set to $range$.
   set-range-fail: Player talk range set failed. It may because you are not an op, or the range is not a number, or the player does not exist.
   set-can-shout-accept: Player $player$ can shout now.
