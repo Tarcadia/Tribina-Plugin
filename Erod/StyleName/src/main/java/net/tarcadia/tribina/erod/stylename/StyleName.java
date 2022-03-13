@@ -5,7 +5,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -98,6 +100,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             commandSN.setExecutor(this);
             commandSN.setTabCompleter(this);
         }
+        this.getServer().getPluginManager().registerEvents(this, this);
         logger.info("Enabled " + descrp.getName() + " v" + descrp.getVersion() + ".");
 
     }
@@ -114,6 +117,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         return canName;
     }
 
+    @NotNull
     public String getPlayerName(@NotNull Player player) {
         return config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_NAME, "");
     }
@@ -132,6 +136,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         }
     }
 
+    @NotNull
     public String getPlayerTag(@NotNull Player player) {
         var tag = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG, "");
         var ret = "";
@@ -144,6 +149,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         return ret;
     }
 
+    @NotNull
     public List<String> getPlayerTagList(@NotNull Player player) {
         var lst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST);
         var ret = new LinkedList<String>();
@@ -156,10 +162,6 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             }
         }
         return ret;
-    }
-
-    public boolean checkPlayerTagVisibility(@NotNull Player player) {
-        return config.getBoolean(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_VISIBLE);
     }
 
     public void setPlayerTagVisibility(@NotNull Player player, boolean visibility) {
@@ -180,6 +182,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         }
     }
 
+    @NotNull
     public String getPlayerStyle(@NotNull Player player) {
         var style = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE, "");
         var ret = "";
@@ -192,6 +195,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         return ret;
     }
 
+    @NotNull
     public List<String> getPlayerStyleList(@NotNull Player player) {
         var lst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE_LIST);
         var ret = new LinkedList<String>();
@@ -250,7 +254,11 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         }
     }
 
-
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        var player = event.getPlayer();
+        player.setDisplayName(this.getPlayerDisplay(player));
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
