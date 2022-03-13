@@ -257,7 +257,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equals(CMD_LI)) {
             if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_ENABLE))) {
-                if (sender.isOp()) {
+                if (sender.isOp() && !this.isFunctionEnabled()) {
                     this.functionEnable();
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
                 } else {
@@ -265,7 +265,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                 }
                 return true;
             } else if ((args.length == 1) && (args[0].equals(CMD_LI_ARG_DISABLE))) {
-                if (sender.isOp() && ((sender instanceof ConsoleCommandSender) || ((sender instanceof Player) && this.loggedPlayer((Player) sender)))) {
+                if (sender.isOp() && ((sender instanceof ConsoleCommandSender) || ((sender instanceof Player) && this.loggedPlayer((Player) sender))) && this.isFunctionEnabled()) {
                     this.functionDisable();
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
                 } else {
