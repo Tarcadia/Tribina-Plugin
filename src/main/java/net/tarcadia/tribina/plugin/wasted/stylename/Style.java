@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.stylename;
+package net.tarcadia.tribina.plugin.wasted.stylename;
 
 import org.jetbrains.annotations.NotNull;
 
