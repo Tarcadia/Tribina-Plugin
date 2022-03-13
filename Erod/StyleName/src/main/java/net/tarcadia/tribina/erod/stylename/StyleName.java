@@ -139,7 +139,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             var theTag = Tag.valueOf(tag);
             ret = theTag.tag();
         } catch (IllegalArgumentException e) {
-            ret = tag;
+            ret = tag + " (NOT SUPPORTED)";
         }
         return ret;
     }
@@ -152,7 +152,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
                 var theTag = Tag.valueOf(tag);
                 ret.add(theTag.tag());
             } catch (IllegalArgumentException e) {
-                ret.add(tag);
+                ret.add(tag + " (NOT SUPPORTED)");
             }
         }
         return ret;
@@ -187,7 +187,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             var theStyle = Style.valueOf(style);
             ret = theStyle.styled(style);
         } catch (IllegalArgumentException e) {
-            ret = style;
+            ret = style + " (NOT SUPPORTED)";
         }
         return ret;
     }
@@ -200,7 +200,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
                 var theStyle = Style.valueOf(style);
                 ret.add(theStyle.styled(style));
             } catch (IllegalArgumentException e) {
-                ret.add(style);
+                ret.add(style + " (NOT SUPPORTED)");
             }
         }
         return ret;
@@ -279,9 +279,9 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
                     sender.sendMessage("tag: "+ this.getPlayerTag(player) + '\n');
                     sender.sendMessage("style: " + this.getPlayerStyle(player) + '\n');
                     sender.sendMessage("tag list:\n");
-                    for (var s : this.getPlayerTagList(player)) sender.sendMessage(" -" + s + '\n');
+                    for (var s : this.getPlayerTagList(player)) sender.sendMessage("  - " + s + '\n');
                     sender.sendMessage("style list:\n");
-                    for (var s : this.getPlayerStyleList(player)) sender.sendMessage(" -" + s + '\n');
+                    for (var s : this.getPlayerStyleList(player)) sender.sendMessage("  - " + s + '\n');
                 } else {
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LIST_FAIL), ""));
                 }
