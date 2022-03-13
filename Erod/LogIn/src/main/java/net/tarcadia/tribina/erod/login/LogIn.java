@@ -247,6 +247,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     !event.getMessage().startsWith("/erodli") &&
                     !event.getMessage().startsWith("/login")
             ) {
+                player.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_PLAYER_COMMAND_DENY), ""));
                 event.setCancelled(true);
             }
         }
