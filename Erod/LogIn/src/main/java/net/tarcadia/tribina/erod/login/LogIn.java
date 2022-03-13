@@ -74,11 +74,13 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
 
     public void functionEnable() {
         config.set(KEY_ENABLED, true);
+        for (var player : this.getServer().getOnlinePlayers()) this.playerJoinControl(player);
         logger.info("Plugin functional enabled.");
     }
 
     public void functionDisable() {
         config.set(KEY_ENABLED, false);
+        for (var player : this.getServer().getOnlinePlayers()) this.playerQuitControl(player);
         logger.info("Plugin functional disabled.");
     }
 
@@ -189,6 +191,27 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         logger.info("Log player " + player.getName() + " out.");
     }
 
+    public void playerJoinControl(@NotNull Player player) {
+        this.logoutPlayer(player);
+        this.playerLoginLoc.put(player.getName(), player.getLocation());
+        this.playerLoginMode.put(player.getName(), player.getGameMode());
+        player.setGameMode(GameMode.SPECTATOR);
+        if (!hasPlayer(player)) {
+            player.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_REGIN), ""));
+        } else if (hasPlayer(player)) {
+            player.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_LOGIN), ""));
+        }
+    }
+
+    public void playerQuitControl(@NotNull Player player) {
+        var gm = this.playerLoginMode.get(player.getName());
+        var loc = this.playerLoginLoc.get(player.getName());
+        this.playerLoginMode.remove(player.getName());
+        this.playerLoginLoc.remove(player.getName());
+        if (gm != null) player.setGameMode(gm);
+        if (loc != null) player.teleport(loc);
+    }
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         if (this.isFunctionEnabled() && !this.loggedPlayer(e.getPlayer()) && !this.canVisit()) {
@@ -200,30 +223,30 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         this.playerLastTry.putIfAbsent(event.getPlayer().getName(), 0L);
         this.playerFails.putIfAbsent(event.getPlayer().getName(), 0L);
-        this.playerLoginLoc.put(event.getPlayer().getName(), event.getPlayer().getLocation());
-        this.playerLoginMode.put(event.getPlayer().getName(), event.getPlayer().getGameMode());
         if (this.isFunctionEnabled()) {
-            event.getPlayer().setGameMode(GameMode.SPECTATOR);
-            if (!hasPlayer(event.getPlayer())) {
-                event.getPlayer().sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_REGIN), ""));
-            } else if (hasPlayer(event.getPlayer())) {
-                event.getPlayer().sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_FORE_LOGIN), ""));
-            }
+            this.playerJoinControl(event.getPlayer());
         }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        var player = event.getPlayer();
-        if (!this.loggedPlayer(player)) {
-            var gm = this.playerLoginMode.get(player.getName());
-            var loc = this.playerLoginLoc.get(player.getName());
-            this.playerLoginMode.remove(player.getName());
-            this.playerLoginLoc.remove(player.getName());
-            if (gm != null) player.setGameMode(gm);
-            if (loc != null) player.teleport(loc);
+        if (this.isFunctionEnabled()) {
+            this.playerQuitControl(event.getPlayer());
         }
         this.logoutPlayer(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        var player = event.getPlayer();
+        if (!this.loggedPlayer(player) && this.isFunctionEnabled()) {
+            if (!event.getMessage().startsWith("/erodlogin") &&
+                    !event.getMessage().startsWith("/erodli") &&
+                    !event.getMessage().startsWith("/login")
+            ) {
+                event.setCancelled(true);
+            }
+        }
     }
 
     @Override
@@ -265,10 +288,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                 if ((sender instanceof Player) && this.regPlayer((Player) sender, args[1])) {
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_ACCEPT), ""));
                     this.loginPlayer((Player) sender, args[1]);
-                    var gm = this.playerLoginMode.get(sender.getName());
-                    var loc = this.playerLoginLoc.get(sender.getName());
-                    if (gm != null) ((Player) sender).setGameMode(gm);
-                    if (loc != null) ((Player) sender).teleport(loc);
+                    this.playerQuitControl((Player) sender);
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                 } else {
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_REG_DENY), ""));
@@ -280,10 +300,7 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
                     if (t <= 0) {
                         if (loginPlayer((Player) sender, args[0])) {
                             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_ACCEPT), ""));
-                            var gm = this.playerLoginMode.get(sender.getName());
-                            var loc = this.playerLoginLoc.get(sender.getName());
-                            if (gm != null) ((Player) sender).setGameMode(gm);
-                            if (loc != null) ((Player) sender).teleport(loc);
+                            this.playerQuitControl((Player) sender);
                             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_WELCOME_POST_LOGIN), ""));
                         } else {
                             sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LOGIN_DENY), ""));

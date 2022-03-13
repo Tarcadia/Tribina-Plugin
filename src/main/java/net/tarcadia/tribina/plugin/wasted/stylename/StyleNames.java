@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.plugin.stylename;
+package net.tarcadia.tribina.plugin.wasted.stylename;
 
 import net.tarcadia.tribina.plugin.Main;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;

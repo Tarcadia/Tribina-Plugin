@@ -753,16 +753,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getStringList(path);
         var val = this.configBuff.getString(path);
         List<String> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
-        } else if (val != null) {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+        } else if ((val != null) && !Objects.equals(val, value)) {
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -817,13 +814,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getIntegerList(path);
         var val = this.configBuff.getInt(path);
         List<Integer> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!Objects.equals(val, value)) {
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -863,13 +860,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getBooleanList(path);
         var val = this.configBuff.getBoolean(path);
         List<Boolean> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!Objects.equals(val, value)) {
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -909,13 +906,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getDoubleList(path);
         var val = this.configBuff.getDouble(path);
         List<Double> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!Objects.equals(val, value)) {
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -955,13 +952,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getFloatList(path);
         var val = this.configBuff.getDouble(path);
         List<Float> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!Objects.equals(val, value)) {
+            added = List.of((float) val, value);
         } else {
-            added = new ArrayList<>(2);
-            added.set(0, (float) val);
-            added.set(1, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -1001,13 +998,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getLongList(path);
         var val = this.configBuff.getLong(path);
         List<Long> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!Objects.equals(val, value)) {
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -1047,13 +1044,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getByteList(path);
         var val = this.configBuff.getInt(path);
         List<Byte> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!Objects.equals(val, value)) {
+            added = List.of((byte) val, value);
         } else {
-            added = new ArrayList<>(2);
-            added.set(0, (byte) val);
-            added.set(1, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -1093,13 +1090,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getCharacterList(path);
         var val = this.configBuff.getInt(path);
         List<Character> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!Objects.equals(val, value)) {
+            added = List.of((char) val, value);
         } else {
-            added = new ArrayList<>(2);
-            added.set(0, (char) val);
-            added.set(1, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -1139,13 +1136,13 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         var lst = this.configBuff.getShortList(path);
         var val = this.configBuff.getInt(path);
         List<Short> added;
-        if (!lst.isEmpty()) {
+        if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!Objects.equals(val, value)) {
+            added = List.of((short) val, value);
         } else {
-            added = new ArrayList<>(2);
-            added.set(0, (short) val);
-            added.set(1, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
