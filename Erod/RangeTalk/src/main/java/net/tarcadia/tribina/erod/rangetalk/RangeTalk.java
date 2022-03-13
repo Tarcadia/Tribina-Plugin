@@ -1,5 +1,6 @@
 package net.tarcadia.tribina.erod.rangetalk;
 
+import net.tarcadia.tribina.erod.rangetalk.util.Configuration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
