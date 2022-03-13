@@ -1,5 +1,6 @@
 package net.tarcadia.tribina.erod.login;
 
+import net.tarcadia.tribina.erod.login.util.Configuration;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
