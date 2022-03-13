@@ -757,12 +757,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if ((val != null) && !Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, value);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -821,12 +818,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if (!Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, val);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -870,12 +864,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if (!Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, val);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -919,12 +910,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if (!Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, val);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -968,12 +956,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if (!Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, (float) val);
-            added.set(1, value);
+            added = List.of((float) val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, (float) val);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -1017,12 +1002,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if (!Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, val);
-            added.set(1, value);
+            added = List.of(val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, val);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -1066,12 +1048,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if (!Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, (byte) val);
-            added.set(1, value);
+            added = List.of((byte) val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, (byte) val);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -1115,12 +1094,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if (!Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, (char) val);
-            added.set(1, value);
+            added = List.of((char) val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, (char) val);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
@@ -1164,12 +1140,9 @@ public class Configuration implements org.bukkit.configuration.Configuration {
             added = lst;
             added.add(value);
         } else if (!Objects.equals(val, value)) {
-            added = new ArrayList<>(2);
-            added.set(0, (short) val);
-            added.set(1, value);
+            added = List.of((short) val, value);
         } else {
-            added = new ArrayList<>(1);
-            added.set(0, (short) val);
+            added = List.of(value);
         }
         this.configBuff.set(path, added);
         this.didUpdate();
