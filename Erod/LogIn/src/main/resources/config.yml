@@ -18,3 +18,4 @@ texts:
   login-deny: Your login denied.
   login-fail: Your login failed. It may because that you are not a player, or you have already logged in, or the system is not enabled.
   login-wait: Your login is too frequent, please wait $time$ seconds.
+  player-command-deny: You shall login first before you send any command.
