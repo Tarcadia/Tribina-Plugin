@@ -235,6 +235,19 @@ public final class LogIn extends JavaPlugin implements TabExecutor, Listener {
         this.logoutPlayer(event.getPlayer());
     }
 
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        var player = event.getPlayer();
+        if (!this.loggedPlayer(player) && this.isFunctionEnabled()) {
+            if (!event.getMessage().startsWith("/erodlogin") &&
+                    !event.getMessage().startsWith("/erodli") &&
+                    !event.getMessage().startsWith("/login")
+            ) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equals(CMD_LI)) {
