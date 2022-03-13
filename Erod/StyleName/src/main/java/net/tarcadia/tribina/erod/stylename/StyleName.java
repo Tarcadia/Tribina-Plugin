@@ -35,11 +35,14 @@ public final class StyleName extends JavaPlugin {
     public static final String KEY_TEXT_SET_NAME = "texts.set-name";
     public static final String KEY_TEXT_SET_NAME_FAIL = "texts.set-name-fail";
     public static final String KEY_TEXT_ADD_TAG = "texts.add-tag";
+    public static final String KEY_TEXT_ADD_TAG_FAIL = "texts.add-tag-fail";
     public static final String KEY_TEXT_SET_TAG = "texts.set-tag";
     public static final String KEY_TEXT_SET_TAG_FAIL = "texts.set-tag-fail";
     public static final String KEY_TEXT_SET_TAG_VISIBLE = "texts.set-tag-visible";
     public static final String KEY_TEXT_SET_TAG_INVISIBLE = "texts.set-tag-invisible";
+    public static final String KEY_TEXT_SET_TAG_VISIBILITY_FAIL = "texts.set-tag-visibility-fail";
     public static final String KEY_TEXT_ADD_STYLE = "texts.add-style";
+    public static final String KEY_TEXT_ADD_STYLE_FAIL = "texts.add-style-fail";
     public static final String KEY_TEXT_SET_STYLE = "texts.set-style";
     public static final String KEY_TEXT_SET_STYLE_FAIL = "texts.set-style-fail";
 
