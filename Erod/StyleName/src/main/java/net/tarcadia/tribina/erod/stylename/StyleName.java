@@ -147,6 +147,7 @@ public final class StyleName extends JavaPlugin {
         }
     }
 
+    @NotNull
     public String getDisplay(@NotNull Player player) {
 
         var name = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_NAME, player.getName());
