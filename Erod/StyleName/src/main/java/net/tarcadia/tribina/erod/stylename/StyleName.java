@@ -105,24 +105,6 @@ public final class StyleName extends JavaPlugin {
         logger.info("Disabled " + descrp.getName() + " v" + descrp.getVersion() + ".");
     }
 
-    public boolean checkStyle(@NotNull Player player, @NotNull String style) {
-        var styleLst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE_LIST);
-        return styleLst.contains(style);
-    }
-
-    public boolean checkTag(@NotNull Player player, @NotNull String tag) {
-        var tagLst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST);
-        return tagLst.contains(tag);
-    }
-
-    public void addStyle(@NotNull Player player, @NotNull String style) {
-        config.addStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE_LIST, style);
-    }
-
-    public void addTag(@NotNull Player player, @NotNull String tag) {
-        config.addStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST, tag);
-    }
-
     public boolean setName(@NotNull Player player, @NotNull String name) {
         boolean canName = true;
         // TODO: Check if the name contains some char that we dont want.
@@ -130,20 +112,36 @@ public final class StyleName extends JavaPlugin {
         return canName;
     }
 
-    public boolean setStyle(@NotNull Player player, @NotNull String style) {
-        var styleLst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE_LIST);
-        if (styleLst.contains(style)) {
-            config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE, style);
-            return true;
-        } else {
-            return false;
-        }
+    public void addTag(@NotNull Player player, @NotNull String tag) {
+        config.addStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST, tag);
     }
 
     public boolean setTag(@NotNull Player player, @NotNull String tag) {
         var tagLst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST);
         if (tagLst.contains(tag)) {
             config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG, tag);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkTagVisibility(@NotNull Player player) {
+        return config.getBoolean(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_VISIBLE);
+    }
+
+    public void setTagVisibility(@NotNull Player player, boolean visibility) {
+        config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_VISIBLE, visibility);
+    }
+
+    public void addStyle(@NotNull Player player, @NotNull String style) {
+        config.addStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE_LIST, style);
+    }
+
+    public boolean setStyle(@NotNull Player player, @NotNull String style) {
+        var styleLst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE_LIST);
+        if (styleLst.contains(style)) {
+            config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE, style);
             return true;
         } else {
             return false;
