@@ -3,6 +3,7 @@ package net.tarcadia.tribina.plugin.util.func;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -46,6 +47,7 @@ public class Bitmaps {
         for (var pos : pSet) {
             image.setRGB(pos.x(), pos.y(), Bitmaps.IN_REGION);
         }
+        if (file.getParent() != null) new File(file.getParent()).mkdirs();
         if (!ImageIO.write(image, "BMP", file)) {
             throw new Exception("No appropriate writer is found");
         }
@@ -60,6 +62,27 @@ public class Bitmaps {
     public static Set<Pair<Integer, Integer>> loadBmpToSet(@NonNull File file) throws IOException {
         var pSet = new HashSet<Pair<Integer, Integer>>();
         var image = ImageIO.read(file);
+        int width = image.getWidth();
+        int height = image.getHeight();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if ((image.getRGB(i, j) & Bitmaps.RGB_MASK) == Bitmaps.IN_REGION) {
+                    pSet.add(new Pair<>(i, j));
+                }
+            }
+        }
+        return pSet;
+    }
+
+    /**
+     * Load a set of pos of masked region from a BMP file.
+     * @param input source BMP InputStream
+     * @return a {@code Set<Pair<Integer, Integer>>} represents the masked region of the bmp
+     * @throws IOException If an input or output exception occurred
+     */
+    public static Set<Pair<Integer, Integer>> loadBmpToSet(@NonNull InputStream input) throws IOException {
+        var pSet = new HashSet<Pair<Integer, Integer>>();
+        var image = ImageIO.read(input);
         int width = image.getWidth();
         int height = image.getHeight();
         for (int i = 0; i < width; i++) {
@@ -100,6 +123,7 @@ public class Bitmaps {
         for (var pos : pLst) {
             image.setRGB(pos.x(), pos.y(), Bitmaps.IN_REGION);
         }
+        if (file.getParent() != null) new File(file.getParent()).mkdirs();
         if (!ImageIO.write(image, "BMP", file)) {
             throw new Exception("No appropriate writer is found");
         }
@@ -114,6 +138,27 @@ public class Bitmaps {
     public static List<Pair<Integer, Integer>> loadBmpToList(@NonNull File file) throws IOException {
         var pLst = new LinkedList<Pair<Integer, Integer>>();
         var image = ImageIO.read(file);
+        int width = image.getWidth();
+        int height = image.getHeight();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if ((image.getRGB(i, j) & Bitmaps.RGB_MASK) == Bitmaps.IN_REGION) {
+                    pLst.add(new Pair<>(i, j));
+                }
+            }
+        }
+        return pLst;
+    }
+
+    /**
+     * Load a list of pos of masked region from a BMP file.
+     * @param input source BMP InputStream
+     * @return a {@code List<Pair<Integer, Integer>>} represents the masked region of the bmp
+     * @throws IOException If an input or output exception occurred
+     */
+    public static List<Pair<Integer, Integer>> loadBmpToList(@NonNull InputStream input) throws IOException {
+        var pLst = new LinkedList<Pair<Integer, Integer>>();
+        var image = ImageIO.read(input);
         int width = image.getWidth();
         int height = image.getHeight();
         for (int i = 0; i < width; i++) {

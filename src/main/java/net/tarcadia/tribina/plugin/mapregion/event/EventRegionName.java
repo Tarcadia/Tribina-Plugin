@@ -1,15 +1,16 @@
 package net.tarcadia.tribina.plugin.mapregion.event;
 
 import net.tarcadia.tribina.plugin.mapregion.MapRegions;
-import net.tarcadia.tribina.plugin.util.BaseListener;
+import net.tarcadia.tribina.plugin.util.sys.BaseListener;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class EventRegionName extends BaseListener {
+public class EventRegionName extends BaseListener implements Listener {
 
     private final Map<String, String> lastRegion = new HashMap<>();
 

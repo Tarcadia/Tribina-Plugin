@@ -4,6 +4,8 @@ import net.tarcadia.tribina.plugin.mapregion.region.base.BaseDisjointSubRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.BaseRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.DisjointRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.ParentRegion;
+import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,12 +16,27 @@ import java.util.List;
 
 public class AssetRegion extends BaseDisjointSubRegion {
 
-    public static final String KEY_ASSET_AUTHS = "asset-info.auths";
-    public static final String KEY_ASSET_AUTH_OWNER = "asset-info.auth-owner";
     public static final String KEY_ASSET_OWNER = "asset-info.owner";
+    public static final String KEY_ASSET_AUTH_OWNER = "asset-info.auth-owner";
+    public static final String KEY_ASSET_AUTHS = "asset-info.auths";
 
-    public static AssetRegion create(String id, File fileConfig, File fileBitmap, TownRegion parent) {
-        // TODO: Add a new implementation for creating empty region in BaseRegion and call that for this method
+    public static void initAssetRegion(@NotNull String id, @NotNull File fileConfig, @NotNull File fileBitmap, @NotNull Location loc) {
+        BaseRegion.initBaseRegion(id, fileConfig, fileBitmap, loc);
+        var config = Configuration.getConfiguration(fileConfig);
+        config.set(KEY_ASSET_OWNER, null);
+        config.set(KEY_ASSET_AUTH_OWNER, List.of());
+        config.set(KEY_ASSET_AUTHS, null);
+        // TODO: More init, when further implements finished.
+    }
+
+    public static AssetRegion create(
+            @NotNull String id,
+            @NotNull File fileConfig,
+            @NotNull File fileBitmap,
+            @NotNull TownRegion parent,
+            @NotNull Location loc
+    ) {
+        AssetRegion.initBaseRegion(id, fileConfig, fileBitmap, loc);
         return new AssetRegion(id, fileConfig, fileBitmap, parent.assets(), parent);
     }
 

@@ -1,0 +1,23 @@
+name: ErodRangeTalk
+version: '${project.version}'
+main: net.tarcadia.tribina.erod.rangetalk.RangeTalk
+api-version: 1.18
+prefix: EROD RT
+load: STARTUP
+authors: [ Tarcadia ]
+description: '${project.description}'
+commands:
+  erodrangetalk:
+    aliases: [ erodrt, rangetalk ]
+    description: "Manage player talking range."
+    usage: |
+      ... enable
+      ... disable
+      ... set <player> can-shout
+      ... set <player> cannot-shout
+      ... set <player> range <number>
+  erodrangetalk-shout:
+    aliases: [ erodrt-shout, shout ]
+    description: "Shout out."
+    usage: |
+      ... <message>

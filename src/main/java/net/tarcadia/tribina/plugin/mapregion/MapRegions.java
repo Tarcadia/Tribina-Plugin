@@ -1,17 +1,19 @@
 package net.tarcadia.tribina.plugin.mapregion;
 
+import net.tarcadia.tribina.plugin.mapregion.command.CommandCreateRegion;
 import net.tarcadia.tribina.plugin.mapregion.event.EventRegionName;
 import net.tarcadia.tribina.plugin.mapregion.region.AssetRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.PathRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.LandRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.TownRegion;
 import net.tarcadia.tribina.plugin.mapregion.region.base.Region;
+import net.tarcadia.tribina.plugin.util.sys.BaseCommand;
+import net.tarcadia.tribina.plugin.util.sys.BaseListener;
 import net.tarcadia.tribina.plugin.util.data.configuration.Configuration;
 import net.tarcadia.tribina.plugin.Main;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,6 +53,11 @@ public class MapRegions {
     public static final String PATH_ROOT_TOWNS = PATH_ROOT + "Towns/";
     public static final String PATH_FILE_CONFIG = PATH_ROOT + "config.yml";
 
+    public static final String PATH_FILE_DEFAULT_MAP_R1 = PATH_ROOT + "default-r1.bmp";
+    public static final String PATH_FILE_DEFAULT_MAP_R3 = PATH_ROOT + "default-r3.bmp";
+    public static final String PATH_FILE_DEFAULT_MAP_R5 = PATH_ROOT + "default-r5.bmp";
+    public static final String PATH_FILE_DEFAULT_MAP_R9 = PATH_ROOT + "default-r9.bmp";
+
     public static final Map<String, Region> regionMap = new HashMap<>();
 
     public static final List<PathRegion> regionPaths = new LinkedList<>();
@@ -58,7 +65,8 @@ public class MapRegions {
     public static final List<TownRegion> regionTowns = new LinkedList<>();
     public static final List<AssetRegion> regionAssets = new LinkedList<>();
 
-    private static final List<Listener> events = new LinkedList<>();
+    private static final List<BaseListener> events = new LinkedList<>();
+    private static final List<BaseCommand> commands = new LinkedList<>();
 
     private static Configuration config = null;
 
@@ -69,6 +77,7 @@ public class MapRegions {
         MapRegions.loadLands();
         MapRegions.loadTowns();
         MapRegions.loadEvents();
+        MapRegions.loadCommands();
         Main.logger.info(MR + "Loaded.");
     }
 
@@ -145,9 +154,16 @@ public class MapRegions {
         Main.logger.info(MR + "Loaded events.");
     }
 
+    private static void loadCommands() {
+        MapRegions.commands.add(new CommandCreateRegion("tribinaCreateRegion"));
+        Main.logger.info(MR + "Loaded commands.");
+    }
+
     public static Configuration config() {
         return MapRegions.config;
     }
+    public static List<BaseListener> events() { return MapRegions.events; }
+    public static List<BaseCommand> commands() { return MapRegions.commands; }
 
     public static boolean enabled() {
         return MapRegions.config.getBoolean(KEY_MAPREGIONS_ENABLED);
@@ -163,12 +179,12 @@ public class MapRegions {
         Main.logger.info(MR + "Set disabled.");
     }
 
-    public static void addPathRegion(@NotNull String id, @NotNull Location loc) {
+    public static void createPathRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_PATH_LIST + "." + id)) {
+            MapRegions.config.createSection(KEY_MAPREGIONS_PATH_LIST + "." + id);
             var fileConfig = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_PATHS + id + ".bmp");
-            var pathRegion = PathRegion.create(id, fileConfig, fileBitmap);
-            // TODO: make a create function;
+            var pathRegion = PathRegion.create(id, fileConfig, fileBitmap, loc);
             MapRegions.regionPaths.add(pathRegion);
             MapRegions.regionMap.put(pathRegion.id(), pathRegion);
             Main.logger.info(MR + "Added path " + pathRegion.id() + ".");
@@ -177,11 +193,12 @@ public class MapRegions {
         }
     }
 
-    public static void addLandRegion(@NotNull String id) {
+    public static void createLandRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_LAND_LIST + "." + id)) {
+            MapRegions.config.createSection(KEY_MAPREGIONS_LAND_LIST + "." + id);
             var fileConfig = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_LANDS + id + ".bmp");
-            var landRegion = LandRegion.create(id, fileConfig, fileBitmap, MapRegions.regionLands);
+            var landRegion = LandRegion.create(id, fileConfig, fileBitmap, MapRegions.regionLands, loc);
             MapRegions.regionLands.add(landRegion);
             MapRegions.regionMap.put(landRegion.id(), landRegion);
             Main.logger.info(MR + "Added land " + landRegion.id() + ".");
@@ -190,11 +207,12 @@ public class MapRegions {
         }
     }
 
-    public static void addTownRegion(@NotNull String id) {
+    public static void createTownRegion(@NotNull String id, @NotNull Location loc) {
         if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + id)) {
+            MapRegions.config.createSection(KEY_MAPREGIONS_TOWN_LIST + "." + id);
             var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + id + ".bmp");
-            var townRegion = TownRegion.create(id, fileConfig, fileBitmap, MapRegions.regionTowns);
+            var townRegion = TownRegion.create(id, fileConfig, fileBitmap, MapRegions.regionTowns, loc);
             MapRegions.regionTowns.add(townRegion);
             MapRegions.regionMap.put(townRegion.id(), townRegion);
             Main.logger.info(MR + "Added town " + townRegion.id() + ".");
@@ -203,12 +221,13 @@ public class MapRegions {
         }
     }
 
-    public static void addAssetRegion(@NotNull String townId, @NotNull String id) {
+    public static void createAssetRegion(@NotNull String townId, @NotNull String id, @NotNull Location loc) {
         var townRegion = MapRegions.getRegion("town." + townId);
         if (!MapRegions.config.contains(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id) && (townRegion instanceof TownRegion)) {
+            MapRegions.config.createSection(KEY_MAPREGIONS_TOWN_LIST + "." + townId + "." + id);
             var fileConfig = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".yml");
             var fileBitmap = new File(Main.dataPath + PATH_ROOT_TOWNS + townId + "/" + id + ".bmp");
-            var assetRegion = AssetRegion.create(id, fileConfig, fileBitmap, (TownRegion) townRegion);
+            var assetRegion = AssetRegion.create(id, fileConfig, fileBitmap, (TownRegion) townRegion, loc);
             MapRegions.regionAssets.add(assetRegion);
             MapRegions.regionMap.put(assetRegion.id(), assetRegion);
             Main.logger.info(MR + "Added asset " + assetRegion.id() + ".");
