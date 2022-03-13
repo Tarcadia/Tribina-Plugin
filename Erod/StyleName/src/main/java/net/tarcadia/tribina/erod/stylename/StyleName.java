@@ -1,16 +1,22 @@
 package net.tarcadia.tribina.erod.stylename;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-public final class StyleName extends JavaPlugin {
+public final class StyleName extends JavaPlugin implements TabExecutor, Listener {
 
     public static StyleName plugin = null;
     public static Configuration config = null;
@@ -85,16 +91,11 @@ public final class StyleName extends JavaPlugin {
 
     @Override
     public void onEnable() {
-//        var commandRT = this.getCommand(CMD_RT);
-//        var commandRTShout = this.getCommand(CMD_RT_SHOUT);
-//        if (commandRT != null) {
-//            commandRT.setExecutor(this);
-//            commandRT.setTabCompleter(this);
-//        }
-//        if (commandRTShout != null) {
-//            commandRTShout.setExecutor(this);
-//            commandRTShout.setTabCompleter(this);
-//        }
+        var commandSN = this.getCommand(CMD_SN);
+        if (commandSN != null) {
+            commandSN.setExecutor(this);
+            commandSN.setTabCompleter(this);
+        }
 //        this.getServer().getPluginManager().registerEvents(this, this);
         logger.info("Enabled " + descrp.getName() + " v" + descrp.getVersion() + ".");
 
@@ -189,6 +190,157 @@ public final class StyleName extends JavaPlugin {
             return theTag.tag() + theStyle.styled(name);
         } else {
             return theStyle.styled(name);
+        }
+    }
+
+
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (command.getName().equals(CMD_SN)) {
+            if ((args.length == 1) && (args[0].equals(CMD_SN_ARG_ENABLE))) {
+                if (sender.isOp()) {
+                    this.functionEnable();
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_ENABLE), ""));
+                }
+                return true;
+            } else if ((args.length == 1) && (args[0].equals(CMD_SN_ARG_DISABLE))) {
+                if (sender.isOp()) {
+                    this.functionDisable();
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_FUNCTION_DISABLE), ""));
+                }
+                return true;
+            } else if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_LIST))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if ((player != null)) {
+                    sender.sendMessage(player.getName() + ":\n");
+                    sender.sendMessage("name: " + Objects.requireNonNullElse(config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_NAME), "") + '\n');
+                    sender.sendMessage("tags:\n");
+                    for (var s : config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE)) sender.sendMessage(" -" + s + '\n');
+                    sender.sendMessage("styles:\n");
+                    for (var s : config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE)) sender.sendMessage(" -" + s + '\n');
+                }
+                return true;
+            } else if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_NAME))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null) && this.setName(player, args[2])) {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_NAME), "").replace("$player$", player.getName()).replace("$name$", args[2]));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_NAME_FAIL), ""));
+                }
+                return true;
+            } else if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_ADD_TAG))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null)) {
+                    this.addTag(player, args[2]);
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_ADD_TAG), "").replace("$player$", player.getName()).replace("$tag$", args[2]));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_ADD_TAG_FAIL), ""));
+                }
+                return true;
+            } else if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_TAG))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null) && this.setTag(player, args[2])) {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_TAG), "").replace("$player$", player.getName()).replace("$tag$", args[2]));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_TAG_FAIL), ""));
+                }
+                return true;
+            } else if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_TAG_VISIBLE))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null)) {
+                    this.setTagVisibility(player, true);
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_TAG_VISIBLE), "").replace("$player$", player.getName()));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_TAG_VISIBILITY_FAIL), ""));
+                }
+                return true;
+            } else if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_TAG_INVISIBLE))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null)) {
+                    this.setTagVisibility(player, false);
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_TAG_INVISIBLE), "").replace("$player$", player.getName()));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_TAG_VISIBILITY_FAIL), ""));
+                }
+                return true;
+            } else if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_ADD_STYLE))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null)) {
+                    this.addStyle(player, args[2]);
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_ADD_STYLE), "").replace("$player$", player.getName()).replace("$style$", args[2]));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_ADD_STYLE_FAIL), ""));
+                }
+                return true;
+            } else if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_STYLE))) {
+                var player = this.getServer().getPlayer(args[1]);
+                if (sender.isOp() && (player != null) && this.setStyle(player, args[2])) {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_STYLE), "").replace("$player$", player.getName()).replace("$style$", args[2]));
+                } else {
+                    sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_SET_STYLE_FAIL), ""));
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (command.getName().equals(CMD_SN)) {
+            List<String> ret = new LinkedList<>();
+            if ((args.length == 1) && sender.isOp() && !this.isFunctionEnabled()) ret.add(CMD_SN_ARG_ENABLE);
+            if ((args.length == 1) && sender.isOp() && this.isFunctionEnabled()) ret.add(CMD_SN_ARG_DISABLE);
+            if ((args.length == 1)) ret.add(CMD_SN_ARG_LIST);
+            if ((args.length == 1) && sender.isOp()) ret.add(CMD_SN_ARG_SET_NAME);
+            if ((args.length == 1) && sender.isOp()) ret.add(CMD_SN_ARG_ADD_TAG);
+            if ((args.length == 1) && sender.isOp()) ret.add(CMD_SN_ARG_SET_TAG);
+            if ((args.length == 1) && sender.isOp()) ret.add(CMD_SN_ARG_SET_TAG_VISIBLE);
+            if ((args.length == 1) && sender.isOp()) ret.add(CMD_SN_ARG_SET_TAG_INVISIBLE);
+            if ((args.length == 1) && sender.isOp()) ret.add(CMD_SN_ARG_ADD_STYLE);
+            if ((args.length == 1) && sender.isOp()) ret.add(CMD_SN_ARG_SET_STYLE);
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_LIST))) {
+                List<String> playerLst = new LinkedList<>();
+                for (var p : this.getServer().getOnlinePlayers()) playerLst.add(p.getName());
+                ret.addAll(playerLst);
+            }
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_NAME)) && sender.isOp()) {
+                List<String> playerLst = new LinkedList<>();
+                for (var p : this.getServer().getOnlinePlayers()) playerLst.add(p.getName());
+                ret.addAll(playerLst);
+            }
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_ADD_TAG)) && sender.isOp()) {
+                List<String> playerLst = new LinkedList<>();
+                for (var p : this.getServer().getOnlinePlayers()) playerLst.add(p.getName());
+                ret.addAll(playerLst);
+            }
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_TAG)) && sender.isOp()) {
+                List<String> playerLst = new LinkedList<>();
+                for (var p : this.getServer().getOnlinePlayers()) playerLst.add(p.getName());
+                ret.addAll(playerLst);
+            }
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_ADD_STYLE)) && sender.isOp()) {
+                List<String> playerLst = new LinkedList<>();
+                for (var p : this.getServer().getOnlinePlayers()) playerLst.add(p.getName());
+                ret.addAll(playerLst);
+            }
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_STYLE)) && sender.isOp()) {
+                List<String> playerLst = new LinkedList<>();
+                for (var p : this.getServer().getOnlinePlayers()) playerLst.add(p.getName());
+                ret.addAll(playerLst);
+            }
+            if ((args.length == 3) && sender.isOp() && (args[0].equals(CMD_SN_ARG_SET_NAME))) ret.add("<name>");
+            if ((args.length == 3) && sender.isOp() && (args[0].equals(CMD_SN_ARG_ADD_TAG))) ret.add("<tag>");
+            if ((args.length == 3) && sender.isOp() && (args[0].equals(CMD_SN_ARG_SET_TAG))) ret.add("<tag>");
+            if ((args.length == 3) && sender.isOp() && (args[0].equals(CMD_SN_ARG_ADD_STYLE))) ret.add("<style>");
+            if ((args.length == 3) && sender.isOp() && (args[0].equals(CMD_SN_ARG_SET_STYLE))) ret.add("<style>");
+            return ret;
+        } else {
+            return null;
         }
     }
 
