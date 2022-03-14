@@ -1,5 +1,6 @@
-package net.tarcadia.tribina.erod.mapregion.util.type;
+package net.tarcadia.tribina.erod.mapregion.util.data;
 
+import net.tarcadia.tribina.erod.mapregion.util.type.Pos;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import javax.imageio.ImageIO;
