@@ -1,7 +1,7 @@
 package net.tarcadia.tribina.erod.mapregion.region;
 
 import net.tarcadia.tribina.erod.mapregion.region.base.BaseDisjointParentRegion;
-import net.tarcadia.tribina.plugin.mapregion.region.base.BaseRegion;
+import net.tarcadia.tribina.erod.mapregion.region.base.BaseRegion;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 

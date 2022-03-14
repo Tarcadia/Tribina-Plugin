@@ -24,15 +24,14 @@ public final class MapRegion extends JavaPlugin {
     public static final String PATH_DATA_PATHS_ROOT = "Erod/MapRegion/Paths/";
     public static final String PATH_DATA_LANDS_ROOT = "Erod/MapRegion/Lands/";
     public static final String PATH_DATA_TOWNS_ROOT = "Erod/MapRegion/Towns/";
+    public static final String PATH_DATA_AUTH = "Erod/MapRegion/Auth.yml";
 
     public static final String PATH_RES_MAP_R1 = "default-map/default-r1.bmp";
     public static final String PATH_RES_MAP_R3 = "default-map/default-r3.bmp";
     public static final String PATH_RES_MAP_R5 = "default-map/default-r5.bmp";
     public static final String PATH_RES_MAP_R9 = "default-map/default-r9.bmp";
 
-
     public static final String KEY_ENABLED = "enabled";
-    public static final String KEY_DEFAULT_RANGE = "default-range";
 
     public boolean isFunctionEnabled() {
         return config.getBoolean(KEY_ENABLED);
