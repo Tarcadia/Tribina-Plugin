@@ -21,9 +21,9 @@ public final class MapRegion extends JavaPlugin {
     public static final String PATH_CONFIG = "Erod/MapRegion.yml";
 
     public static final String PATH_DATA_ROOT = "Erod/MapRegion/";
-    public static final String PATH_DATA_PATHS_ROOT = PATH_DATA_ROOT + "Paths/";
-    public static final String PATH_DATA_LANDS_ROOT = PATH_DATA_ROOT + "Lands/";
-    public static final String PATH_DATA_TOWNS_ROOT = PATH_DATA_ROOT + "Towns/";
+    public static final String PATH_DATA_PATHS_ROOT = "Erod/MapRegion/Paths/";
+    public static final String PATH_DATA_LANDS_ROOT = "Erod/MapRegion/Lands/";
+    public static final String PATH_DATA_TOWNS_ROOT = "Erod/MapRegion/Towns/";
 
     public static final String PATH_RES_MAP_R1 = "default-map/default-r1.bmp";
     public static final String PATH_RES_MAP_R3 = "default-map/default-r3.bmp";
