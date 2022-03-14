@@ -34,7 +34,9 @@ public class InFilePosSet extends BasePosSet {
         long _x = x - this.biasX;
         long _z = z - this.biasZ;
         if ((_x >= 0) && (_z >= 0) && (_x < FILE_CHUNK_SIZE) && (_z < FILE_CHUNK_SIZE)) {
-            var sub = this.setMap[(int) _x][(int) _z];
+            int _cX = (int) (_x >> CHUNK_SIZE_BITLEN);
+            int _cZ = (int) (_z >> CHUNK_SIZE_BITLEN);
+            var sub = this.setMap[_cX][_cZ];
             if (sub != null) {
                 return sub.contains(x, z);
             } else {
