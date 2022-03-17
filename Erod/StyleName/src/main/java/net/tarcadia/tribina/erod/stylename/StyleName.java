@@ -83,6 +83,8 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     public static final String CMD_SN_ARG_ADD_STYLE = "add-style";
     public static final String CMD_SN_ARG_SET_STYLE = "set-style";
 
+    private ProtocolManager pm;
+
     public boolean isFunctionEnabled() {
         return config.getBoolean(KEY_ENABLED);
     }
@@ -110,6 +112,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
 
     @Override
     public void onEnable() {
+        pm = ProtocolLibrary.getProtocolManager();
         var commandSN = this.getCommand(CMD_SN);
         if (commandSN != null) {
             commandSN.setExecutor(this);
