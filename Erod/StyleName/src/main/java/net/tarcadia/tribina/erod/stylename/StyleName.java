@@ -115,6 +115,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     @Override
     public void onEnable() {
         pm = ProtocolLibrary.getProtocolManager();
+        pm.addPacketListener(playerInfoListener);
         var commandSN = this.getCommand(CMD_SN);
         if (commandSN != null) {
             commandSN.setExecutor(this);
@@ -355,6 +356,35 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             this.updatePlayerDisplayFollower(player);
         }
     }
+
+    private final PacketAdapter playerInfoListener = new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.PLAYER_INFO) {
+        @Override
+        public void onPacketSending(PacketEvent event) {
+            if (isFunctionEnabled()) {
+                var packet = event.getPacket();
+                if (packet.getPlayerInfoAction().read(0).equals(EnumWrappers.PlayerInfoAction.ADD_PLAYER)) {
+                    var nPIDList = new LinkedList<PlayerInfoData>();
+                    for (var rPID : packet.getPlayerInfoDataLists().read(0)) {
+                        Player player;
+                        WrappedGameProfile profile;
+                        if (
+                                (rPID != null) &&
+                                        ((profile = rPID.getProfile()) != null) &&
+                                        ((player = plugin.getServer().getPlayer(profile.getUUID())) != null) &&
+                                        player.isOnline()
+                        ) {
+                            var name = getPlayerName(player);
+                            var nWGP = profile.withName(name);
+                            nWGP.getProperties().removeAll("textures");
+                            nWGP.getProperties().put("textures", getPlayerDisplaySkinProperty(player));
+                            nPIDList.add(new PlayerInfoData(nWGP, rPID.getLatency(), rPID.getGameMode(), rPID.getDisplayName()));
+                        }
+                    }
+                    packet.getPlayerInfoDataLists().write(0, nPIDList);
+                }
+            }
+        }
+    };
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
