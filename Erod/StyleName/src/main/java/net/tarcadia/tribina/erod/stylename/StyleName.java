@@ -91,11 +91,13 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
 
     public void functionEnable() {
         config.set(KEY_ENABLED, true);
+        for (var p : plugin.getServer().getOnlinePlayers()) this.updatePlayerDisplay(p);
         logger.info("Plugin functional enabled.");
     }
 
     public void functionDisable() {
         config.set(KEY_ENABLED, false);
+        for (var p : plugin.getServer().getOnlinePlayers()) this.updatePlayerDisplay(p);
         logger.info("Plugin functional disabled.");
     }
 
@@ -345,8 +347,13 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     }
 
     public void updatePlayerDisplay(@NotNull Player player) {
-        player.setDisplayName(getPlayerDisplayFullName(player));
-        this.updatePlayerDisplayFollower(player);
+        if (this.isFunctionEnabled()) {
+            player.setDisplayName(getPlayerDisplayFullName(player));
+            this.updatePlayerDisplayFollower(player);
+        } else {
+            player.setDisplayName("");
+            this.updatePlayerDisplayFollower(player);
+        }
     }
 
     @Override
