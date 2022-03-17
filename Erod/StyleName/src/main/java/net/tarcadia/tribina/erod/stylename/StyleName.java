@@ -129,10 +129,12 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     }
 
     public boolean setPlayerName(@NotNull Player player, @NotNull String name) {
-        boolean canName = true;
-        // TODO: Check if the name contains some char that we dont want.
-        config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_NAME, name);
-        return canName;
+        if (!name.contains("§") && name.getBytes(StandardCharsets.UTF_8).length <= 16) {
+            config.set(KEY_PLAYERS + player.getName() + KEY_PLAYERS_NAME, name);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @NotNull
