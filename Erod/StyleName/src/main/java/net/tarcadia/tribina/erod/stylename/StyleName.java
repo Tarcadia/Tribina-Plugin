@@ -32,6 +32,8 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     public static final String KEY_ENABLED = "enabled";
     public static final String KEY_PLAYERS = "players.";
     public static final String KEY_PLAYERS_NAME = ".name";
+    public static final String KEY_PLAYERS_SKIN = ".skin";
+    public static final String KEY_PLAYERS_SKIN_LIST = ".skin-list";
     public static final String KEY_PLAYERS_TAG = ".tag";
     public static final String KEY_PLAYERS_TAG_LIST = ".tag-list";
     public static final String KEY_PLAYERS_TAG_VISIBLE = ".tag-visible";
@@ -44,6 +46,10 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     public static final String KEY_TEXT_LIST_FAIL = "texts.list-fail";
     public static final String KEY_TEXT_SET_NAME = "texts.set-name";
     public static final String KEY_TEXT_SET_NAME_FAIL = "texts.set-name-fail";
+    public static final String KEY_TEXT_ADD_SKIN = "texts.add-skin";
+    public static final String KEY_TEXT_ADD_SKIN_FAIL = "texts.add-skin-fail";
+    public static final String KEY_TEXT_SET_SKIN = "texts.set-skin";
+    public static final String KEY_TEXT_SET_SKIN_FAIL = "texts.set-skin-fail";
     public static final String KEY_TEXT_ADD_TAG = "texts.add-tag";
     public static final String KEY_TEXT_ADD_TAG_FAIL = "texts.add-tag-fail";
     public static final String KEY_TEXT_SET_TAG = "texts.set-tag";
@@ -61,6 +67,8 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     public static final String CMD_SN_ARG_DISABLE = "disable";
     public static final String CMD_SN_ARG_LIST = "list";
     public static final String CMD_SN_ARG_SET_NAME = "set-name";
+    public static final String CMD_SN_ARG_ADD_SKIN = "add-skin";
+    public static final String CMD_SN_ARG_SET_SKIN = "set-skin";
     public static final String CMD_SN_ARG_ADD_TAG = "add-tag";
     public static final String CMD_SN_ARG_SET_TAG = "set-tag";
     public static final String CMD_SN_ARG_SET_TAG_VISIBLE = "set-tag-visible";
