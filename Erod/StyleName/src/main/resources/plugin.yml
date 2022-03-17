@@ -6,6 +6,7 @@ prefix: EROD SN
 load: STARTUP
 authors: [ Tarcadia ]
 description: '${project.description}'
+depend: [ ProtocolLib ]
 commands:
   erodstylename:
     aliases: [ erodsn, stylename ]
