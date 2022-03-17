@@ -16,6 +16,8 @@ commands:
       ... disable
       ... list <player>
       ... set-name <player> <name>
+      ... add-skin <player> <skin>
+      ... set-skin <player> <skin>
       ... add-tag <player> <tag>
       ... set-tag <player> <tag>
       ... set-tag-visible <player>
