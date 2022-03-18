@@ -1,22 +1,19 @@
 package net.tarcadia.tribina.erod.stylename;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.*;
 import net.tarcadia.tribina.erod.stylename.util.Skin;
 import net.tarcadia.tribina.erod.stylename.util.Style;
 import net.tarcadia.tribina.erod.stylename.util.Tag;
 import net.tarcadia.tribina.erod.stylename.util.data.Configuration;
+import net.tarcadia.tribina.erod.stylename.util.wrap.PlayerPacketWrap;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -84,7 +81,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     public static final String CMD_SN_ARG_ADD_STYLE = "add-style";
     public static final String CMD_SN_ARG_SET_STYLE = "set-style";
 
-    private ProtocolManager pm;
+    private PlayerPacketWrap ppw;
 
     public boolean isFunctionEnabled() {
         return config.getBoolean(KEY_ENABLED);
@@ -115,14 +112,13 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
 
     @Override
     public void onEnable() {
-        pm = ProtocolLibrary.getProtocolManager();
-        pm.addPacketListener(playerInfoListener);
         var commandSN = this.getCommand(CMD_SN);
         if (commandSN != null) {
             commandSN.setExecutor(this);
             commandSN.setTabCompleter(this);
         }
         this.getServer().getPluginManager().registerEvents(this, this);
+        ppw = new PlayerPacketWrap();
         logger.info("Enabled " + descrp.getName() + " v" + descrp.getVersion() + ".");
 
     }
@@ -141,11 +137,6 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         }
     }
 
-    @NotNull
-    public String getPlayerName(@NotNull Player player) {
-        return config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_NAME, player.getName());
-    }
-
     public void addPlayerSkin(@NotNull Player player, @NotNull String skin) {
         config.addStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_SKIN_LIST, skin);
     }
@@ -160,34 +151,6 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         }
     }
 
-    @NotNull
-    public String getPlayerSkin(@NotNull Player player) {
-        var skin = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_SKIN, "");
-        var ret = "";
-        try {
-            var theSkin = Skin.valueOf(skin);
-            ret = theSkin.name();
-        } catch (IllegalArgumentException e) {
-            ret = skin + " (NOT SUPPORTED)";
-        }
-        return ret;
-    }
-
-    @NotNull
-    public List<String> getPlayerSkinList(@NotNull Player player) {
-        var lst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_SKIN_LIST);
-        var ret = new LinkedList<String>();
-        for (var skin : lst) {
-            try {
-                Skin.valueOf(skin);
-                ret.add(skin);
-            } catch (IllegalArgumentException e) {
-                ret.add(skin + " (NOT SUPPORTED)");
-            }
-        }
-        return ret;
-    }
-
     public void addPlayerTag(@NotNull Player player, @NotNull String tag) {
         config.addStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST, tag);
     }
@@ -200,34 +163,6 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         } else {
             return false;
         }
-    }
-
-    @NotNull
-    public String getPlayerTag(@NotNull Player player) {
-        var tag = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG, "");
-        var ret = "";
-        try {
-            var theTag = Tag.valueOf(tag);
-            ret = theTag.tag();
-        } catch (IllegalArgumentException e) {
-            ret = tag + " (NOT SUPPORTED)";
-        }
-        return ret;
-    }
-
-    @NotNull
-    public List<String> getPlayerTagList(@NotNull Player player) {
-        var lst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST);
-        var ret = new LinkedList<String>();
-        for (var tag : lst) {
-            try {
-                var theTag = Tag.valueOf(tag);
-                ret.add(theTag.tag());
-            } catch (IllegalArgumentException e) {
-                ret.add(tag + " (NOT SUPPORTED)");
-            }
-        }
-        return ret;
     }
 
     public void setPlayerTagVisibility(@NotNull Player player, boolean visibility) {
@@ -248,8 +183,71 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         }
     }
 
+
+
     @NotNull
-    public String getPlayerStyle(@NotNull Player player) {
+    public String getPlayerStringName(@NotNull Player player) {
+        return config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_NAME, player.getName());
+    }
+
+    @NotNull
+    public String getPlayerStringSkin(@NotNull Player player) {
+        var skin = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_SKIN, "(NONE)");
+        var ret = "";
+        try {
+            var theSkin = Skin.valueOf(skin);
+            ret = theSkin.name();
+        } catch (IllegalArgumentException e) {
+            ret = skin + " (NOT SUPPORTED)";
+        }
+        return ret;
+    }
+
+    @NotNull
+    public List<String> getPlayerListSkin(@NotNull Player player) {
+        var lst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_SKIN_LIST);
+        var ret = new LinkedList<String>();
+        for (var skin : lst) {
+            try {
+                Skin.valueOf(skin);
+                ret.add(skin);
+            } catch (IllegalArgumentException e) {
+                ret.add(skin + " (NOT SUPPORTED)");
+            }
+        }
+        return ret;
+    }
+
+    @NotNull
+    public String getPlayerStringTag(@NotNull Player player) {
+        var tag = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG, "");
+        var ret = "";
+        try {
+            var theTag = Tag.valueOf(tag);
+            ret = theTag.tag();
+        } catch (IllegalArgumentException e) {
+            ret = tag + " (NOT SUPPORTED)";
+        }
+        return ret;
+    }
+
+    @NotNull
+    public List<String> getPlayerListTag(@NotNull Player player) {
+        var lst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST);
+        var ret = new LinkedList<String>();
+        for (var tag : lst) {
+            try {
+                var theTag = Tag.valueOf(tag);
+                ret.add(theTag.tag());
+            } catch (IllegalArgumentException e) {
+                ret.add(tag + " (NOT SUPPORTED)");
+            }
+        }
+        return ret;
+    }
+
+    @NotNull
+    public String getPlayerStringStyle(@NotNull Player player) {
         var style = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE, "");
         var ret = "";
         try {
@@ -262,7 +260,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     }
 
     @NotNull
-    public List<String> getPlayerStyleList(@NotNull Player player) {
+    public List<String> getPlayerListStyle(@NotNull Player player) {
         var lst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE_LIST);
         var ret = new LinkedList<String>();
         for (var style : lst) {
@@ -344,48 +342,20 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
         }
     }
 
-    public void updatePlayerDisplayFollower(@NotNull Player player) {
-
-    }
-
     public void updatePlayerDisplay(@NotNull Player player) {
         if (this.isFunctionEnabled()) {
             player.setDisplayName(getPlayerDisplayFullName(player));
-            this.updatePlayerDisplayFollower(player);
         } else {
             player.setDisplayName("");
-            this.updatePlayerDisplayFollower(player);
         }
     }
 
-    private final PacketAdapter playerInfoListener = new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.PLAYER_INFO) {
-        @Override
-        public void onPacketSending(PacketEvent event) {
-            if (isFunctionEnabled()) {
-                var packet = event.getPacket();
-                if (packet.getPlayerInfoAction().read(0).equals(EnumWrappers.PlayerInfoAction.ADD_PLAYER)) {
-                    var nPIDList = new LinkedList<PlayerInfoData>();
-                    for (var rPID : packet.getPlayerInfoDataLists().read(0)) {
-                        Player player;
-                        WrappedGameProfile profile;
-                        if (
-                                (rPID != null) &&
-                                        ((profile = rPID.getProfile()) != null) &&
-                                        ((player = plugin.getServer().getPlayer(profile.getUUID())) != null) &&
-                                        player.isOnline()
-                        ) {
-                            var name = getPlayerName(player);
-                            var nWGP = profile.withName(name);
-                            nWGP.getProperties().removeAll("textures");
-                            nWGP.getProperties().put("textures", getPlayerDisplaySkinProperty(player));
-                            nPIDList.add(new PlayerInfoData(nWGP, rPID.getLatency(), rPID.getGameMode(), rPID.getDisplayName()));
-                        }
-                    }
-                    packet.getPlayerInfoDataLists().write(0, nPIDList);
-                }
-            }
-        }
-    };
+    @EventHandler
+    public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
+        var player = event.getPlayer();
+        Skin.updateSkin(player);
+        ppw.updateEIDPlayer(player);
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -411,16 +381,16 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
                 if ((sender.isOp() || sender.equals(player)) && (player != null)) {
                     this.updatePlayerDisplay(player);
                     sender.sendMessage(player.getName() + ":\n");
-                    sender.sendMessage("name:  " + this.getPlayerName(player) + '\n');
-                    sender.sendMessage("skin:  " + this.getPlayerSkin(player) + '\n');
-                    sender.sendMessage("tag:   " + this.getPlayerTag(player) + '\n');
-                    sender.sendMessage("style: " + this.getPlayerStyle(player) + '\n');
+                    sender.sendMessage("name:  " + this.getPlayerStringName(player) + '\n');
+                    sender.sendMessage("skin:  " + this.getPlayerStringSkin(player) + '\n');
+                    sender.sendMessage("tag:   " + this.getPlayerStringTag(player) + '\n');
+                    sender.sendMessage("style: " + this.getPlayerStringStyle(player) + '\n');
                     sender.sendMessage("skin list:\n");
-                    for (var s : this.getPlayerSkinList(player)) sender.sendMessage("  - " + s + '\n');
+                    for (var s : this.getPlayerListSkin(player)) sender.sendMessage("  - " + s + '\n');
                     sender.sendMessage("tag list:\n");
-                    for (var s : this.getPlayerTagList(player)) sender.sendMessage("  - " + s + '\n');
+                    for (var s : this.getPlayerListTag(player)) sender.sendMessage("  - " + s + '\n');
                     sender.sendMessage("style list:\n");
-                    for (var s : this.getPlayerStyleList(player)) sender.sendMessage("  - " + s + '\n');
+                    for (var s : this.getPlayerListStyle(player)) sender.sendMessage("  - " + s + '\n');
                 } else {
                     sender.sendMessage(Objects.requireNonNullElse(config.getString(KEY_TEXT_LIST_FAIL), ""));
                 }
@@ -541,9 +511,14 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_STYLE))) ret.add("<style>");
             if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_LIST)) && sender.isOp()) ret.add("<player>");
             if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_NAME)) && sender.isOp()) ret.add("<player>");
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_ADD_SKIN)) && sender.isOp()) ret.add("<player>");
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_SKIN))) ret.add(sender.getName());
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_SKIN)) && sender.isOp()) ret.add("<player>");
             if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_ADD_TAG)) && sender.isOp()) ret.add("<player>");
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_TAG))) ret.add(sender.getName());
             if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_TAG)) && sender.isOp()) ret.add("<player>");
             if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_ADD_STYLE)) && sender.isOp()) ret.add("<player>");
+            if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_STYLE))) ret.add(sender.getName());
             if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_SET_STYLE)) && sender.isOp()) ret.add("<player>");
             return ret;
         } else {
