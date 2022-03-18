@@ -1,8 +1,0 @@
-name: ErodMapRegion
-version: '${project.version}'
-main: net.tarcadia.tribina.erod.mapregion.MapRegion
-api-version: 1.18
-prefix: EROD MR
-load: STARTUP
-authors: [ Tarcadia, HYC ]
-description: '${project.description}'

@@ -1,0 +1,12 @@
+[submodule "Erod/LogIn"]
+	path = Erod/LogIn
+	url = https://github.com/Tarcadia/Tribina-ErodLogIn.git
+[submodule "Erod/MapRegion"]
+	path = Erod/MapRegion
+	url = https://github.com/Tarcadia/Tribina-ErodMapRegion.git
+[submodule "Erod/StyleName"]
+	path = Erod/StyleName
+	url = https://github.com/Tarcadia/Tribina-ErodStyleName.git
+[submodule "Erod/RangeTalk"]
+	path = Erod/RangeTalk
+	url = https://github.com/Tarcadia/Tribina-ErodRangeTalk.git
