@@ -8,9 +8,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "}";
+            return "§r" + name + "§r";
         }
     },
 
@@ -18,10 +16,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"color\": \"green\", " +
-                    "}";
+            return "§a" + name + "§r";
         }
     },
 
@@ -29,10 +24,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"color\": \"yellow\", " +
-                    "}";
+            return "§e" + name + "§r";
         }
     },
 
@@ -40,10 +32,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"color\": \"blue\", " +
-                    "}";
+            return "§9" + name + "§r";
         }
     },
 
@@ -51,34 +40,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"color\": \"gold\", " +
-                    "}";
-        }
-    },
-
-    LightCyanName{
-        @Override
-        @NotNull
-        public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"italic\": true, " +
-                    "\"color\": \"aqua\", " +
-                    "}";
-        }
-    },
-
-    LightPinkName{
-        @Override
-        @NotNull
-        public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"italic\": true, " +
-                    "\"color\": \"light_purple\", " +
-                    "}";
+            return "§6" + name + "§r";
         }
     },
 
@@ -86,10 +48,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"color\": \"aqua\", " +
-                    "}";
+            return "§b" + name + "§r";
         }
     },
 
@@ -97,10 +56,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"color\": \"light_purple\", " +
-                    "}";
+            return "§d" + name + "§r";
         }
     },
 
@@ -108,11 +64,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"bold\": true, " +
-                    "\"color\": \"aqua\", " +
-                    "}";
+            return "§b§o§l" + name + "§r";
         }
     },
 
@@ -120,11 +72,7 @@ public enum Style {
         @Override
         @NotNull
         public String styled(@NotNull String name) {
-            return "{\"text\": " +
-                    "\"" + name + "\", " +
-                    "\"bold\": true, " +
-                    "\"color\": \"light_purple\", " +
-                    "}";
+            return "§d§o§l" + name + "§r";
         }
     },
 
