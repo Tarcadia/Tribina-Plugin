@@ -1,5 +1,6 @@
-package net.tarcadia.tribina.erod.mapregion.util.type;
+package net.tarcadia.tribina.erod.mapregion.util.data;
 
+import net.tarcadia.tribina.erod.mapregion.util.type.Pos;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import javax.imageio.ImageIO;
@@ -24,25 +25,25 @@ public class Bitmaps {
      * @throws IllegalArgumentException If the region is invalid
      * @throws Exception Other exceptions
      */
-    public static void saveSetToBmp(@NonNull Set<Pair<Integer, Integer>> pSet, @NonNull File file) throws IOException, IllegalArgumentException, Exception {
+    public static void saveSetToBmp(@NonNull Set<Pos> pSet, @NonNull File file) throws IOException, IllegalArgumentException, Exception {
         int width = 0;
         int height = 0;
         for (var pos : pSet) {
-            int x = pos.x();
-            int y = pos.y();
-            if (x < 0 || y < 0) {
+            long x = pos.x();
+            long z = pos.z();
+            if (x < 0 || z < 0 || x > Integer.MAX_VALUE || z > Integer.MAX_VALUE) {
                 throw new IllegalArgumentException("Invalid pos found: " + pos);
             }
             if (x + 1 > width) {
-                width = x + 1;
+                width = (int) x + 1;
             }
-            if (y + 1 > height) {
-                height = y + 1;
+            if (z + 1 > height) {
+                height = (int) z + 1;
             }
         }
         var image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
         for (var pos : pSet) {
-            image.setRGB(pos.x(), pos.y(), Bitmaps.IN_REGION);
+            image.setRGB((int) pos.x(), (int) pos.z(), Bitmaps.IN_REGION);
         }
         if (file.getParent() != null) new File(file.getParent()).mkdirs();
         if (!ImageIO.write(image, "BMP", file)) {
@@ -56,15 +57,15 @@ public class Bitmaps {
      * @return a {@code Set<Pair<Integer, Integer>>} represents the masked region of the bmp
      * @throws IOException If an input or output exception occurred
      */
-    public static Set<Pair<Integer, Integer>> loadBmpToSet(@NonNull File file) throws IOException {
-        var pSet = new HashSet<Pair<Integer, Integer>>();
+    public static Set<Pos> loadBmpToSet(@NonNull File file) throws IOException {
+        var pSet = new HashSet<Pos>();
         var image = ImageIO.read(file);
         int width = image.getWidth();
         int height = image.getHeight();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if ((image.getRGB(i, j) & Bitmaps.RGB_MASK) == Bitmaps.IN_REGION) {
-                    pSet.add(new Pair<>(i, j));
+                    pSet.add(new Pos(i, j));
                 }
             }
         }
@@ -77,15 +78,15 @@ public class Bitmaps {
      * @return a {@code Set<Pair<Integer, Integer>>} represents the masked region of the bmp
      * @throws IOException If an input or output exception occurred
      */
-    public static Set<Pair<Integer, Integer>> loadBmpToSet(@NonNull InputStream input) throws IOException {
-        var pSet = new HashSet<Pair<Integer, Integer>>();
+    public static Set<Pos> loadBmpToSet(@NonNull InputStream input) throws IOException {
+        var pSet = new HashSet<Pos>();
         var image = ImageIO.read(input);
         int width = image.getWidth();
         int height = image.getHeight();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if ((image.getRGB(i, j) & Bitmaps.RGB_MASK) == Bitmaps.IN_REGION) {
-                    pSet.add(new Pair<>(i, j));
+                    pSet.add(new Pos(i, j));
                 }
             }
         }
@@ -100,25 +101,25 @@ public class Bitmaps {
      * @throws IllegalArgumentException If the region is invalid
      * @throws Exception Other exceptions
      */
-    public static void saveListToBmp(@NonNull List<Pair<Integer, Integer>> pLst, @NonNull File file) throws IOException, IllegalArgumentException, Exception {
+    public static void saveListToBmp(@NonNull List<Pos> pLst, @NonNull File file) throws IOException, IllegalArgumentException, Exception {
         int width = 0;
         int height = 0;
         for (var pos : pLst) {
-            int x = pos.x();
-            int y = pos.y();
-            if (x < 0 || y < 0) {
+            long x = pos.x();
+            long z = pos.z();
+            if (x < 0 || z < 0 || x > Integer.MAX_VALUE || z > Integer.MAX_VALUE) {
                 throw new IllegalArgumentException("Invalid pos found: " + pos);
             }
             if (x + 1 > width) {
-                width = x + 1;
+                width = (int) x + 1;
             }
-            if (y + 1 > height) {
-                height = y + 1;
+            if (z + 1 > height) {
+                height = (int) z + 1;
             }
         }
         var image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
         for (var pos : pLst) {
-            image.setRGB(pos.x(), pos.y(), Bitmaps.IN_REGION);
+            image.setRGB((int) pos.x(), (int) pos.z(), Bitmaps.IN_REGION);
         }
         if (file.getParent() != null) new File(file.getParent()).mkdirs();
         if (!ImageIO.write(image, "BMP", file)) {
@@ -132,15 +133,15 @@ public class Bitmaps {
      * @return a {@code List<Pair<Integer, Integer>>} represents the masked region of the bmp
      * @throws IOException If an input or output exception occurred
      */
-    public static List<Pair<Integer, Integer>> loadBmpToList(@NonNull File file) throws IOException {
-        var pLst = new LinkedList<Pair<Integer, Integer>>();
+    public static List<Pos> loadBmpToList(@NonNull File file) throws IOException {
+        var pLst = new LinkedList<Pos>();
         var image = ImageIO.read(file);
         int width = image.getWidth();
         int height = image.getHeight();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if ((image.getRGB(i, j) & Bitmaps.RGB_MASK) == Bitmaps.IN_REGION) {
-                    pLst.add(new Pair<>(i, j));
+                    pLst.add(new Pos(i, j));
                 }
             }
         }
@@ -153,15 +154,15 @@ public class Bitmaps {
      * @return a {@code List<Pair<Integer, Integer>>} represents the masked region of the bmp
      * @throws IOException If an input or output exception occurred
      */
-    public static List<Pair<Integer, Integer>> loadBmpToList(@NonNull InputStream input) throws IOException {
-        var pLst = new LinkedList<Pair<Integer, Integer>>();
+    public static List<Pos> loadBmpToList(@NonNull InputStream input) throws IOException {
+        var pLst = new LinkedList<Pos>();
         var image = ImageIO.read(input);
         int width = image.getWidth();
         int height = image.getHeight();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if ((image.getRGB(i, j) & Bitmaps.RGB_MASK) == Bitmaps.IN_REGION) {
-                    pLst.add(new Pair<>(i, j));
+                    pLst.add(new Pos(i, j));
                 }
             }
         }
