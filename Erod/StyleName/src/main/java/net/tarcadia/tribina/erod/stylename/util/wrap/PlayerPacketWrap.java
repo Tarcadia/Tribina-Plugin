@@ -9,7 +9,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.*;
 import net.tarcadia.tribina.erod.stylename.StyleName;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -77,32 +76,46 @@ public class PlayerPacketWrap {
         }
     }
 
-    @Nullable
+    @NotNull
     public PacketContainer wrapFollowerSpawn(@NotNull Player player) {
         var eid = getFollowerEID(player);
         var uuid = getFollowerUUID(player);
-        var metadata = new WrappedDataWatcher();
-        var displayNameObject = Optional.of(WrappedChatComponent.fromChatMessage(sn.getPlayerDisplayFullName(player))[0].getHandle());
-        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x40);
-        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)), displayNameObject);
-        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true); //custom name visible
-        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(5, WrappedDataWatcher.Registry.get(Boolean.class)), true); //no gravity
-        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(11, WrappedDataWatcher.Registry.get(Byte.class)), (byte) (0x01 | 0x08 | 0x10)); //isSmall, noBasePlate, set Marker
-
         var packetSpawn = pm.createPacket(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
         packetSpawn.getModifier().writeDefaults();
         packetSpawn.getIntegers().write(0, eid);
         packetSpawn.getUUIDs().write(0, uuid);
-        packetSpawn.getEntityTypeModifier().write(0, EntityType.ARMOR_STAND);
+        packetSpawn.getIntegers().write(1, 1);
         packetSpawn.getDoubles().write(0, player.getLocation().getX());
-        packetSpawn.getDoubles().write(1, player.getLocation().getY() + 2.2);
+        packetSpawn.getDoubles().write(1, player.getLocation().getY() + 2.4);
         packetSpawn.getDoubles().write(2, player.getLocation().getZ());
-        packetSpawn.getWatchableCollectionModifier().write(0, metadata.getWatchableObjects());
 
         return packetSpawn;
     }
 
-    @Nullable
+    @NotNull
+    public PacketContainer wrapFollowerMeta(@NotNull Player player) {
+        var metadata = new WrappedDataWatcher();
+        var displayName = sn.getPlayerDisplayFullName(player);
+        var displayNameVisible = !player.isSneaking() && sn.isFunctionEnabled();
+        var optDisplayNameObject = Optional.of(WrappedChatComponent.fromText(displayName).getHandle());
+        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x20); // invisible
+        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)), optDisplayNameObject);
+        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), displayNameVisible);
+        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(4, WrappedDataWatcher.Registry.get(Boolean.class)), true);
+        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(5, WrappedDataWatcher.Registry.get(Boolean.class)), true);
+        metadata.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(15, WrappedDataWatcher.Registry.get(Byte.class)), (byte) (0x01 | 0x08 | 0x10)); //isSmall, noBasePlate, set Marker
+
+        var eid = getFollowerEID(player);
+        var uuid = getFollowerUUID(player);
+        var packetMeta = pm.createPacket(PacketType.Play.Server.ENTITY_METADATA);
+        packetMeta.getModifier().writeDefaults();
+        packetMeta.getIntegers().write(0, eid);
+        packetMeta.getWatchableCollectionModifier().write(0, metadata.getWatchableObjects());
+
+        return packetMeta;
+    }
+
+    @NotNull
     public PacketContainer wrapFollowerDestroy(@NotNull Player player) {
         var eid = getFollowerEID(player);
         var uuid = getFollowerUUID(player);
@@ -114,7 +127,7 @@ public class PlayerPacketWrap {
         return packetDestroy;
     }
 
-    @Nullable
+    @NotNull
     public PacketContainer wrapFollowerMove(@NotNull Player player) {
         var eid = getFollowerEID(player);
         var uuid = getFollowerUUID(player);
@@ -123,7 +136,7 @@ public class PlayerPacketWrap {
         packetMove.getModifier().writeDefaults();
         packetMove.getIntegers().write(0, eid);
         packetMove.getDoubles().write(0, player.getLocation().getX());
-        packetMove.getDoubles().write(1, player.getLocation().getY() + 2.2);
+        packetMove.getDoubles().write(1, player.getLocation().getY() + 2.4);
         packetMove.getDoubles().write(2, player.getLocation().getZ());
 
         return packetMove;
@@ -133,7 +146,8 @@ public class PlayerPacketWrap {
         pm = ProtocolLibrary.getProtocolManager();
         sn = StyleName.plugin;
 
-        playerInfoListener = new PacketAdapter(sn,
+        playerInfoListener = new PacketAdapter(
+                sn,
                 ListenerPriority.NORMAL,
                 PacketType.Play.Server.PLAYER_INFO
         ) {
@@ -152,9 +166,9 @@ public class PlayerPacketWrap {
                         WrappedGameProfile profile;
                         if (
                                 (rPID != null) &&
-                                        ((profile = rPID.getProfile()) != null) &&
-                                        ((player = sn.getServer().getPlayer(profile.getUUID())) != null) &&
-                                        player.isOnline()
+                                ((profile = rPID.getProfile()) != null) &&
+                                ((player = sn.getServer().getPlayer(profile.getUUID())) != null) &&
+                                player.isOnline()
                         ) {
                             var name = sn.getPlayerStringName(player);
                             var nWGP = profile.withName(name);
@@ -174,6 +188,7 @@ public class PlayerPacketWrap {
                 ListenerPriority.NORMAL,
                 PacketType.Play.Server.NAMED_ENTITY_SPAWN,
                 PacketType.Play.Server.ENTITY_DESTROY,
+                PacketType.Play.Server.ENTITY_METADATA,
                 PacketType.Play.Server.REL_ENTITY_MOVE,
                 PacketType.Play.Server.REL_ENTITY_MOVE_LOOK,
                 PacketType.Play.Server.ENTITY_TELEPORT
@@ -189,8 +204,11 @@ public class PlayerPacketWrap {
                         if (player != null) {
                             updateEIDPlayer(player);
                             var packetSpawn = wrapFollowerSpawn(player);
+                            var packetMeta = wrapFollowerMeta(player);
                             try {
-                                pm.sendServerPacket(event.getPlayer(), packetSpawn);
+                                var target = event.getPlayer();
+                                pm.sendServerPacket(target, packetSpawn);
+                                pm.sendServerPacket(target, packetMeta);
                             } catch (Exception e) {
                                 StyleName.logger.warning("Unable to wrap the player follower spawn packet.");
                             }
@@ -200,12 +218,26 @@ public class PlayerPacketWrap {
                         for (var eid : eidList) {
                             var player = getEIDPlayer(eid);
                             if (player != null) {
+                                sn.getLogger().info("ENTITY DESTROY: " + player.getName());
                                 var packetDestroy = wrapFollowerDestroy(player);
                                 try {
-                                    pm.sendServerPacket(event.getPlayer(), packetDestroy);
+                                    var target = event.getPlayer();
+                                    pm.sendServerPacket(target, packetDestroy);
                                 } catch (Exception e) {
                                     StyleName.logger.warning("Unable to wrap the player follower destroy packet.");
                                 }
+                            }
+                        }
+                    } else if (packet.getType().equals(PacketType.Play.Server.ENTITY_METADATA)) {
+                        var eid = packet.getIntegers().read(0);
+                        var player = getEIDPlayer(eid);
+                        if (player != null) {
+                            var packetMeta = wrapFollowerMeta(player);
+                            try {
+                                var target = event.getPlayer();
+                                pm.sendServerPacket(target, packetMeta);
+                            } catch (Exception e) {
+                                StyleName.logger.warning("Unable to wrap the player follower meta packet.");
                             }
                         }
                     } else if (
@@ -218,7 +250,8 @@ public class PlayerPacketWrap {
                         if (player != null) {
                             var packetMove = wrapFollowerMove(player);
                             try {
-                                pm.sendServerPacket(event.getPlayer(), packetMove);
+                                var target = event.getPlayer();
+                                pm.sendServerPacket(target, packetMove);
                             } catch (Exception e) {
                                 StyleName.logger.warning("Unable to wrap the player follower move packet.");
                             }
