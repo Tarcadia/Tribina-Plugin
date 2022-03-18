@@ -288,6 +288,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             }
         } catch (IllegalArgumentException e) {
             logger.warning("Style " + style + " load failed.");
+            this.setPlayerStyle(player, "Normal");
             theStyle = Style.Normal;
         }
         return theStyle.styled(name);
@@ -307,6 +308,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             }
         } catch (IllegalArgumentException e) {
             logger.warning("Tag " + tag + " load failed.");
+            this.setPlayerStyle(player, "NullTag");
             theTag = Tag.NullTag;
         }
         if (tagVisible) return theTag.tag();
@@ -326,6 +328,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             }
         } catch (IllegalArgumentException e) {
             logger.warning("Skin " + skin + " load failed.");
+            this.setPlayerStyle(player, "Default");
             theSkin = Skin.Default;
         }
         return new WrappedSignedProperty("textures", theSkin.skinValue(player), theSkin.skinSignature(player));
