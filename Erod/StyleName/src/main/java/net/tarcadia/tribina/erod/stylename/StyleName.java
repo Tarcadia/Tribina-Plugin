@@ -345,8 +345,10 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     public void updatePlayerDisplay(@NotNull Player player) {
         if (this.isFunctionEnabled()) {
             player.setDisplayName(getPlayerDisplayFullName(player));
+            player.setPlayerListName(getPlayerDisplayName(player));
         } else {
-            player.setDisplayName("");
+            player.setDisplayName(null);
+            player.setPlayerListName(null);
         }
     }
 
