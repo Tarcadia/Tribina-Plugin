@@ -756,6 +756,8 @@ public class Configuration implements org.bukkit.configuration.Configuration {
         if (!lst.isEmpty() && !lst.contains(value)) {
             added = lst;
             added.add(value);
+        } else if (!lst.isEmpty() && lst.contains(value)) {
+            added = lst;
         } else if ((val != null) && !Objects.equals(val, value)) {
             added = List.of(val, value);
         } else {
