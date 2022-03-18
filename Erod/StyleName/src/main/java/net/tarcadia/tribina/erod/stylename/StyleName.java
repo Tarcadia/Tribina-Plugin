@@ -220,7 +220,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
 
     @NotNull
     public String getPlayerStringTag(@NotNull Player player) {
-        var tag = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG, "");
+        var tag = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG, "(NONE)");
         var ret = "";
         try {
             var theTag = Tag.valueOf(tag);
@@ -248,7 +248,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
 
     @NotNull
     public String getPlayerStringStyle(@NotNull Player player) {
-        var style = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE, "");
+        var style = config.getString(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE, "(NONE)");
         var ret = "";
         try {
             var theStyle = Style.valueOf(style);
@@ -508,8 +508,11 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
             if ((args.length == 3) && sender.isOp() && (args[0].equals(CMD_SN_ARG_ADD_SKIN))) ret.add("<skin>");
             if ((args.length == 3) && sender.isOp() && (args[0].equals(CMD_SN_ARG_ADD_TAG))) ret.add("<tag>");
             if ((args.length == 3) && sender.isOp() && (args[0].equals(CMD_SN_ARG_ADD_STYLE))) ret.add("<style>");
+            if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_SKIN)) && (sender instanceof Player)) ret.addAll(this.getPlayerListSkin((Player) sender));
             if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_SKIN))) ret.add("<skin>");
+            if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_TAG)) && (sender instanceof Player)) ret.addAll(this.getPlayerListTag((Player) sender));
             if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_TAG))) ret.add("<tag>");
+            if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_STYLE)) && (sender instanceof Player)) ret.addAll(this.getPlayerListStyle((Player) sender));
             if ((args.length == 3) && (args[0].equals(CMD_SN_ARG_SET_STYLE))) ret.add("<style>");
             if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_LIST)) && (sender instanceof Player)) ret.add(sender.getName());
             if ((args.length == 2) && (args[0].equals(CMD_SN_ARG_LIST)) && sender.isOp()) ret.add("<player>");
