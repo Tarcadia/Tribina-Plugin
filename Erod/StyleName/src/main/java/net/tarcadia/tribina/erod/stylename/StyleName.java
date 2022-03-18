@@ -346,6 +346,21 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     }
 
     public void updatePlayerDisplay(@NotNull Player player) {
+        var skinLst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_SKIN_LIST);
+        var tagLst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_TAG_LIST);
+        var styleLst = config.getStringList(KEY_PLAYERS + player.getName() + KEY_PLAYERS_STYLE_LIST);
+        if (skinLst.isEmpty()) {
+            this.addPlayerSkin(player, "Default");
+            this.setPlayerSkin(player, "Default");
+        }
+        if (tagLst.isEmpty()) {
+            this.addPlayerTag(player, "NullTag");
+            this.setPlayerTag(player, "NullTag");
+        }
+        if (styleLst.isEmpty()) {
+            this.addPlayerStyle(player, "Normal");
+            this.setPlayerStyle(player, "Normal");
+        }
         if (this.isFunctionEnabled()) {
             player.setDisplayName(getPlayerDisplayFullName(player));
             player.setPlayerListName(getPlayerDisplayName(player));
@@ -358,6 +373,7 @@ public final class StyleName extends JavaPlugin implements TabExecutor, Listener
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
         var player = event.getPlayer();
+        this.updatePlayerDisplay(player);
         Skin.updateSkin(player);
         ppw.updateEIDPlayer(player);
     }
