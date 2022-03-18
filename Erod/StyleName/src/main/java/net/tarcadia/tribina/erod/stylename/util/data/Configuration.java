@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.erod.stylename;
+package net.tarcadia.tribina.erod.stylename.util.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;

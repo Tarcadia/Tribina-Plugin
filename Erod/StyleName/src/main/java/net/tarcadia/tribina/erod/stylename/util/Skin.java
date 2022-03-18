@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.erod.stylename;
+package net.tarcadia.tribina.erod.stylename.util;
 
 import com.google.gson.JsonObject;
 import org.bukkit.entity.Player;
