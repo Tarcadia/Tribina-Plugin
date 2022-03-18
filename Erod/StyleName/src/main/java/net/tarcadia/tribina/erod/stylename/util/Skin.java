@@ -14,12 +14,12 @@ public enum Skin {
     Default{
         @Override
         public @NotNull String skinValue(@NotNull Player player) {
-            return Own.skinValue(player);
+            return Alex.skinValue(player);
         }
 
         @Override
         public @NotNull String skinSignature(@NotNull Player player) {
-            return Own.skinSignature(player);
+            return Alex.skinSignature(player);
         }
     },
 
