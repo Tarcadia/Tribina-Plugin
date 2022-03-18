@@ -6,6 +6,7 @@ prefix: EROD SN
 load: STARTUP
 authors: [ Tarcadia ]
 description: '${project.description}'
+depend: [ ProtocolLib ]
 commands:
   erodstylename:
     aliases: [ erodsn, stylename ]
@@ -15,6 +16,8 @@ commands:
       ... disable
       ... list <player>
       ... set-name <player> <name>
+      ... add-skin <player> <skin>
+      ... set-skin <player> <skin>
       ... add-tag <player> <tag>
       ... set-tag <player> <tag>
       ... set-tag-visible <player>
