@@ -6,7 +6,6 @@
 
     <groupId>net.tarcadia.tribina.erod</groupId>
     <artifactId>stylename</artifactId>
-
     <version>1.0.2-RELEASE</version>
     <packaging>jar</packaging>
 
