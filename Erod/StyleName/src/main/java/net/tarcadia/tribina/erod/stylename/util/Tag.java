@@ -1,4 +1,4 @@
-package net.tarcadia.tribina.erod.stylename;
+package net.tarcadia.tribina.erod.stylename.util;
 
 import org.jetbrains.annotations.NotNull;
 
